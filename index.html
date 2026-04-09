@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>VG Maintenance Tracker</title>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="VG Tracker">
+<meta name="theme-color" content="#0d0f14">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0d0f14;--surface:#151820;--surface2:#1c2030;--border:#252a3a;--accent:#4f9cf9;--accent2:#7c6af7;--green:#3ecf8e;--yellow:#f5a623;--red:#f25f5c;--text:#e8eaf0;--text2:#8892a4;--text3:#4a5468;--mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;--display:'Syne',sans-serif}
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;overflow-x:hidden}
+  .topbar{position:sticky;top:0;z-index:100;background:rgba(13,15,20,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
+  .topbar-title{font-family:var(--display);font-weight:800;font-size:17px;letter-spacing:-.3px}
+  .topbar-title span{color:var(--accent)}
+  .topbar-sub{font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:2px}
+  .nav{display:flex;gap:4px;padding:10px 12px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+  .nav::-webkit-scrollbar{display:none}
+  .nav-btn{flex-shrink:0;padding:7px 14px;border-radius:8px;border:none;font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;background:transparent;color:var(--text2);transition:all .2s}
+  .nav-btn.active{background:var(--accent);color:#fff}
+  .view{display:none;padding:16px;animation:fadeIn .25s ease}
+  .view.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px}
+  .card-title{font-family:var(--display);font-weight:700;font-size:13px;color:var(--text2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  .card-title::before{content:'';display:block;width:3px;height:14px;background:var(--accent);border-radius:2px}
+  .kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+  .kpi-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px 12px;position:relative;overflow:hidden}
+  .kpi-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent-color,var(--accent))}
+  .kpi-label{font-size:10px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+  .kpi-value{font-family:var(--mono);font-size:26px;font-weight:500;line-height:1}
+  .kpi-target{font-size:10px;color:var(--text3);margin-top:4px}
+  .kpi-status{font-size:11px;margin-top:6px;font-weight:500}
+  .ok{color:var(--green)}.warn{color:var(--yellow)}.bad{color:var(--red)}
+  .progress-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+  .progress-fill{height:100%;border-radius:2px;transition:width .6s ease}
+  .form-group{margin-bottom:14px}
+  .form-label{font-size:12px;color:var(--text2);font-weight:500;margin-bottom:6px;display:block;letter-spacing:.3px}
+  .form-input,.form-select,.form-textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--sans);font-size:14px;outline:none;transition:border-color .2s;-webkit-appearance:none;appearance:none}
+  .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent)}
+  .form-textarea{resize:vertical;min-height:70px}
+  .form-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238892a4' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+  .btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;border-radius:12px;border:none;font-family:var(--display);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.2px}
+  .btn-primary{background:var(--accent);color:#fff}.btn-primary:active{transform:scale(.98);opacity:.9}
+  .btn-secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+  .btn-danger{background:rgba(242,95,92,.15);color:var(--red);border:1px solid rgba(242,95,92,.3)}
+  .btn-sm{padding:8px 14px;font-size:12px;border-radius:8px;width:auto}
+  .btn-green{background:var(--green);color:#0d0f14}
+  .log-item{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:8px;position:relative;overflow:hidden}
+  .log-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--item-color,var(--border))}
+  .log-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+  .log-title{font-weight:500;font-size:14px;flex:1;padding-right:8px}
+  .badge{font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:6px;font-weight:500;white-space:nowrap;flex-shrink:0}
+  .badge-green{background:rgba(62,207,142,.15);color:var(--green)}.badge-yellow{background:rgba(245,166,35,.15);color:var(--yellow)}
+  .badge-red{background:rgba(242,95,92,.15);color:var(--red)}.badge-blue{background:rgba(79,156,249,.15);color:var(--accent)}
+  .badge-purple{background:rgba(124,106,247,.15);color:var(--accent2)}
+  .log-meta{font-size:12px;color:var(--text3);display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+  .log-actions{display:flex;gap:6px;margin-top:10px}
+  .section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+  .section-title{font-family:var(--display);font-weight:700;font-size:18px}
+  .empty{text-align:center;padding:40px 20px;color:var(--text3)}
+  .empty-icon{font-size:36px;margin-bottom:12px}.empty-text{font-size:14px}
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);z-index:200;align-items:flex-end}
+  .modal-overlay.open{display:flex}
+  .modal{background:var(--surface);border:1px solid var(--border);border-radius:20px 20px 0 0;padding:20px;width:100%;max-height:92vh;overflow-y:auto;animation:slideUp .3s ease}
+  @keyframes slideUp{from{transform:translateY(100%)}to{transform:none}}
+  .modal-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 20px}
+  .modal-title{font-family:var(--display);font-weight:700;font-size:18px;margin-bottom:18px}
+  .achievement-item{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:8px}
+  .ach-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+  .ach-rate{font-family:var(--mono);font-size:20px;color:var(--green);font-weight:500}
+  .project-item{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:8px}
+  .proj-header{display:flex;justify-content:space-between;margin-bottom:8px}
+  .proj-pct{font-family:var(--mono);font-size:13px;color:var(--accent)}
+  .divider{height:1px;background:var(--border);margin:16px 0}
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--green);color:#0d0f14;padding:12px 24px;border-radius:50px;font-weight:600;font-size:13px;transition:transform .3s ease;z-index:300;white-space:nowrap}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .area-tag{display:inline-block;font-family:var(--mono);font-size:10px;padding:2px 8px;background:rgba(79,156,249,.12);color:var(--accent);border-radius:4px;letter-spacing:.3px}
+  input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(.4)}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  /* CALENDAR */
+  .week-header{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:6px}
+  .week-day-label{text-align:center;font-size:10px;color:var(--text3);font-weight:600;text-transform:uppercase;padding:4px 0}
+  .calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:8px}
+  .cal-day{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:5px 3px;min-height:44px;cursor:pointer;transition:border-color .15s;position:relative}
+  .cal-day:hover{border-color:var(--accent)}
+  .cal-day.today{border-color:var(--accent);background:rgba(79,156,249,.08)}
+  .cal-day.other-month{opacity:.3}
+  .cal-day-num{font-family:var(--mono);font-size:10px;color:var(--text2);margin-bottom:2px;text-align:center}
+  .cal-day.today .cal-day-num{color:var(--accent);font-weight:700}
+  .cal-dot{width:5px;height:5px;border-radius:50%;margin:1px auto}
+  .month-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .month-title{font-family:var(--display);font-weight:700;font-size:15px}
+  .month-btn{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:5px 14px;color:var(--text);cursor:pointer;font-size:16px}
+  .sched-item{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:8px;position:relative;overflow:hidden}
+  .sched-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--item-color,var(--border))}
+  .sched-date-big{font-family:var(--mono);font-size:11px;color:var(--accent);margin-bottom:3px}
+  /* SUPPLIERS */
+  .supplier-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px;position:relative;overflow:hidden}
+  .supplier-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--item-color,var(--border))}
+  .supplier-name{font-family:var(--display);font-weight:700;font-size:15px;margin-bottom:4px}
+  .supplier-meta{font-size:12px;color:var(--text3);margin-bottom:10px}
+  .supplier-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px}
+  .sup-kpi{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px;text-align:center}
+  .sup-kpi-val{font-family:var(--mono);font-size:16px;font-weight:500}
+  .sup-kpi-label{font-size:10px;color:var(--text3);margin-top:2px}
+  .offer-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:11px;margin-bottom:6px}
+  .offer-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px}
+  .offer-title{font-weight:500;font-size:13px;flex:1;padding-right:8px}
+  .offer-price{font-family:var(--mono);font-size:14px;color:var(--green);font-weight:500;white-space:nowrap}
+  .sup-summary{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px}
+  .sup-summary-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+  .sup-summary-val{font-family:var(--mono);font-size:22px;font-weight:500}
+  .sup-summary-label{font-size:10px;color:var(--text3);margin-top:3px;text-transform:uppercase;letter-spacing:.4px}
+  .rating-stars{color:var(--yellow);font-size:12px;letter-spacing:1px;margin-top:4px}
+  .filter-row{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+  .filter-row::-webkit-scrollbar{display:none}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div>
+    <div class="topbar-title">VG <span>Tracker</span></div>
+    <div class="topbar-sub" id="current-date"></div>
+  </div>
+  <div style="font-size:20px">⚙️</div>
+</div>
+
+<div class="nav">
+  <button class="nav-btn active" onclick="switchView('dashboard',this)">Dashboard</button>
+  <button class="nav-btn" onclick="switchView('schedule',this)">Schedule</button>
+  <button class="nav-btn" onclick="switchView('gemba',this)">Gemba</button>
+  <button class="nav-btn" onclick="switchView('pm',this)">PM Log</button>
+  <button class="nav-btn" onclick="switchView('suppliers',this)">Προμηθευτές</button>
+  <button class="nav-btn" onclick="switchView('achievements',this)">Portfolio</button>
+</div>
+
+<!-- DASHBOARD -->
+<div id="view-dashboard" class="view active">
+  <div class="kpi-grid">
+    <div class="kpi-card" style="--accent-color:var(--green)"><div class="kpi-label">PM Rate</div><div class="kpi-value" id="kpi-pm-rate">—</div><div class="kpi-target">Target ≥ 95%</div><div class="kpi-status" id="kpi-pm-status"></div></div>
+    <div class="kpi-card" style="--accent-color:var(--yellow)"><div class="kpi-label">Overdue PMs</div><div class="kpi-value" id="kpi-overdue">—</div><div class="kpi-target">Target = 0</div><div class="kpi-status" id="kpi-overdue-status"></div></div>
+    <div class="kpi-card" style="--accent-color:var(--red)"><div class="kpi-label">Breakdowns</div><div class="kpi-value" id="kpi-breakdowns">—</div><div class="kpi-target">Target &lt; 3/μήνα</div><div class="kpi-status" id="kpi-break-status"></div></div>
+    <div class="kpi-card" style="--accent-color:var(--accent2)"><div class="kpi-label">Gemba Closed</div><div class="kpi-value" id="kpi-gemba-rate">—</div><div class="kpi-target">Target ≥ 80%</div><div class="kpi-status" id="kpi-gemba-status"></div></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Carl Source & Ασφάλεια</div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:13px;color:var(--text2)">Carl Source Closure</span><span class="proj-pct" id="carl-pct">—</span></div><div class="progress-bar"><div class="progress-fill" id="carl-bar" style="background:var(--accent);width:0%"></div></div></div>
+      <div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:13px;color:var(--text2)">HAZOPs Μήνα</span><span class="proj-pct" id="hazop-count">—</span></div><div class="progress-bar"><div class="progress-fill" id="hazop-bar" style="background:var(--accent2);width:0%"></div></div></div>
+      <div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:13px;color:var(--text2)">SOPs Updated</span><span class="proj-pct" id="sop-count">—</span></div><div class="progress-bar"><div class="progress-fill" id="sop-bar" style="background:var(--green);width:0%"></div></div></div>
+    </div>
+    <div class="divider"></div>
+    <button class="btn btn-secondary" onclick="openModal('kpi-modal')" style="font-size:13px;padding:10px">✏️ &nbsp;Update Monthly KPIs</button>
+  </div>
+  <div class="card"><div class="card-title">Επόμενες Εκκρεμότητες</div><div id="upcoming-tasks"></div></div>
+  <div class="card">
+    <div class="card-title">Active Projects</div>
+    <div id="projects-list"></div>
+    <button class="btn btn-secondary" onclick="openModal('project-modal')" style="margin-top:8px;font-size:13px;padding:10px">+ Add Project</button>
+  </div>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <div class="card-title" style="margin:0">Recent Gemba</div>
+      <button class="btn btn-secondary btn-sm" onclick="switchView('gemba',document.querySelectorAll('.nav-btn')[2])">View all</button>
+    </div>
+    <div id="recent-gemba"></div>
+  </div>
+</div>
+
+<!-- SCHEDULE -->
+<div id="view-schedule" class="view">
+  <div class="section-header">
+    <div class="section-title">Schedule</div>
+    <button class="btn btn-primary btn-sm" onclick="openSchedModal()">+ Task</button>
+  </div>
+  <div class="card" style="padding:12px">
+    <div class="month-nav">
+      <button class="month-btn" onclick="changeMonth(-1)">‹</button>
+      <div class="month-title" id="cal-month-title"></div>
+      <button class="month-btn" onclick="changeMonth(1)">›</button>
+    </div>
+    <div class="week-header">
+      <div class="week-day-label">Κυ</div><div class="week-day-label">Δε</div><div class="week-day-label">Τρ</div><div class="week-day-label">Τε</div><div class="week-day-label">Πε</div><div class="week-day-label">Πα</div><div class="week-day-label">Σα</div>
+    </div>
+    <div class="calendar-grid" id="cal-grid"></div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px">
+      <span style="font-size:10px;color:var(--text3);display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block"></span>Maintenance</span>
+      <span style="font-size:10px;color:var(--text3);display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:var(--red);display:inline-block"></span>Safety</span>
+      <span style="font-size:10px;color:var(--text3);display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block"></span>Meeting</span>
+      <span style="font-size:10px;color:var(--text3);display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:var(--accent2);display:inline-block"></span>Inspection</span>
+    </div>
+  </div>
+  <div class="filter-row">
+    <button class="btn btn-secondary btn-sm" id="sf-all" onclick="filterSched('all')" style="background:var(--accent);color:#fff;border-color:var(--accent)">Όλα</button>
+    <button class="btn btn-secondary btn-sm" id="sf-pending" onclick="filterSched('pending')">Εκκρεμή</button>
+    <button class="btn btn-secondary btn-sm" id="sf-done" onclick="filterSched('done')">✅ Ολοκλ.</button>
+    <button class="btn btn-secondary btn-sm" id="sf-overdue" onclick="filterSched('overdue')">⚠️ Καθυστ.</button>
+  </div>
+  <div id="sched-list"></div>
+</div>
+
+<!-- GEMBA -->
+<div id="view-gemba" class="view">
+  <div class="section-header"><div class="section-title">Gemba Walks</div><button class="btn btn-primary btn-sm" onclick="openModal('gemba-modal')">+ Finding</button></div>
+  <div class="filter-row">
+    <button class="btn btn-secondary btn-sm" id="filter-all" onclick="filterGemba('all')" style="background:var(--accent);color:#fff;border-color:var(--accent)">All</button>
+    <button class="btn btn-secondary btn-sm" id="filter-open" onclick="filterGemba('open')">Open</button>
+    <button class="btn btn-secondary btn-sm" id="filter-high" onclick="filterGemba('high')">🔴 High</button>
+    <button class="btn btn-secondary btn-sm" id="filter-closed" onclick="filterGemba('closed')">✅ Closed</button>
+  </div>
+  <div id="gemba-list"></div>
+</div>
+
+<!-- PM LOG -->
+<div id="view-pm" class="view">
+  <div class="section-header"><div class="section-title">PM Log</div><button class="btn btn-primary btn-sm" onclick="openModal('pm-modal')">+ PM</button></div>
+  <div class="filter-row">
+    <button class="btn btn-secondary btn-sm" id="pm-filter-all" onclick="filterPM('all')" style="background:var(--accent);color:#fff;border-color:var(--accent)">All</button>
+    <button class="btn btn-secondary btn-sm" id="pm-filter-due" onclick="filterPM('due')">Scheduled</button>
+    <button class="btn btn-secondary btn-sm" id="pm-filter-done" onclick="filterPM('done')">✅ Done</button>
+    <button class="btn btn-secondary btn-sm" id="pm-filter-overdue" onclick="filterPM('overdue')">⚠️ Overdue</button>
+  </div>
+  <div id="pm-list"></div>
+</div>
+
+<!-- SUPPLIERS -->
+<div id="view-suppliers" class="view">
+  <div class="section-header"><div class="section-title">Προμηθευτές</div><button class="btn btn-primary btn-sm" onclick="openModal('supplier-modal')">+ Προμηθευτής</button></div>
+  <div class="sup-summary">
+    <div class="sup-summary-card"><div class="sup-summary-val" id="sup-count">0</div><div class="sup-summary-label">Προμηθευτές</div></div>
+    <div class="sup-summary-card"><div class="sup-summary-val" id="sup-offers">0</div><div class="sup-summary-label">Προσφορές</div></div>
+    <div class="sup-summary-card"><div class="sup-summary-val ok" id="sup-best-del">—</div><div class="sup-summary-label">Best Delivery</div></div>
+    <div class="sup-summary-card"><div class="sup-summary-val" id="sup-avg-rating">—</div><div class="sup-summary-label">Avg Rating</div></div>
+  </div>
+  <div class="filter-row">
+    <button class="btn btn-secondary btn-sm" id="supf-all" onclick="filterSup('all')" style="background:var(--accent);color:#fff;border-color:var(--accent)">Όλοι</button>
+    <button class="btn btn-secondary btn-sm" id="supf-active" onclick="filterSup('active')">✅ Ενεργοί</button>
+    <button class="btn btn-secondary btn-sm" id="supf-eval" onclick="filterSup('eval')">⏳ Αξιολόγηση</button>
+  </div>
+  <div id="suppliers-list"></div>
+  <div style="margin-top:8px">
+    <div class="section-header" style="margin-bottom:10px">
+      <div style="font-family:var(--display);font-weight:700;font-size:16px">Όλες οι Προσφορές</div>
+      <button class="btn btn-primary btn-sm" onclick="openOfferModal(null)">+ Προσφορά</button>
+    </div>
+    <div id="all-offers-list"></div>
+  </div>
+</div>
+
+<!-- PORTFOLIO -->
+<div id="view-achievements" class="view">
+  <div class="section-header"><div class="section-title">Portfolio</div><button class="btn btn-primary btn-sm" onclick="openModal('ach-modal')">+ Add</button></div>
+  <div id="ach-list"></div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="sched-modal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Νέα Εκκρεμότητα</div>
+    <div class="form-group"><label class="form-label">Τίτλος</label><input type="text" class="form-input" id="sc-title" placeholder="π.χ. Αντικατάσταση φίλτρου αντλίας"></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Ημερομηνία</label><input type="date" class="form-input" id="sc-date"></div>
+      <div class="form-group"><label class="form-label">Ώρα (προαιρ.)</label><input type="time" class="form-input" id="sc-time"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Κατηγορία</label>
+        <select class="form-select" id="sc-cat">
+          <option value="maintenance">🔧 Maintenance</option><option value="safety">🦺 Safety</option>
+          <option value="inspection">🔍 Inspection</option><option value="admin">📋 Admin</option>
+          <option value="meeting">🤝 Meeting</option><option value="other">📌 Other</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Προτεραιότητα</label>
+        <select class="form-select" id="sc-priority">
+          <option value="high">🔴 High</option><option value="medium">🟡 Medium</option><option value="low">🟢 Low</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group"><label class="form-label">Area</label>
+      <select class="form-select" id="sc-area">
+        <option value="">— Γενικό —</option>
+        <option>20L A</option><option>20L B</option><option>5L</option><option>WWTP</option><option>HYPO</option>
+        <option>RM Tanks</option><option>Semi Finished Tanks</option><option>Hold Tanks</option>
+        <option>Mixers</option><option>Sleeve</option><option>Warehouse</option><option>In-Tank</option><option>Outside</option>
+      </select>
+    </div>
+    <div class="form-group"><label class="form-label">Επαναλαμβανόμενο</label>
+      <select class="form-select" id="sc-recur">
+        <option value="none">Όχι</option><option value="weekly">Εβδομαδιαία</option><option value="monthly">Μηνιαία</option>
+      </select>
+    </div>
+    <div class="form-group"><label class="form-label">Σημειώσεις</label><textarea class="form-textarea" id="sc-notes" placeholder="Επιπλέον λεπτομέρειες..." style="min-height:55px"></textarea></div>
+    <button class="btn btn-primary" onclick="saveSched()">Αποθήκευση</button>
+    <div style="height:8px"></div>
+    <button class="btn btn-secondary" onclick="closeModal('sched-modal')">Άκυρο</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="supplier-modal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Νέος Προμηθευτής</div>
+    <div class="form-group"><label class="form-label">Επωνυμία</label><input type="text" class="form-input" id="sup-name" placeholder="π.χ. Alfa Pumps ΑΕΒΕ"></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Κατηγορία</label>
+        <select class="form-select" id="sup-cat"><option>Ανταλλακτικά</option><option>Χημικά</option><option>Εξοπλισμός</option><option>Υπηρεσίες</option><option>Αναλώσιμα</option><option>Άλλο</option></select>
+      </div>
+      <div class="form-group"><label class="form-label">Κατάσταση</label>
+        <select class="form-select" id="sup-status"><option value="active">✅ Ενεργός</option><option value="eval">⏳ Αξιολόγηση</option><option value="inactive">❌ Ανενεργός</option></select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Επικοινωνία</label><input type="text" class="form-input" id="sup-contact" placeholder="Όνομα / τηλ"></div>
+      <div class="form-group"><label class="form-label">Delivery (μέρες)</label><input type="number" class="form-input" id="sup-delivery" placeholder="π.χ. 5" min="0"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Rating (1-5 ⭐)</label><input type="number" class="form-input" id="sup-rating" placeholder="1-5" min="1" max="5"></div>
+      <div class="form-group"><label class="form-label">Πιστωτικές Ημέρες</label><input type="number" class="form-input" id="sup-credit" placeholder="π.χ. 30" min="0"></div>
+    </div>
+    <div class="form-group"><label class="form-label">Σημειώσεις</label><textarea class="form-textarea" id="sup-notes" placeholder="Συμφωνίες, σχόλια..." style="min-height:55px"></textarea></div>
+    <button class="btn btn-primary" onclick="saveSupplier()">Αποθήκευση</button>
+    <div style="height:8px"></div>
+    <button class="btn btn-secondary" onclick="closeModal('supplier-modal')">Άκυρο</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="offer-modal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Νέα Προσφορά</div>
+    <div class="form-group"><label class="form-label">Προμηθευτής</label><select class="form-select" id="off-supplier"></select></div>
+    <div class="form-group"><label class="form-label">Περιγραφή / Είδος</label><input type="text" class="form-input" id="off-desc" placeholder="π.χ. Αντλία centrifugal 5.5kW"></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Τιμή μονάδας (€)</label><input type="number" class="form-input" id="off-price" placeholder="0.00" step="0.01" min="0"></div>
+      <div class="form-group"><label class="form-label">Ποσότητα</label><input type="number" class="form-input" id="off-qty" placeholder="1" min="1" value="1"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Ημ. Προσφοράς</label><input type="date" class="form-input" id="off-date"></div>
+      <div class="form-group"><label class="form-label">Ισχύς ως</label><input type="date" class="form-input" id="off-valid"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Κατηγορία</label>
+        <select class="form-select" id="off-cat"><option>Ανταλλακτικά</option><option>Χημικά</option><option>Εξοπλισμός</option><option>Υπηρεσίες</option><option>Αναλώσιμα</option><option>Άλλο</option></select>
+      </div>
+      <div class="form-group"><label class="form-label">Κατάσταση</label>
+        <select class="form-select" id="off-status"><option value="pending">⏳ Εκκρεμής</option><option value="approved">✅ Εγκρίθηκε</option><option value="rejected">❌ Απορρίφθηκε</option><option value="ordered">📦 Παραγγέλθηκε</option></select>
+      </div>
+    </div>
+    <div class="form-group"><label class="form-label">Σημειώσεις</label><textarea class="form-textarea" id="off-notes" placeholder="Σχόλια, σύγκριση τιμών..." style="min-height:55px"></textarea></div>
+    <button class="btn btn-primary" onclick="saveOffer()">Αποθήκευση</button>
+    <div style="height:8px"></div>
+    <button class="btn btn-secondary" onclick="closeModal('offer-modal')">Άκυρο</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="gemba-modal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">New Gemba Finding</div>
+    <div class="form-group"><label class="form-label">Date</label><input type="date" class="form-input" id="g-date"></div>
+    <div class="form-group"><label class="form-label">Area</label>
+      <select class="form-select" id="g-area"><option value="">Select area...</option><option>20L A</option><option>20L B</option><option>5L</option><option>WWTP</option><option>HYPO</option><option>RM Tanks</option><option>Semi Finished Tanks</option><option>Hold Tanks</option><option>Mixers</option><option>Sleeve</option><option>Warehouse</option><option>In-Tank</option><option>Outside</option></select>
+    </div>
+    <div class="form-group"><label class="form-label">Finding Description</label><textarea class="form-textarea" id="g-desc" placeholder="Describe what you observed..."></textarea></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Priority</label>
+        <select class="form-select" id="g-priority"><option value="high">🔴 High</option><option value="medium">🟡 Medium</option><option value="low">🟢 Low</option></select>
+      </div>
+      <div class="form-group"><label class="form-label">Due Date</label><input type="date" class="form-input" id="g-due"></div>
+    </div>
+    <div class="form-group"><label class="form-label">Action Required</label><input type="text" class="form-input" id="g-action" placeholder="What needs to be done?"></div>
+    <div class="form-group"><label class="form-label">Carl Source WO#</label><input type="text" class="form-input" id="g-wo" placeholder="WO-XXX"></div>
+    <button class="btn btn-primary" onclick="saveGemba()">Save Finding</button>
+    <div style="height:8px"></div>
+    <button class="btn btn-secondary" onclick="closeModal('gemba-modal')">Cancel</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="pm-modal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">New PM Entry</div>
+    <div class="form-group"><label class="form-label">Area</label>
+      <select class="form-select" id="pm-area"><option value="">Select area...</option><option>20L A</option><option>20L B</option><option>5L</option><option>WWTP</option><option>HYPO</option><option>RM Tanks</option><option>Semi Finished Tanks</option><option>Hold Tanks</option><option>Mixers</option><option>Sleeve</option><option>Warehouse</option><option>In-Tank</option><option>Outside</option></select>
+    </div>
+    <div class="form-group"><label class="form-label">Equipment / Asset</label><input type="text" class="form-input" id="pm-equip" placeholder="π.χ. Filling Machine A1"></div>
+    <div class="form-group"><label class="form-label">PM Type</label><input type="text" class="form-input" id="pm-type" placeholder="π.χ. Monthly inspection"></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Frequency</label>
+        <select class="form-select" id="pm-freq"><option>Weekly</option><option>Monthly</option><option>Quarterly</option><option>Annual</option></select>
+      </div>
+      <div class="form-group"><label class="form-label">Scheduled Date</label><input type="date" class="form-input" id="pm-sched"></div>
+    </div>
+    <div class="form-group"><label class="form-label">Carl Source WO#</label><input type="text" class="form-input" id="pm-wo" placeholder="WO-XXX"></div>
+    <div class="form-group"><label class="form-label">Notes</label><textarea class="form-textarea" id="pm-notes" placeholder="Observations..." style="min-height:55px"></textarea></div>
+    <button class="btn btn-primary" onclick="savePM()">Save PM</button>
+    <div style="height:8px"></div>
+    <button class="btn btn-secondary" onclick="closeModal('pm-modal')">Cancel</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="ach-modal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Add Achievement</div>
+    <div class="form-group"><label class="form-label">Achievement</label><input type="text" class="form-input" id="ach-title" placeholder="What did you accomplish?"></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Date</label><input type="date" class="form-input" id="ach-date"></div>
+      <div class="form-group"><label class="form-label">Category</label>
+        <select class="form-select" id="ach-cat"><option>Systems</option><option>Process</option><option>Maintenance</option><option>Safety</option><option>PM</option><option>Other</option></select>
+      </div>
+    </div>
+    <div class="form-group"><label class="form-label">Quantified Impact</label><input type="text" class="form-input" id="ach-impact" placeholder="π.χ. Μείωση downtime 20%"></div>
+    <div class="form-group"><label class="form-label">Completion Rate (%)</label><input type="number" class="form-input" id="ach-rate" placeholder="0–100" min="0" max="100"></div>
+    <div class="form-group"><label class="form-label">Evidence</label><input type="text" class="form-input" id="ach-evidence" placeholder="π.χ. Carl Source report"></div>
+    <button class="btn btn-primary" onclick="saveAch()">Save Achievement</button>
+    <div style="height:8px"></div>
+    <button class="btn btn-secondary" onclick="closeModal('ach-modal')">Cancel</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="kpi-modal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Update Monthly KPIs</div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">PM Completion (%)</label><input type="number" class="form-input" id="kpi-pm" min="0" max="100" placeholder="0–100"></div>
+      <div class="form-group"><label class="form-label">Overdue PMs</label><input type="number" class="form-input" id="kpi-od" min="0" placeholder="0"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Breakdowns</label><input type="number" class="form-input" id="kpi-bd" min="0" placeholder="0"></div>
+      <div class="form-group"><label class="form-label">Carl Closure (%)</label><input type="number" class="form-input" id="kpi-carl" min="0" max="100" placeholder="0–100"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">HAZOPs</label><input type="number" class="form-input" id="kpi-hz" min="0" placeholder="0"></div>
+      <div class="form-group"><label class="form-label">SOPs Updated</label><input type="number" class="form-input" id="kpi-sop" min="0" placeholder="0"></div>
+    </div>
+    <button class="btn btn-primary" onclick="saveKPIs()">Update Dashboard</button>
+    <div style="height:8px"></div>
+    <button class="btn btn-secondary" onclick="closeModal('kpi-modal')">Cancel</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="project-modal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Add Project</div>
+    <div class="form-group"><label class="form-label">Project Name</label><input type="text" class="form-input" id="proj-name" placeholder="π.χ. Carl Source Integration"></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">% Complete</label><input type="number" class="form-input" id="proj-pct" min="0" max="100" placeholder="0"></div>
+      <div class="form-group"><label class="form-label">Due Date</label><input type="date" class="form-input" id="proj-due"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Priority</label>
+        <select class="form-select" id="proj-priority"><option value="high">🔴 High</option><option value="medium">🟡 Medium</option><option value="low">🟢 Low</option></select>
+      </div>
+      <div class="form-group"><label class="form-label">Status</label>
+        <select class="form-select" id="proj-status"><option value="active">🔄 In Progress</option><option value="done">✅ Completed</option><option value="planned">⏳ Planned</option></select>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="saveProject()">Save Project</button>
+    <div style="height:8px"></div>
+    <button class="btn btn-secondary" onclick="closeModal('project-modal')">Cancel</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let state={
+  kpis:{pm:null,overdue:null,breakdowns:null,carl:null,hazop:null,sop:null},
+  gemba:[],pms:[],achievements:[],suppliers:[],offers:[],schedule:[],
+  projects:[
+    {id:1,name:"PM Program Transfer → Vasileios",pct:40,due:"2025-07-31",priority:"high",status:"active"},
+    {id:2,name:"Carl Source Full Integration",pct:30,due:"2025-06-30",priority:"high",status:"active"},
+    {id:3,name:"HAZOP Documentation",pct:20,due:"2025-08-31",priority:"medium",status:"active"},
+    {id:4,name:"Gemba Walk System",pct:100,due:"2025-04-01",priority:"low",status:"done"},
+  ]
+};
+let gF='all',pmF='all',sF='all',supF='all';
+let calY,calM;
+const now=new Date();
+
+function sv(){try{localStorage.setItem('vgt',JSON.stringify(state));}catch(e){}}
+function lv(){try{const d=localStorage.getItem('vgt');if(d)state={...state,...JSON.parse(d)};}catch(e){}}
+
+lv();
+calY=now.getFullYear();calM=now.getMonth();
+document.getElementById('current-date').textContent=now.toLocaleDateString('el-GR',{weekday:'long',day:'numeric',month:'long'});
+document.querySelectorAll('input[type="date"]').forEach(el=>el.value=now.toISOString().split('T')[0]);
+renderAll();
+
+function renderAll(){renderDash();renderCal();renderSchedList();renderGemba();renderPM();renderAch();renderSup();}
+
+function switchView(v,btn){
+  document.querySelectorAll('.view').forEach(e=>e.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(e=>e.classList.remove('active'));
+  document.getElementById('view-'+v).classList.add('active');
+  if(btn)btn.classList.add('active');
+  renderAll();
+}
+
+function catColor(c){return{maintenance:'var(--accent)',safety:'var(--red)',inspection:'var(--accent2)',admin:'var(--text3)',meeting:'var(--green)',other:'var(--yellow)'}[c]||'var(--text3)';}
+
+// DASHBOARD
+function renderDash(){
+  const k=state.kpis;
+  kpiSet('kpi-pm-rate','kpi-pm-status',k.pm,'%',v=>v>=95?'ok':v>=80?'warn':'bad','✅ On Track','⚠️ Below Target');
+  kpiSet('kpi-overdue','kpi-overdue-status',k.overdue,'',v=>v===0?'ok':'bad','✅ Zero','⚠️ Action Needed');
+  kpiSet('kpi-breakdowns','kpi-break-status',k.breakdowns,'',v=>v<3?'ok':'bad','✅ OK','⚠️ Review');
+  const tot=state.gemba.length,cl=state.gemba.filter(g=>g.status==='closed').length;
+  kpiSet('kpi-gemba-rate','kpi-gemba-status',tot>0?Math.round(cl/tot*100):null,'%',v=>v>=80?'ok':v>=60?'warn':'bad','✅ On Track','⚠️ Follow Up');
+  const carl=k.carl||0;
+  document.getElementById('carl-pct').textContent=k.carl!=null?carl+'%':'—';
+  document.getElementById('carl-bar').style.width=carl+'%';
+  const hz=k.hazop||0;
+  document.getElementById('hazop-count').textContent=k.hazop!=null?hz+'/2':'—';
+  document.getElementById('hazop-bar').style.width=Math.min(hz/2*100,100)+'%';
+  const sop=k.sop||0;
+  document.getElementById('sop-count').textContent=k.sop!=null?sop+'/1':'—';
+  document.getElementById('sop-bar').style.width=Math.min(sop*100,100)+'%';
+  // Upcoming
+  const td=now.toISOString().split('T')[0];
+  const in7=new Date(now.getTime()+7*86400000).toISOString().split('T')[0];
+  const up=state.schedule.filter(s=>s.status!=='done'&&s.date>=td&&s.date<=in7).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,5);
+  const uEl=document.getElementById('upcoming-tasks');
+  uEl.innerHTML=up.length?up.map(t=>`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
+    <div style="width:7px;height:7px;border-radius:50%;background:${catColor(t.cat)};flex-shrink:0"></div>
+    <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${t.title}</div><div style="font-size:11px;color:var(--text3)">${fd(t.date)}${t.time?' · '+t.time:''}${t.area?' · '+t.area:''}</div></div>
+    <button class="btn btn-green btn-sm" style="padding:5px 10px;font-size:11px;flex-shrink:0" onclick="doneSched('${t.id}')">✓</button>
+  </div>`).join(''):'<div style="color:var(--text3);font-size:13px;text-align:center;padding:14px">Καμία εκκρεμότητα αυτή την εβδομάδα 🎉</div>';
+  // Projects
+  document.getElementById('projects-list').innerHTML=state.projects.map((p,i)=>{
+    const pc=p.status==='done'?'var(--green)':p.pct>=70?'var(--accent)':'var(--yellow)';
+    return `<div class="project-item"><div class="proj-header"><div style="font-weight:500;font-size:14px">${p.name}</div><div class="proj-pct" style="color:${pc}">${p.pct}%</div></div>
+    <div style="font-size:12px;color:var(--text3);margin-bottom:8px">${p.status==='done'?'✅ Done':p.status==='planned'?'⏳ Planned':'🔄 In Progress'} · Due: ${fd(p.due)}</div>
+    <div class="progress-bar"><div class="progress-fill" style="background:${pc};width:${p.pct}%"></div></div>
+    <div class="log-actions"><button class="btn btn-secondary btn-sm" onclick="updPct(${i})">Update %</button><button class="btn btn-danger btn-sm" onclick="delProj(${i})">Remove</button></div></div>`;
+  }).join('');
+  // Recent gemba
+  const rg=document.getElementById('recent-gemba');
+  const rc=[...state.gemba].reverse().slice(0,3);
+  rg.innerHTML=rc.length?rc.map(g=>gCard(g,false)).join(''):'<div style="color:var(--text3);font-size:13px;text-align:center;padding:14px">Δεν υπάρχουν ευρήματα</div>';
+}
+
+function kpiSet(vid,sid,val,unit,fn,ok,bad){
+  const el=document.getElementById(vid);
+  if(val==null){el.textContent='—';return;}
+  el.textContent=val+unit;const cls=fn(val);el.className='kpi-value '+cls;
+  const s=document.getElementById(sid);if(s){s.textContent=cls==='ok'?ok:bad;s.className='kpi-status '+cls;}
+}
+
+// CALENDAR
+function renderCal(){
+  const t=new Date(calY,calM,1).toLocaleDateString('el-GR',{month:'long',year:'numeric'});
+  document.getElementById('cal-month-title').textContent=t.charAt(0).toUpperCase()+t.slice(1);
+  const grid=document.getElementById('cal-grid');
+  const first=new Date(calY,calM,1).getDay();
+  const days=new Date(calY,calM+1,0).getDate();
+  const prev=new Date(calY,calM,0).getDate();
+  const td=new Date().toISOString().split('T')[0];
+  let h='';
+  for(let i=first-1;i>=0;i--) h+=`<div class="cal-day other-month"><div class="cal-day-num">${prev-i}</div></div>`;
+  for(let d=1;d<=days;d++){
+    const ds=`${calY}-${String(calM+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isT=ds===td;
+    const dts=state.schedule.filter(s=>s.date===ds&&s.status!=='done');
+    const dots=dts.slice(0,3).map(t=>`<div class="cal-dot" style="background:${catColor(t.cat)}"></div>`).join('');
+    h+=`<div class="cal-day${isT?' today':''}" onclick="openSchedDate('${ds}')"><div class="cal-day-num">${d}</div>${dots}</div>`;
+  }
+  const rem=(7-(first+days)%7)%7;
+  for(let d=1;d<=rem;d++) h+=`<div class="cal-day other-month"><div class="cal-day-num">${d}</div></div>`;
+  grid.innerHTML=h;
+}
+function changeMonth(d){calM+=d;if(calM>11){calM=0;calY++;}if(calM<0){calM=11;calY--;}renderCal();}
+
+// SCHEDULE
+function renderSchedList(){
+  const el=document.getElementById('sched-list');
+  const td=new Date().toISOString().split('T')[0];
+  let items=[...state.schedule].sort((a,b)=>a.date.localeCompare(b.date));
+  if(sF==='pending') items=items.filter(s=>s.status!=='done'&&s.date>=td);
+  if(sF==='done') items=items.filter(s=>s.status==='done');
+  if(sF==='overdue') items=items.filter(s=>s.status!=='done'&&s.date<td);
+  if(!items.length){el.innerHTML='<div class="empty"><div class="empty-icon">📅</div><div class="empty-text">Δεν υπάρχουν εκκρεμότητες</div></div>';return;}
+  const catLbl={maintenance:'🔧 Maintenance',safety:'🦺 Safety',inspection:'🔍 Inspection',admin:'📋 Admin',meeting:'🤝 Meeting',other:'📌 Other'};
+  el.innerHTML=items.map(s=>{
+    const ov=s.status!=='done'&&s.date<td;
+    const color=s.status==='done'?'var(--green)':ov?'var(--red)':catColor(s.cat);
+    const badge=s.status==='done'?'<span class="badge badge-green">✅ Ολοκλ.</span>':ov?'<span class="badge badge-red">⚠️ Καθυστ.</span>':'<span class="badge badge-blue">⏳ Εκκρεμής</span>';
+    return `<div class="sched-item" style="--item-color:${color}">
+      <div class="sched-date-big">${fd(s.date)}${s.time?' · '+s.time:''}</div>
+      <div class="log-header"><div class="log-title">${s.title}</div>${badge}</div>
+      <div class="log-meta"><span>${catLbl[s.cat]||s.cat}</span>${s.area?`<span><span class="area-tag">${s.area}</span></span>`:''} ${s.recur&&s.recur!=='none'?`<span>🔁 ${s.recur==='weekly'?'Εβδ.':'Μην.'}</span>`:''}</div>
+      ${s.notes?`<div style="font-size:12px;color:var(--text3);margin-top:5px">${s.notes}</div>`:''}
+      ${s.status!=='done'?`<div class="log-actions"><button class="btn btn-green btn-sm" onclick="doneSched('${s.id}')">✓ Ολοκλήρωση</button><button class="btn btn-danger btn-sm" onclick="delSched('${s.id}')">Διαγραφή</button></div>`:`<div style="font-size:11px;color:var(--text3);margin-top:8px">Ολοκληρώθηκε: ${fd(s.completedDate)}</div>`}
+    </div>`;
+  }).join('');
+}
+function filterSched(f){
+  sF=f;
+  ['all','pending','done','overdue'].forEach(x=>{const b=document.getElementById('sf-'+x);if(b){b.style.background='';b.style.color='';b.style.borderColor='';}});
+  const btn=document.getElementById('sf-'+f);if(btn){btn.style.background='var(--accent)';btn.style.color='#fff';btn.style.borderColor='var(--accent)';}
+  renderSchedList();
+}
+function saveSched(){
+  const title=document.getElementById('sc-title').value.trim();
+  if(!title){toast('Συμπλήρωσε τίτλο ⚠️');return;}
+  state.schedule.push({id:'s'+Date.now(),title,date:document.getElementById('sc-date').value,time:document.getElementById('sc-time').value,cat:document.getElementById('sc-cat').value,priority:document.getElementById('sc-priority').value,area:document.getElementById('sc-area').value,notes:document.getElementById('sc-notes').value.trim(),recur:document.getElementById('sc-recur').value,status:'pending'});
+  sv();closeModal('sched-modal');renderAll();toast('Εκκρεμότητα αποθηκεύτηκε ✅');
+  ['sc-title','sc-notes'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('sc-time').value='';
+}
+function doneSched(id){const s=state.schedule.find(x=>x.id===id);if(!s)return;s.status='done';s.completedDate=new Date().toISOString().split('T')[0];sv();renderAll();toast('Ολοκληρώθηκε ✅');}
+function delSched(id){state.schedule=state.schedule.filter(x=>x.id!==id);sv();renderAll();}
+function openSchedModal(){document.getElementById('sc-date').value=new Date().toISOString().split('T')[0];openModal('sched-modal');}
+function openSchedDate(d){document.getElementById('sc-date').value=d;openModal('sched-modal');}
+
+// SUPPLIERS
+function renderSup(){
+  document.getElementById('sup-count').textContent=state.suppliers.length;
+  document.getElementById('sup-offers').textContent=state.offers.length;
+  const delivs=state.suppliers.filter(s=>s.delivery).map(s=>parseInt(s.delivery));
+  document.getElementById('sup-best-del').textContent=delivs.length?Math.min(...delivs)+'d':'—';
+  const rats=state.suppliers.filter(s=>s.rating).map(s=>parseFloat(s.rating));
+  document.getElementById('sup-avg-rating').textContent=rats.length?(rats.reduce((a,b)=>a+b,0)/rats.length).toFixed(1):'—';
+  let sups=[...state.suppliers];
+  if(supF==='active') sups=sups.filter(s=>s.status==='active');
+  if(supF==='eval') sups=sups.filter(s=>s.status==='eval');
+  const el=document.getElementById('suppliers-list');
+  el.innerHTML=sups.length?sups.map(s=>{
+    const sOffs=state.offers.filter(o=>o.supplierId===s.id);
+    const spend=sOffs.filter(o=>o.status==='ordered').reduce((a,o)=>a+(parseFloat(o.price||0)*parseInt(o.qty||1)),0);
+    const stars='★'.repeat(Math.round(s.rating||0))+'☆'.repeat(5-Math.round(s.rating||0));
+    const sc={active:'var(--green)',eval:'var(--yellow)',inactive:'var(--text3)'}[s.status]||'var(--text3)';
+    const sb={active:'badge-green',eval:'badge-yellow',inactive:'badge-red'}[s.status]||'badge-blue';
+    const sl={active:'Ενεργός',eval:'Αξιολόγηση',inactive:'Ανενεργός'}[s.status]||s.status;
+    return `<div class="supplier-card" style="--item-color:${sc}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px">
+        <div><div class="supplier-name">${s.name}</div><div class="supplier-meta">${s.cat}${s.contact?' · '+s.contact:''}</div></div>
+        <span class="badge ${sb}">${sl}</span>
+      </div>
+      <div class="supplier-kpis">
+        <div class="sup-kpi"><div class="sup-kpi-val ok">${s.delivery||'—'}<span style="font-size:10px">d</span></div><div class="sup-kpi-label">Delivery</div></div>
+        <div class="sup-kpi"><div class="sup-kpi-val">${s.credit||'—'}<span style="font-size:10px">d</span></div><div class="sup-kpi-label">Credit</div></div>
+        <div class="sup-kpi"><div class="sup-kpi-val" style="color:var(--green);font-size:13px">${spend>0?'€'+spend.toLocaleString('el-GR'):'€0'}</div><div class="sup-kpi-label">YTD Spend</div></div>
+      </div>
+      ${s.rating?`<div class="rating-stars">${stars} <span style="font-size:11px;color:var(--text3)">(${s.rating}/5)</span></div>`:''}
+      ${s.notes?`<div style="font-size:12px;color:var(--text3);margin-top:6px">${s.notes}</div>`:''}
+      <div class="log-actions" style="margin-top:10px">
+        <button class="btn btn-secondary btn-sm" onclick="openOfferModal('${s.id}')">+ Προσφορά</button>
+        <button class="btn btn-danger btn-sm" onclick="delSup('${s.id}')">Διαγραφή</button>
+      </div>
+      ${sOffs.length?`<div style="margin-top:10px;font-size:11px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Προσφορές (${sOffs.length})</div>`+sOffs.slice(-3).map(o=>offCard(o)).join(''):''}
+    </div>`;
+  }).join(''):'<div class="empty"><div class="empty-icon">🏭</div><div class="empty-text">Δεν υπάρχουν προμηθευτές</div></div>';
+  // All offers
+  const ao=[...state.offers].reverse();
+  document.getElementById('all-offers-list').innerHTML=ao.length?ao.map(o=>offCard(o,true)).join(''):'<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">Δεν υπάρχουν προσφορές</div></div>';
+}
+function offCard(o,showSup=false){
+  const sup=state.suppliers.find(s=>s.id===o.supplierId);
+  const sb={'pending':'badge-yellow','approved':'badge-green','rejected':'badge-red','ordered':'badge-purple'}[o.status]||'badge-blue';
+  const sl={'pending':'⏳ Εκκρεμής','approved':'✅ Εγκρίθηκε','rejected':'❌ Απορρίφθηκε','ordered':'📦 Παραγγέλθηκε'}[o.status]||o.status;
+  const total=parseFloat(o.price||0)*parseInt(o.qty||1);
+  return `<div class="offer-item">
+    <div class="offer-header"><div class="offer-title">${o.desc}${showSup&&sup?` <span style="color:var(--text3);font-weight:400">· ${sup.name}</span>`:''}</div><div class="offer-price">€${total.toLocaleString('el-GR',{minimumFractionDigits:2,maximumFractionDigits:2})}</div></div>
+    <div style="display:flex;justify-content:space-between;align-items:center"><div style="font-size:11px;color:var(--text3)">${o.cat} · ${fd(o.date)}${parseInt(o.qty||1)>1?' · x'+o.qty:''}</div><span class="badge ${sb}">${sl}</span></div>
+    ${o.notes?`<div style="font-size:11px;color:var(--text3);margin-top:4px">${o.notes}</div>`:''}
+  </div>`;
+}
+function filterSup(f){
+  supF=f;
+  ['all','active','eval'].forEach(x=>{const b=document.getElementById('supf-'+x);if(b){b.style.background='';b.style.color='';b.style.borderColor='';}});
+  const btn=document.getElementById('supf-'+f);if(btn){btn.style.background='var(--accent)';btn.style.color='#fff';btn.style.borderColor='var(--accent)';}
+  renderSup();
+}
+function saveSupplier(){
+  const name=document.getElementById('sup-name').value.trim();if(!name){toast('Συμπλήρωσε επωνυμία ⚠️');return;}
+  state.suppliers.push({id:'sup'+Date.now(),name,cat:document.getElementById('sup-cat').value,status:document.getElementById('sup-status').value,contact:document.getElementById('sup-contact').value.trim(),delivery:document.getElementById('sup-delivery').value,rating:document.getElementById('sup-rating').value,credit:document.getElementById('sup-credit').value,notes:document.getElementById('sup-notes').value.trim()});
+  sv();closeModal('supplier-modal');renderAll();toast('Προμηθευτής αποθηκεύτηκε ✅');
+  ['sup-name','sup-contact','sup-delivery','sup-rating','sup-credit','sup-notes'].forEach(id=>document.getElementById(id).value='');
+}
+function delSup(id){state.suppliers=state.suppliers.filter(s=>s.id!==id);state.offers=state.offers.filter(o=>o.supplierId!==id);sv();renderAll();}
+function openOfferModal(supId){
+  const sel=document.getElementById('off-supplier');
+  sel.innerHTML=state.suppliers.map(s=>`<option value="${s.id}"${s.id===supId?'selected':''}>${s.name}</option>`).join('');
+  if(!state.suppliers.length){toast('Πρόσθεσε πρώτα προμηθευτή');return;}
+  openModal('offer-modal');
+}
+function saveOffer(){
+  const desc=document.getElementById('off-desc').value.trim();if(!desc){toast('Συμπλήρωσε περιγραφή ⚠️');return;}
+  state.offers.push({id:'off'+Date.now(),supplierId:document.getElementById('off-supplier').value,desc,price:document.getElementById('off-price').value,qty:document.getElementById('off-qty').value||1,date:document.getElementById('off-date').value,valid:document.getElementById('off-valid').value,cat:document.getElementById('off-cat').value,status:document.getElementById('off-status').value,notes:document.getElementById('off-notes').value.trim()});
+  sv();closeModal('offer-modal');renderAll();toast('Προσφορά αποθηκεύτηκε ✅');
+  ['off-desc','off-price','off-notes'].forEach(id=>document.getElementById(id).value='');document.getElementById('off-qty').value='1';
+}
+
+// GEMBA
+function gCard(g,showA=true){
+  const pc=g.priority==='high'?'var(--red)':g.priority==='medium'?'var(--yellow)':'var(--green)';
+  const bc=g.status==='closed'?'badge-green':g.status==='open'?'badge-yellow':'badge-blue';
+  const sl=g.status==='closed'?'✅ Closed':g.status==='open'?'🔄 Open':'⏳ Pending';
+  const idx=state.gemba.indexOf(g);
+  return `<div class="log-item" style="--item-color:${pc}">
+    <div class="log-header"><div class="log-title">${g.desc}</div><span class="badge ${bc}">${sl}</span></div>
+    <div class="log-meta"><span><span class="area-tag">${g.area}</span></span><span>📅 ${fd(g.date)}</span>${g.wo?`<span>🔧 ${g.wo}</span>`:''}</div>
+    ${g.action?`<div style="font-size:12px;color:var(--text2);margin-top:5px">→ ${g.action}</div>`:''}
+    ${showA&&g.status!=='closed'?`<div class="log-actions"><button class="btn btn-green btn-sm" onclick="closeG(${idx})">Mark Closed</button><button class="btn btn-danger btn-sm" onclick="delG(${idx})">Delete</button></div>`:''}
+  </div>`;
+}
+function renderGemba(){
+  const el=document.getElementById('gemba-list');
+  let items=[...state.gemba].reverse();
+  if(gF==='open') items=items.filter(g=>g.status!=='closed');
+  if(gF==='high') items=items.filter(g=>g.priority==='high');
+  if(gF==='closed') items=items.filter(g=>g.status==='closed');
+  el.innerHTML=items.length?items.map(g=>gCard(g)).join(''):'<div class="empty"><div class="empty-icon">🔍</div><div class="empty-text">No findings</div></div>';
+}
+function filterGemba(f){
+  gF=f;
+  ['all','open','high','closed'].forEach(x=>{const b=document.getElementById('filter-'+x);if(b){b.style.background='';b.style.color='';b.style.borderColor='';}});
+  const btn=document.getElementById('filter-'+f);if(btn){btn.style.background='var(--accent)';btn.style.color='#fff';btn.style.borderColor='var(--accent)';}
+  renderGemba();
+}
+function saveGemba(){
+  const area=document.getElementById('g-area').value,desc=document.getElementById('g-desc').value.trim();
+  if(!area||!desc){toast('Fill in area & description ⚠️');return;}
+  state.gemba.push({date:document.getElementById('g-date').value,area,desc,priority:document.getElementById('g-priority').value,due:document.getElementById('g-due').value,action:document.getElementById('g-action').value.trim(),wo:document.getElementById('g-wo').value.trim(),status:'open'});
+  sv();closeModal('gemba-modal');renderAll();toast('Finding saved ✅');
+  ['g-desc','g-wo','g-action'].forEach(id=>document.getElementById(id).value='');
+}
+function closeG(i){state.gemba[i].status='closed';state.gemba[i].closedDate=new Date().toISOString().split('T')[0];sv();renderAll();toast('Finding closed ✅');}
+function delG(i){state.gemba.splice(i,1);sv();renderAll();}
+
+// PM
+function renderPM(){
+  const el=document.getElementById('pm-list');
+  const td=new Date().toISOString().split('T')[0];
+  let items=[...state.pms].reverse();
+  if(pmF==='due') items=items.filter(p=>p.status==='scheduled');
+  if(pmF==='done') items=items.filter(p=>p.status==='done');
+  if(pmF==='overdue') items=items.filter(p=>p.status==='scheduled'&&p.sched<td);
+  if(!items.length){el.innerHTML='<div class="empty"><div class="empty-icon">🔧</div><div class="empty-text">No PMs logged yet</div></div>';return;}
+  el.innerHTML=items.map(p=>{
+    const ov=p.status==='scheduled'&&p.sched<td;
+    const color=p.status==='done'?'var(--green)':ov?'var(--red)':'var(--yellow)';
+    const badge=p.status==='done'?'<span class="badge badge-green">✅ Done</span>':ov?'<span class="badge badge-red">⚠️ Overdue</span>':'<span class="badge badge-yellow">⏳ Scheduled</span>';
+    const idx=state.pms.indexOf(p);
+    return `<div class="log-item" style="--item-color:${color}">
+      <div class="log-header"><div class="log-title">${p.equip}</div>${badge}</div>
+      <div class="log-meta"><span><span class="area-tag">${p.area}</span></span><span>📅 ${fd(p.sched)}</span><span>🔁 ${p.freq}</span>${p.wo?`<span>🔧 ${p.wo}</span>`:''}</div>
+      <div style="font-size:12px;color:var(--text2);margin-top:5px">${p.type}</div>
+      ${p.notes?`<div style="font-size:12px;color:var(--text3);margin-top:4px">${p.notes}</div>`:''}
+      ${p.status!=='done'?`<div class="log-actions"><button class="btn btn-green btn-sm" onclick="donePM(${idx})">Mark Done</button><button class="btn btn-danger btn-sm" onclick="delPM(${idx})">Delete</button></div>`:''}
+    </div>`;
+  }).join('');
+}
+function filterPM(f){
+  pmF=f;
+  ['all','due','done','overdue'].forEach(x=>{const b=document.getElementById('pm-filter-'+x);if(b){b.style.background='';b.style.color='';b.style.borderColor='';}});
+  const btn=document.getElementById('pm-filter-'+f);if(btn){btn.style.background='var(--accent)';btn.style.color='#fff';btn.style.borderColor='var(--accent)';}
+  renderPM();
+}
+function savePM(){
+  const area=document.getElementById('pm-area').value,equip=document.getElementById('pm-equip').value.trim();
+  if(!area||!equip){toast('Fill in area & equipment ⚠️');return;}
+  state.pms.push({area,equip,type:document.getElementById('pm-type').value.trim(),freq:document.getElementById('pm-freq').value,sched:document.getElementById('pm-sched').value,wo:document.getElementById('pm-wo').value.trim(),notes:document.getElementById('pm-notes').value.trim(),status:'scheduled'});
+  sv();closeModal('pm-modal');renderAll();toast('PM saved ✅');
+  ['pm-equip','pm-type','pm-wo','pm-notes'].forEach(id=>document.getElementById(id).value='');
+}
+function donePM(i){state.pms[i].status='done';state.pms[i].completedDate=new Date().toISOString().split('T')[0];sv();renderAll();toast('PM completed ✅');}
+function delPM(i){state.pms.splice(i,1);sv();renderAll();}
+
+// ACHIEVEMENTS
+function renderAch(){
+  const el=document.getElementById('ach-list');
+  if(!state.achievements.length){el.innerHTML='<div class="empty"><div class="empty-icon">🏆</div><div class="empty-text">Add your first achievement</div></div>';return;}
+  el.innerHTML=[...state.achievements].reverse().map((a,i)=>{
+    const idx=state.achievements.length-1-i;
+    return `<div class="achievement-item">
+      <div class="ach-header"><div style="font-weight:500;font-size:14px">${a.title}</div><div class="ach-rate">${a.rate!=null?a.rate+'%':'—'}</div></div>
+      <div style="font-size:12px;color:var(--text3)">${a.cat} · ${fd(a.date)}</div>
+      ${a.impact?`<div style="font-size:13px;color:var(--text2);margin-top:6px">📊 ${a.impact}</div>`:''}
+      ${a.evidence?`<div style="font-size:12px;color:var(--text3);margin-top:4px">📎 ${a.evidence}</div>`:''}
+      <div class="log-actions" style="margin-top:8px"><button class="btn btn-danger btn-sm" onclick="delAch(${idx})">Remove</button></div>
+    </div>`;
+  }).join('');
+}
+function saveAch(){
+  const title=document.getElementById('ach-title').value.trim();if(!title){toast('Add a title ⚠️');return;}
+  state.achievements.push({title,date:document.getElementById('ach-date').value,cat:document.getElementById('ach-cat').value,impact:document.getElementById('ach-impact').value.trim(),rate:document.getElementById('ach-rate').value||null,evidence:document.getElementById('ach-evidence').value.trim()});
+  sv();closeModal('ach-modal');renderAll();toast('Achievement saved 🏆');
+  ['ach-title','ach-impact','ach-rate','ach-evidence'].forEach(id=>document.getElementById(id).value='');
+}
+function delAch(i){state.achievements.splice(i,1);sv();renderAll();}
+
+// KPIs
+function saveKPIs(){
+  state.kpis={pm:parseFloat(document.getElementById('kpi-pm').value)||null,overdue:parseFloat(document.getElementById('kpi-od').value)||0,breakdowns:parseFloat(document.getElementById('kpi-bd').value)||0,carl:parseFloat(document.getElementById('kpi-carl').value)||null,hazop:parseFloat(document.getElementById('kpi-hz').value)||0,sop:parseFloat(document.getElementById('kpi-sop').value)||0};
+  sv();closeModal('kpi-modal');renderAll();toast('KPIs updated ✅');
+}
+
+// PROJECTS
+function updPct(i){const p=prompt('New % (0-100):',state.projects[i].pct);if(p===null)return;state.projects[i].pct=Math.min(100,Math.max(0,parseInt(p)||0));if(state.projects[i].pct===100)state.projects[i].status='done';sv();renderAll();toast('Project updated ✅');}
+function delProj(i){state.projects.splice(i,1);sv();renderAll();}
+function saveProject(){
+  const name=document.getElementById('proj-name').value.trim();if(!name){toast('Add a name ⚠️');return;}
+  state.projects.push({id:Date.now(),name,pct:parseInt(document.getElementById('proj-pct').value)||0,due:document.getElementById('proj-due').value,priority:document.getElementById('proj-priority').value,status:document.getElementById('proj-status').value});
+  sv();closeModal('project-modal');renderAll();toast('Project added ✅');document.getElementById('proj-name').value='';
+}
+
+// MODALS
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-overlay').forEach(el=>el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('open');}));
+
+// HELPERS
+function fd(d){if(!d)return '—';try{return new Date(d+'T00:00:00').toLocaleDateString('el-GR',{day:'numeric',month:'short',year:'numeric'});}catch(e){return d;}}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+
+// Register Service Worker
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('/sw.js').catch(()=>{});
+  });
+}
+</script>
+</body>
+</html>

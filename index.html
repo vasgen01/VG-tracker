@@ -3,13 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>VG Maintenance Tracker</title>
+<title>Ecolab Mandra — Maintenance Tracker</title>
 <link rel="manifest" href="manifest.json">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="VG Tracker">
 <meta name="theme-color" content="#0d0f14">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"><\/script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root{--bg:#0d0f14;--surface:#151820;--surface2:#1c2030;--border:#252a3a;--accent:#4f9cf9;--accent2:#7c6af7;--green:#3ecf8e;--yellow:#f5a623;--red:#f25f5c;--text:#e8eaf0;--text2:#8892a4;--text3:#4a5468;--mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;--display:'Syne',sans-serif}
@@ -82,6 +83,14 @@
   .toast.show{transform:translateX(-50%) translateY(0)}
   .area-tag{display:inline-block;font-family:var(--mono);font-size:10px;padding:2px 8px;background:rgba(79,156,249,.12);color:var(--accent);border-radius:4px;letter-spacing:.3px}
   input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(.4)}
+@media print{
+  .topbar,.nav,.log-actions,.filter-row,.modal-overlay,.toast{display:none!important}
+  body{background:#fff;color:#000}
+  .view{display:block!important;padding:8px}
+  .log-item,.sched-item,.supplier-card,.achievement-item,.project-item{background:#f9f9f9;border:1px solid #ccc;page-break-inside:avoid}
+  .card{background:#fff;border:1px solid #ccc}
+}
+@media print{.topbar,.nav,.log-actions,.filter-row,.modal-overlay,.toast,.pm-alert-banner,.btn{display:none!important}body{background:#fff;color:#000}.view{display:block!important;padding:10px}.log-item,.sched-item,.supplier-card,.achievement-item,.project-item{background:#f9f9f9;border:1px solid #ddd;page-break-inside:avoid}.card{background:#fff;border:1px solid #ddd}:root{--text:#000;--text2:#333;--text3:#666;--surface:#fff;--surface2:#f9f9f9;--border:#ddd}}
   .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   /* CALENDAR */
   .week-header{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:6px}
@@ -124,12 +133,22 @@
 </head>
 <body>
 
+<div id="pm-alert-banner" style="display:none;background:rgba(242,95,92,.12);border:1px solid rgba(242,95,92,.3);border-radius:12px;padding:12px 14px;margin:10px 16px 0;animation:fadeIn .3s ease">
+  <div style="color:var(--red);font-weight:700;font-size:13px;margin-bottom:6px">🔔 PMs που πλησιάζουν</div>
+  <div id="pm-alert-items"></div>
+</div>
 <div class="topbar">
   <div>
-    <div class="topbar-title">VG <span>Tracker</span></div>
+    <div class="topbar-title">Ecolab <span>Mandra</span></div>
     <div class="topbar-sub" id="current-date"></div>
   </div>
-  <div style="font-size:20px">⚙️</div>
+  <div style="display:flex;gap:8px;align-items:center">
+    <button onclick="exportExcel()" style="background:rgba(62,207,142,.15);border:1px solid rgba(62,207,142,.3);border-radius:9px;padding:7px 11px;color:var(--green);font-size:12px;font-weight:600;cursor:pointer">XLS</button>
+    <button onclick="exportPDF()" style="background:rgba(79,156,249,.15);border:1px solid rgba(79,156,249,.3);border-radius:9px;padding:7px 11px;color:var(--accent);font-size:12px;font-weight:600;cursor:pointer">PDF</button>
+    <div onclick="openModal('settings-modal')" style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:7px 9px;cursor:pointer;font-size:16px;position:relative">
+      ⚙️<span id="notif-badge" style="display:none;position:absolute;top:-4px;right:-4px;background:var(--red);color:#fff;font-size:9px;font-family:var(--mono);font-weight:700;border-radius:50%;width:15px;height:15px;align-items:center;justify-content:center"></span>
+    </div>
+  </div>
 </div>
 
 <div class="nav">
@@ -150,12 +169,9 @@
     <div class="kpi-card" style="--accent-color:var(--accent2)"><div class="kpi-label">Gemba Closed</div><div class="kpi-value" id="kpi-gemba-rate">—</div><div class="kpi-target">Target ≥ 80%</div><div class="kpi-status" id="kpi-gemba-status"></div></div>
   </div>
   <div class="card">
-    <div class="card-title">Carl Source & Ασφάλεια</div>
-    <div style="display:flex;flex-direction:column;gap:12px">
-      <div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:13px;color:var(--text2)">Carl Source Closure</span><span class="proj-pct" id="carl-pct">—</span></div><div class="progress-bar"><div class="progress-fill" id="carl-bar" style="background:var(--accent);width:0%"></div></div></div>
-      <div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:13px;color:var(--text2)">HAZOPs Μήνα</span><span class="proj-pct" id="hazop-count">—</span></div><div class="progress-bar"><div class="progress-fill" id="hazop-bar" style="background:var(--accent2);width:0%"></div></div></div>
-      <div><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:13px;color:var(--text2)">SOPs Updated</span><span class="proj-pct" id="sop-count">—</span></div><div class="progress-bar"><div class="progress-fill" id="sop-bar" style="background:var(--green);width:0%"></div></div></div>
-    </div>
+    <div class="card-title">Carl Source</div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:13px;color:var(--text2)">WO Closure Rate</span><span id="carl-pct" style="font-family:var(--mono);font-size:13px;color:var(--accent)">—</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="carl-bar" style="background:var(--accent);width:0%"></div></div>
     <div class="divider"></div>
     <button class="btn btn-secondary" onclick="openModal('kpi-modal')" style="font-size:13px;padding:10px">✏️ &nbsp;Update Monthly KPIs</button>
   </div>
@@ -439,10 +455,6 @@
       <div class="form-group"><label class="form-label">Breakdowns</label><input type="number" class="form-input" id="kpi-bd" min="0" placeholder="0"></div>
       <div class="form-group"><label class="form-label">Carl Closure (%)</label><input type="number" class="form-input" id="kpi-carl" min="0" max="100" placeholder="0–100"></div>
     </div>
-    <div class="form-row">
-      <div class="form-group"><label class="form-label">HAZOPs</label><input type="number" class="form-input" id="kpi-hz" min="0" placeholder="0"></div>
-      <div class="form-group"><label class="form-label">SOPs Updated</label><input type="number" class="form-input" id="kpi-sop" min="0" placeholder="0"></div>
-    </div>
     <button class="btn btn-primary" onclick="saveKPIs()">Update Dashboard</button>
     <div style="height:8px"></div>
     <button class="btn btn-secondary" onclick="closeModal('kpi-modal')">Cancel</button>
@@ -492,11 +504,12 @@ const now=new Date();
 function sv(){try{localStorage.setItem('vgt',JSON.stringify(state));}catch(e){}}
 function lv(){try{const d=localStorage.getItem('vgt');if(d)state={...state,...JSON.parse(d)};}catch(e){}}
 
-lv();
+lv();loadSettings();
 calY=now.getFullYear();calM=now.getMonth();
 document.getElementById('current-date').textContent=now.toLocaleDateString('el-GR',{weekday:'long',day:'numeric',month:'long'});
 document.querySelectorAll('input[type="date"]').forEach(el=>el.value=now.toISOString().split('T')[0]);
 renderAll();
+loadSettings();updateSettingsUI();checkPMAlerts();
 
 function renderAll(){renderDash();renderCal();renderSchedList();renderGemba();renderPM();renderAch();renderSup();}
 
@@ -521,12 +534,6 @@ function renderDash(){
   const carl=k.carl||0;
   document.getElementById('carl-pct').textContent=k.carl!=null?carl+'%':'—';
   document.getElementById('carl-bar').style.width=carl+'%';
-  const hz=k.hazop||0;
-  document.getElementById('hazop-count').textContent=k.hazop!=null?hz+'/2':'—';
-  document.getElementById('hazop-bar').style.width=Math.min(hz/2*100,100)+'%';
-  const sop=k.sop||0;
-  document.getElementById('sop-count').textContent=k.sop!=null?sop+'/1':'—';
-  document.getElementById('sop-bar').style.width=Math.min(sop*100,100)+'%';
   // Upcoming
   const td=now.toISOString().split('T')[0];
   const in7=new Date(now.getTime()+7*86400000).toISOString().split('T')[0];
@@ -804,7 +811,7 @@ function delAch(i){state.achievements.splice(i,1);sv();renderAll();}
 
 // KPIs
 function saveKPIs(){
-  state.kpis={pm:parseFloat(document.getElementById('kpi-pm').value)||null,overdue:parseFloat(document.getElementById('kpi-od').value)||0,breakdowns:parseFloat(document.getElementById('kpi-bd').value)||0,carl:parseFloat(document.getElementById('kpi-carl').value)||null,hazop:parseFloat(document.getElementById('kpi-hz').value)||0,sop:parseFloat(document.getElementById('kpi-sop').value)||0};
+  state.kpis={pm:parseFloat(document.getElementById('kpi-pm').value)||null,overdue:parseFloat(document.getElementById('kpi-od').value)||0,breakdowns:parseFloat(document.getElementById('kpi-bd').value)||0,carl:parseFloat(document.getElementById('kpi-carl').value)||null};
   sv();closeModal('kpi-modal');renderAll();toast('KPIs updated ✅');
 }
 
@@ -825,13 +832,6 @@ document.querySelectorAll('.modal-overlay').forEach(el=>el.addEventListener('cli
 // HELPERS
 function fd(d){if(!d)return '—';try{return new Date(d+'T00:00:00').toLocaleDateString('el-GR',{day:'numeric',month:'short',year:'numeric'});}catch(e){return d;}}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
-
-// Register Service Worker
-if('serviceWorker' in navigator){
-  window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('/sw.js').catch(()=>{});
-  });
-}
 </script>
 </body>
 </html>

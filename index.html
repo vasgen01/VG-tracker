@@ -517,65 +517,6 @@ h1.print-hd{display:none}
 .ai-link{color:var(--acc);text-decoration:none;font-size:12px}
 
 
-/* ── LOCK SCREEN ── */
-.lock-screen{
-  position:fixed;inset:0;z-index:1000;
-  background:linear-gradient(145deg,#07090e 0%,#0d1220 50%,#0a0f1a 100%);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:40px 24px;
-}
-.lock-logo{
-  font-family:var(--hd);font-size:24px;letter-spacing:-.5px;
-  margin-bottom:6px;color:var(--t1);
-}
-.lock-logo span{color:var(--acc)}
-.lock-sub{font-family:var(--mono);font-size:11px;color:var(--t3);margin-bottom:48px;letter-spacing:.5px}
-.lock-icon{font-size:52px;margin-bottom:24px;filter:drop-shadow(0 4px 24px rgba(64,128,255,.4))}
-.lock-title{font-family:var(--hd);font-size:20px;margin-bottom:8px;text-align:center}
-.lock-desc{font-size:13px;color:var(--t2);text-align:center;margin-bottom:32px;line-height:1.5}
-.pin-dots{display:flex;gap:14px;justify-content:center;margin-bottom:28px}
-.pin-dot{
-  width:14px;height:14px;border-radius:50%;
-  border:2px solid var(--b3);background:transparent;
-  transition:all .2s cubic-bezier(.4,0,.2,1);
-}
-.pin-dot.filled{background:var(--acc);border-color:var(--acc);box-shadow:0 0 12px rgba(64,128,255,.5)}
-.pin-dot.error{background:var(--r);border-color:var(--r);animation:shake .4s ease}
-@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
-.pin-error{color:var(--r);font-size:12px;text-align:center;margin-bottom:16px;min-height:16px;font-weight:600}
-.pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:260px;width:100%}
-.pin-btn{
-  height:64px;border-radius:14px;border:1px solid var(--b2);
-  background:var(--s2);color:var(--t1);cursor:pointer;
-  font-family:var(--hd);font-size:22px;font-weight:700;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  transition:all .15s;gap:2px;
-  box-shadow:0 2px 8px rgba(0,0,0,.3);
-}
-.pin-btn:hover{background:var(--s3);border-color:var(--b3)}
-.pin-btn:active{background:var(--acc);border-color:var(--acc);transform:scale(.94)}
-.pin-btn-sub{font-size:7px;letter-spacing:.8px;color:var(--t3);font-family:var(--sans);font-weight:600;text-transform:uppercase}
-.pin-btn.del{font-size:20px;color:var(--t2)}
-.pin-btn.del:active{background:var(--r);border-color:var(--r)}
-.pin-btn.zero{grid-column:2}
-.lock-setup-input{
-  width:100%;max-width:260px;background:var(--s2);border:1px solid var(--b2);
-  border-radius:12px;padding:14px;color:var(--t1);font-family:var(--mono);
-  font-size:18px;text-align:center;letter-spacing:8px;outline:none;
-  margin-bottom:12px;transition:border-color .2s;
-}
-.lock-setup-input:focus{border-color:var(--acc)}
-.lock-bio{
-  margin-top:20px;color:var(--t3);font-size:13px;cursor:pointer;
-  display:flex;align-items:center;gap:6px;transition:color .2s;
-}
-.lock-bio:hover{color:var(--acc)}
-.lock-forgot{
-  position:absolute;bottom:32px;left:50%;transform:translateX(-50%);
-  color:var(--t4);font-size:11px;cursor:pointer;white-space:nowrap;
-  text-decoration:underline;
-}
-
 /* ── SEARCH BAR ── */
 .search-wrap{
   padding:8px 14px 6px;background:rgba(7,9,14,.97);
@@ -890,21 +831,21 @@ h1.print-hd{display:none}
       <button class="tsearch-clear" id="search-clear">✕</button>
       <div class="search-results" id="search-results"></div>
     </div>
-    <div class="sw"><button class="ibtn" id="btn-settings">⚙️ Settings</button><div class="ndot" id="ndot"></div></div></div></div>
+    <div class="sw"><button class="ibtn" id="btn-settings" onclick="openM('m-settings')">⚙️ Settings</button><div class="ndot" id="ndot"></div></div></div></div>
 <div class="nav">
-  <button class="nb on" data-view="dashboard">📊 Dashboard</button>
-  <button class="nb" data-view="analytics">📈 Analytics</button>
-  <button class="nb" data-view="equipment">🏭 Equipment</button>
-  <button class="nb" data-view="pm">🔧 PM Log</button>
-  <button class="nb" data-view="breakdowns">⚡ Breakdowns</button>
-  <button class="nb" data-view="gemba">🔍 Gemba</button>
-  <button class="nb" data-view="schedule">📅 Schedule</button>
-  <button class="nb" data-view="suppliers">🤝 Suppliers</button>
-  <button class="nb" data-view="portfolio">🏆 Portfolio</button>
-  <button class="nb" data-view="reports">📋 Reports</button>
-  <button class="nb" data-view="systems">🌐 Systems</button>
-  <button class="nb" data-view="corrective">🛠️ Corrective</button>
-  <button class="nb" data-view="inventory">📦 Inventory</button>
+  <button class="nb on" data-view="dashboard" onclick="gotoView('dashboard')">📊 Dashboard</button>
+  <button class="nb" data-view="systems" onclick="gotoView('systems')">🌐 Systems</button>
+  <button class="nb" data-view="equipment" onclick="gotoView('equipment')">🏭 Equipment</button>
+  <button class="nb" data-view="pm" onclick="gotoView('pm')">🔧 PM Plans</button>
+  <button class="nb" data-view="corrective" onclick="gotoView('corrective')">🛠️ Corrective</button>
+  <button class="nb" data-view="breakdowns" onclick="gotoView('breakdowns')">⚡ Breakdowns</button>
+  <button class="nb" data-view="gemba" onclick="gotoView('gemba')">🔍 Gemba</button>
+  <button class="nb" data-view="inventory" onclick="gotoView('inventory')">📦 Inventory</button>
+  <button class="nb" data-view="suppliers" onclick="gotoView('suppliers')">🤝 Suppliers</button>
+  <button class="nb" data-view="analytics" onclick="gotoView('analytics')">📈 Analytics</button>
+  <button class="nb" data-view="reports" onclick="gotoView('reports')">📋 Reports</button>
+  <button class="nb" data-view="schedule" onclick="gotoView('schedule')">📅 Schedule</button>
+  <button class="nb" data-view="portfolio" onclick="gotoView('portfolio')">🏆 Portfolio</button>
 </div>
 <div id="view-dashboard" class="view on">
 <h1 class="print-hd">Ecolab Mandra — Maintenance Dashboard</h1>
@@ -924,10 +865,10 @@ h1.print-hd{display:none}
 <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:13px;color:var(--t2)">Closure Rate</span><span id="k-carl" style="font-family:var(--mono);font-size:13px;color:var(--acc)">—</span></div>
 <div class="pbar"><div class="pfill" id="carl-bar" style="background:var(--acc);width:0%"></div></div>
 <div class="div"></div>
-<button class="btn btn-s" id="btn-kpi" style="font-size:12px;padding:10px">✏️ Update Monthly KPIs</button>
+<button class="btn btn-s" id="btn-kpi" onclick="openM('m-kpi')" style="font-size:12px;padding:10px">✏️ Update Monthly KPIs</button>
 </div>
 <div class="card"><div class="card-hd">Επόμενες Εκκρεμότητες — 7 ημέρες</div><div id="upcoming"></div></div>
-<div class="card"><div class="card-hd">Active Projects</div><div id="proj-list"></div><button class="btn btn-s btn-sm" id="btn-proj" style="margin-top:8px;width:100%;padding:10px;font-size:12px">+ Add Project</button></div>
+<div class="card"><div class="card-hd">Active Projects</div><div id="proj-list"></div><button class="btn btn-s btn-sm" id="btn-proj" onclick="openM('m-proj')" style="margin-top:8px;width:100%;padding:10px;font-size:12px">+ Add Project</button></div>
 <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div class="card-hd" style="margin:0">Recent Gemba</div><button class="btn btn-s btn-sm" data-goto="gemba">View all</button></div><div id="recent-g"></div></div>
 </div>
 <div id="view-analytics" class="view">
@@ -939,19 +880,19 @@ h1.print-hd{display:none}
 <div class="chart-wrap"><div class="chart-title">🔍 Gemba Findings by Area</div><div class="area-bar-wrap" id="chart-gemba-area"></div></div>
 </div>
 <div id="view-equipment" class="view">
-<div class="ph"><div class="ph-title">Equipment Register</div><button class="btn btn-p btn-sm" id="btn-eq">+ Asset</button></div>
+<div class="ph"><div class="ph-title">Equipment Register</div><button class="btn btn-p btn-sm" id="btn-eq" onclick="openEqModal()">+ Asset</button></div>
 <div class="xbar"><span class="xbar-label">Export</span><button class="xbtn xbtn-pdf" data-export="equipment-pdf">📄 PDF</button><button class="xbtn xbtn-csv" data-export="equipment-csv">📊 CSV</button></div>
 <div class="frow" id="eq-filters"></div>
 <div id="eq-list"></div>
 </div>
 <div id="view-pm" class="view">
-<div class="ph"><div class="ph-title">PM Log</div><button class="btn btn-p btn-sm" id="btn-pm">+ PM</button></div>
+<div class="ph"><div class="ph-title">PM Log</div><button class="btn btn-p btn-sm" id="btn-pm" onclick="(function(){if(typeof pmEquipList!=='undefined'){pmEquipList=[];renderPMEquipTags();}if(typeof pmOpsList!=='undefined'){pmOpsList=[];renderPMOpsList();}resetEqPicker('pm');openM('m-pm');})()">+ PM</button></div>
 <div class="xbar"><span class="xbar-label">Export</span><button class="xbtn xbtn-pdf" data-export="pm-pdf">📄 PDF</button><button class="xbtn xbtn-csv" data-export="pm-csv">📊 CSV</button></div>
 <div class="frow"><button class="fb on" data-pmf="all">All</button><button class="fb" data-pmf="due">Scheduled</button><button class="fb" data-pmf="done">✅ Done</button><button class="fb" data-pmf="overdue">⚠️ Overdue</button></div>
 <div id="pm-list"></div>
 </div>
 <div id="view-breakdowns" class="view">
-<div class="ph"><div class="ph-title">Breakdown Log</div><button class="btn btn-p btn-sm" id="btn-bd">+ Breakdown</button></div>
+<div class="ph"><div class="ph-title">Breakdown Log</div><button class="btn btn-p btn-sm" id="btn-bd" onclick="resetEqPicker('bd');openM('m-bd')">+ Breakdown</button></div>
 <div class="xbar"><span class="xbar-label">Export</span><button class="xbtn xbtn-pdf" data-export="bd-pdf">📄 PDF</button><button class="xbtn xbtn-csv" data-export="bd-csv">📊 CSV</button></div>
 <div class="kgrid-3" style="margin-bottom:12px">
 <div class="kpi kpi-sm" style="--kc:var(--r)"><div class="kpi-lbl">Total Breakdowns</div><div class="kpi-val" id="bd-total">0</div><div class="kpi-target">All time</div></div>
@@ -961,13 +902,13 @@ h1.print-hd{display:none}
 <div id="bd-list"></div>
 </div>
 <div id="view-gemba" class="view">
-<div class="ph"><div class="ph-title">Gemba Walks</div><button class="btn btn-p btn-sm" id="btn-gemba">+ Finding</button></div>
+<div class="ph"><div class="ph-title">Gemba Walks</div><button class="btn btn-p btn-sm" id="btn-gemba" onclick="openM('m-gemba')">+ Finding</button></div>
 <div class="xbar"><span class="xbar-label">Export</span><button class="xbtn xbtn-pdf" data-export="gemba-pdf">📄 PDF</button><button class="xbtn xbtn-csv" data-export="gemba-csv">📊 CSV</button></div>
 <div class="frow"><button class="fb on" data-gf="all">All</button><button class="fb" data-gf="open">Open</button><button class="fb" data-gf="high">🔴 High</button><button class="fb" data-gf="closed">✅ Closed</button></div>
 <div id="gemba-list"></div>
 </div>
 <div id="view-schedule" class="view">
-<div class="ph"><div class="ph-title">Schedule</div><button class="btn btn-p btn-sm" id="btn-sched">+ Task</button></div>
+<div class="ph"><div class="ph-title">Schedule</div><button class="btn btn-p btn-sm" id="btn-sched" onclick="document.getElementById('sc-date').value=TODAY;openM('m-sched')">+ Task</button></div>
 <div class="xbar"><span class="xbar-label">Export</span><button class="xbtn xbtn-pdf" data-export="schedule-pdf">📄 PDF</button><button class="xbtn xbtn-csv" data-export="schedule-csv">📊 CSV</button></div>
 <div class="cal-wrap">
 <div class="cal-nav"><button class="cal-btn" id="cal-prev">‹</button><div class="cal-title" id="cal-title"></div><button class="cal-btn" id="cal-next">›</button></div>
@@ -983,7 +924,7 @@ h1.print-hd{display:none}
 <div id="sched-list"></div>
 </div>
 <div id="view-suppliers" class="view">
-<div class="ph"><div class="ph-title">Suppliers</div><button class="btn btn-p btn-sm" id="btn-sup">+ Supplier</button></div>
+<div class="ph"><div class="ph-title">Suppliers</div><button class="btn btn-p btn-sm" id="btn-sup" onclick="openM('m-sup')">+ Supplier</button></div>
 <div class="xbar"><span class="xbar-label">Export</span><button class="xbtn xbtn-pdf" data-export="suppliers-pdf">📄 PDF</button><button class="xbtn xbtn-csv" data-export="suppliers-csv">📊 CSV</button></div>
 <div class="sup-sum">
 <div class="ss"><div class="ss-v" id="sup-cnt">0</div><div class="ss-l">Suppliers</div></div>
@@ -993,10 +934,10 @@ h1.print-hd{display:none}
 </div>
 <div class="frow"><button class="fb on" data-spf="all">All</button><button class="fb" data-spf="active">✅ Active</button><button class="fb" data-spf="eval">⏳ Eval</button></div>
 <div id="sup-list"></div>
-<div style="margin-top:12px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div style="font-family:var(--hd);font-size:16px">All Offers</div><button class="btn btn-p btn-sm" id="btn-offer">+ Offer</button></div><div id="offer-list"></div></div>
+<div style="margin-top:12px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div style="font-family:var(--hd);font-size:16px">All Offers</div><button class="btn btn-p btn-sm" id="btn-offer" onclick="openOfferModal(null)">+ Offer</button></div><div id="offer-list"></div></div>
 </div>
 <div id="view-portfolio" class="view">
-<div class="ph"><div class="ph-title">Portfolio</div><button class="btn btn-p btn-sm" id="btn-ach">+ Achievement</button></div>
+<div class="ph"><div class="ph-title">Portfolio</div><button class="btn btn-p btn-sm" id="btn-ach" onclick="openM('m-ach')">+ Achievement</button></div>
 <div class="xbar"><span class="xbar-label">Export</span><button class="xbtn xbtn-pdf" data-export="portfolio-pdf">📄 PDF</button><button class="xbtn xbtn-csv" data-export="portfolio-csv">📊 CSV</button></div>
 <div id="ach-list"></div>
 </div>
@@ -1009,8 +950,8 @@ h1.print-hd{display:none}
 <div class="fg"><label class="fl">Month</label><input type="month" class="fi" id="rpt-month"></div>
 </div>
 <div style="display:flex;gap:8px">
-<button class="btn btn-p" id="btn-gen-rpt" style="flex:1">📊 Generate Report</button>
-<button class="btn btn-s btn-sm" id="btn-print-rpt" style="padding:12px 14px">🖨️</button>
+<button class="btn btn-p" id="btn-gen-rpt" onclick="generateReport()" style="flex:1">📊 Generate Report</button>
+<button class="btn btn-s btn-sm" id="btn-print-rpt" onclick="printReport()" style="padding:12px 14px">🖨️</button>
 </div>
 </div>
 <div id="report-preview"></div>
@@ -1024,14 +965,14 @@ h1.print-hd{display:none}
 <div class="set-sec">🔔 PM Notifications</div>
 <div class="set-row"><div><div class="set-label">Ειδοποιήσεις</div><div class="set-desc">Banner για επερχόμενα PMs</div></div><label class="tog"><input type="checkbox" id="set-notif"><span class="tog-sl"></span></label></div>
 <div class="set-row"><div><div class="set-label">Προειδοποίηση (μέρες)</div></div><select class="fs" id="set-days" style="width:65px;padding:8px 10px"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="5">5</option><option value="7">7</option></select></div>
-<div class="set-row"><div><div class="set-label">Browser Notifications</div><div class="set-desc">Ειδοποιήσεις εκτός app</div></div><button class="btn btn-s btn-sm" id="set-perm-btn">Enable</button></div>
+<div class="set-row"><div><div class="set-label">Browser Notifications</div><div class="set-desc">Ειδοποιήσεις εκτός app</div></div><button class="btn btn-s btn-sm" id="set-perm-btn" onclick="reqNotif()">Enable</button></div>
 <div class="set-sec">📊 KPI Targets</div>
 <div class="fr"><div class="fg"><label class="fl">PM Rate (%)</label><input type="number" class="fi" id="set-pm-t" placeholder="95"></div><div class="fg"><label class="fl">Gemba Closed (%)</label><input type="number" class="fi" id="set-gm-t" placeholder="80"></div><div class="fg"><label class="fl">Max Breakdowns</label><input type="number" class="fi" id="set-bk-t" placeholder="3"></div></div>
-<button class="btn btn-p" id="save-settings-btn">Save Settings</button>
+<button class="btn btn-p" id="save-settings-btn" onclick="saveSettings()">Save Settings</button>
 <div class="set-sec">💾 Backup & Restore</div>
 <div class="exp-grid">
-<div class="exp-card" id="backup-btn"><div class="exp-ico">💾</div><div class="exp-lbl">Backup</div><div class="exp-sub">JSON file</div></div>
-<div class="exp-card" id="restore-wrap"><div class="exp-ico">📥</div><div class="exp-lbl">Restore</div><div class="exp-sub">From backup</div></div>
+<div class="exp-card" id="backup-btn" onclick="doBackup()"><div class="exp-ico">💾</div><div class="exp-lbl">Backup</div><div class="exp-sub">JSON file</div></div>
+<div class="exp-card" id="restore-wrap" onclick="document.getElementById('restore-file').click()"><div class="exp-ico">📥</div><div class="exp-lbl">Restore</div><div class="exp-sub">From backup</div></div>
 </div>
 <input type="file" id="restore-file" accept=".json" style="display:none">
 <div class="set-sec">🤖 AI Assistant</div>
@@ -1040,9 +981,9 @@ h1.print-hd{display:none}
   <button class="btn btn-s btn-sm" onclick="localStorage.removeItem('gemini_key');AI_KEY='';document.getElementById('ai-key-status').textContent='Not connected';toast('API key cleared');">Reset</button>
 </div>
 <div class="set-sec">🗑️ Data</div>
-<div class="set-row"><div><div class="set-label">Clear All Data</div><div class="set-desc">Deletes everything</div></div><button class="btn btn-d btn-sm" id="clear-btn">Reset</button></div>
+<div class="set-row"><div><div class="set-label">Clear All Data</div><div class="set-desc">Deletes everything</div></div><button class="btn btn-d btn-sm" id="clear-btn" onclick="doClear()">Reset</button></div>
 <div style="height:8px"></div>
-<button class="btn btn-s" id="close-settings-btn">Close</button>
+<button class="btn btn-s" id="close-settings-btn" onclick="closeM('m-settings')">Close</button>
 </div></div>
 
 <!-- EQUIPMENT MODAL -->
@@ -1108,19 +1049,13 @@ h1.print-hd{display:none}
         <input type="date" class="fi" id="eq-next">
       </div>
     </div>
-    <div class="fg"><label class="fl">PM Frequency</label>
-      <select class="fs" id="eq-pm-freq">
-        <option value="">— Not scheduled —</option>
-        <option value="weekly">Weekly</option><option value="monthly">Monthly</option>
-        <option value="quarterly">Quarterly</option><option value="annual">Annual</option>
-      </select>
-    </div>
+
     <div class="fg"><label class="fl">Notes / Location Details</label>
       <textarea class="ft" id="eq-notes" placeholder="Location, P&ID reference, specs, history..." style="min-height:60px"></textarea>
     </div>
-    <button class="btn btn-p" id="save-eq-btn">Save Asset</button>
+    <button class="btn btn-p" id="save-eq-btn" onclick="saveEq()">Save Asset</button>
     <div style="height:8px"></div>
-    <button class="btn btn-s" id="close-eq-btn">Cancel</button>
+    <button class="btn btn-s" id="close-eq-btn" onclick="closeM('m-eq')">Cancel</button>
   </div>
 </div>
 
@@ -1183,8 +1118,8 @@ h1.print-hd{display:none}
 <div class="fr"><div class="fg"><label class="fl">Frequency</label><select class="fs" id="pm-freq"><option>Weekly</option><option>Monthly</option><option>Quarterly</option><option>Annual</option></select></div><div class="fg"><label class="fl">Scheduled Date</label><input type="date" class="fi" id="pm-sched"></div></div>
 <div class="fg"><label class="fl">Carl Source WO#</label><input type="text" class="fi" id="pm-wo" placeholder="WO-XXX"></div>
 <div class="fg"><label class="fl">Notes / Findings</label><textarea class="ft" id="pm-notes" style="min-height:55px" placeholder="Observations..."></textarea></div>
-<button class="btn btn-p" id="save-pm-btn">Save PM</button>
-<div style="height:8px"></div><button class="btn btn-s" id="close-pm-btn">Cancel</button>
+<button class="btn btn-p" id="save-pm-btn" onclick="savePM()">Save PM</button>
+<div style="height:8px"></div><button class="btn btn-s" id="close-pm-btn" onclick="closeM('m-pm')">Cancel</button>
 </div></div>
 
 <!-- BREAKDOWN MODAL -->
@@ -1220,8 +1155,8 @@ h1.print-hd{display:none}
 <div class="fg"><label class="fl">Description</label><textarea class="ft" id="bd-desc" placeholder="What happened? What were the symptoms?" style="min-height:65px"></textarea></div>
 <div class="fg"><label class="fl">Resolution / Action Taken</label><textarea class="ft" id="bd-resolution" placeholder="How was it fixed?" style="min-height:55px"></textarea></div>
 <div class="fg"><label class="fl">Cost (€) — optional</label><input type="number" class="fi" id="bd-cost" placeholder="0.00" step="0.01" min="0"></div>
-<button class="btn btn-p" id="save-bd-btn">Log Breakdown</button>
-<div style="height:8px"></div><button class="btn btn-s" id="close-bd-btn">Cancel</button>
+<button class="btn btn-p" id="save-bd-btn" onclick="saveBd()">Log Breakdown</button>
+<div style="height:8px"></div><button class="btn btn-s" id="close-bd-btn" onclick="closeM('m-bd')">Cancel</button>
 </div></div>
 
 <!-- GEMBA MODAL -->
@@ -1248,8 +1183,8 @@ h1.print-hd{display:none}
 <div class="fg"><label class="fl">Finding Description *</label><textarea class="ft" id="g-desc" placeholder="Describe what you observed..."></textarea></div>
 <div class="fg"><label class="fl">Action Required</label><input type="text" class="fi" id="g-action" placeholder="What needs to be done?"></div>
 <div class="fr"><div class="fg"><label class="fl">Due Date</label><input type="date" class="fi" id="g-due"></div><div class="fg"><label class="fl">Carl Source WO#</label><input type="text" class="fi" id="g-wo" placeholder="WO-XXX"></div></div>
-<button class="btn btn-p" id="save-gemba-btn">Save Finding</button>
-<div style="height:8px"></div><button class="btn btn-s" id="close-gemba-btn">Cancel</button>
+<button class="btn btn-p" id="save-gemba-btn" onclick="saveGemba()">Save Finding</button>
+<div style="height:8px"></div><button class="btn btn-s" id="close-gemba-btn" onclick="closeM('m-gemba')">Cancel</button>
 </div></div>
 
 <!-- SCHEDULE MODAL -->
@@ -1277,8 +1212,8 @@ h1.print-hd{display:none}
 </select></div>
 <div class="fg"><label class="fl">Recurrence</label><select class="fs" id="sc-recur"><option value="none">None</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option></select></div>
 <div class="fg"><label class="fl">Notes</label><textarea class="ft" id="sc-notes" style="min-height:55px" placeholder="Details..."></textarea></div>
-<button class="btn btn-p" id="save-sched-btn">Save Task</button>
-<div style="height:8px"></div><button class="btn btn-s" id="close-sched-btn">Cancel</button>
+<button class="btn btn-p" id="save-sched-btn" onclick="saveSched()">Save Task</button>
+<div style="height:8px"></div><button class="btn btn-s" id="close-sched-btn" onclick="closeM('m-sched')">Cancel</button>
 </div></div>
 
 <!-- SUPPLIER MODAL -->
@@ -1296,8 +1231,8 @@ h1.print-hd{display:none}
 <div class="fr"><div class="fg"><label class="fl">Price / Value</label><input type="number" class="fi" id="sup-sp" placeholder="1-5" min="1" max="5"></div><div class="fg"><label class="fl">Communication</label><input type="number" class="fi" id="sup-sc" placeholder="1-5" min="1" max="5"></div></div>
 </div>
 <div class="fg"><label class="fl">Notes</label><textarea class="ft" id="sup-notes" style="min-height:55px" placeholder="Agreements, comments..."></textarea></div>
-<button class="btn btn-p" id="save-sup-btn">Save Supplier</button>
-<div style="height:8px"></div><button class="btn btn-s" id="close-sup-btn">Cancel</button>
+<button class="btn btn-p" id="save-sup-btn" onclick="saveSup()">Save Supplier</button>
+<div style="height:8px"></div><button class="btn btn-s" id="close-sup-btn" onclick="closeM('m-sup')">Cancel</button>
 </div></div>
 
 <!-- OFFER MODAL -->
@@ -1311,8 +1246,8 @@ h1.print-hd{display:none}
 <div class="fr"><div class="fg"><label class="fl">Offer Date</label><input type="date" class="fi" id="off-date"></div><div class="fg"><label class="fl">Valid Until</label><input type="date" class="fi" id="off-valid"></div></div>
 <div class="fr"><div class="fg"><label class="fl">Category</label><select class="fs" id="off-cat"><option>Spare Parts</option><option>Chemicals</option><option>Equipment</option><option>Services</option><option>Consumables</option><option>Other</option></select></div><div class="fg"><label class="fl">Status</label><select class="fs" id="off-status"><option value="pending">⏳ Pending</option><option value="approved">✅ Approved</option><option value="rejected">❌ Rejected</option><option value="ordered">📦 Ordered</option></select></div></div>
 <div class="fg"><label class="fl">Notes</label><textarea class="ft" id="off-notes" style="min-height:50px" placeholder="Price comparison, comments..."></textarea></div>
-<button class="btn btn-p" id="save-offer-btn">Save Offer</button>
-<div style="height:8px"></div><button class="btn btn-s" id="close-offer-btn">Cancel</button>
+<button class="btn btn-p" id="save-offer-btn" onclick="saveOffer()">Save Offer</button>
+<div style="height:8px"></div><button class="btn btn-s" id="close-offer-btn" onclick="closeM('m-offer')">Cancel</button>
 </div></div>
 
 <!-- KPI MODAL -->
@@ -1323,8 +1258,8 @@ h1.print-hd{display:none}
 <div class="fg"><label class="fl">Month</label><input type="month" class="fi" id="kpi-month"></div>
 <div class="fr"><div class="fg"><label class="fl">PM Completion (%)</label><input type="number" class="fi" id="kpi-pm" min="0" max="100" placeholder="0–100"></div><div class="fg"><label class="fl">Overdue PMs</label><input type="number" class="fi" id="kpi-od" min="0" placeholder="0"></div></div>
 <div class="fr"><div class="fg"><label class="fl">Breakdowns</label><input type="number" class="fi" id="kpi-bd" min="0" placeholder="0"></div><div class="fg"><label class="fl">Carl Closure (%)</label><input type="number" class="fi" id="kpi-carl" min="0" max="100" placeholder="0–100"></div></div>
-<button class="btn btn-p" id="save-kpi-btn">Update Dashboard</button>
-<div style="height:8px"></div><button class="btn btn-s" id="close-kpi-btn">Cancel</button>
+<button class="btn btn-p" id="save-kpi-btn" onclick="saveKPI()">Update Dashboard</button>
+<div style="height:8px"></div><button class="btn btn-s" id="close-kpi-btn" onclick="closeM('m-kpi')">Cancel</button>
 </div></div>
 
 <!-- PROJECT MODAL -->
@@ -1335,8 +1270,8 @@ h1.print-hd{display:none}
 <div class="fg"><label class="fl">Project Name *</label><input type="text" class="fi" id="proj-name" placeholder="π.χ. Carl Source Integration"></div>
 <div class="fr"><div class="fg"><label class="fl">% Complete</label><input type="number" class="fi" id="proj-pct" min="0" max="100" placeholder="0"></div><div class="fg"><label class="fl">Due Date</label><input type="date" class="fi" id="proj-due"></div></div>
 <div class="fr"><div class="fg"><label class="fl">Priority</label><select class="fs" id="proj-prio"><option value="high">🔴 High</option><option value="medium">🟡 Medium</option><option value="low">🟢 Low</option></select></div><div class="fg"><label class="fl">Status</label><select class="fs" id="proj-status"><option value="active">🔄 In Progress</option><option value="done">✅ Done</option><option value="planned">⏳ Planned</option></select></div></div>
-<button class="btn btn-p" id="save-proj-btn">Save Project</button>
-<div style="height:8px"></div><button class="btn btn-s" id="close-proj-btn">Cancel</button>
+<button class="btn btn-p" id="save-proj-btn" onclick="saveProj()">Save Project</button>
+<div style="height:8px"></div><button class="btn btn-s" id="close-proj-btn" onclick="closeM('m-proj')">Cancel</button>
 </div></div>
 
 <!-- ACHIEVEMENT MODAL -->
@@ -1349,8 +1284,8 @@ h1.print-hd{display:none}
 <div class="fg"><label class="fl">Quantified Impact</label><input type="text" class="fi" id="ach-impact" placeholder="π.χ. Reduced downtime by 20%"></div>
 <div class="fg"><label class="fl">Completion Rate (%)</label><input type="number" class="fi" id="ach-rate" placeholder="0–100" min="0" max="100"></div>
 <div class="fg"><label class="fl">Evidence / Source</label><input type="text" class="fi" id="ach-evidence" placeholder="π.χ. Carl Source report, Excel file"></div>
-<button class="btn btn-p" id="save-ach-btn">Save Achievement</button>
-<div style="height:8px"></div><button class="btn btn-s" id="close-ach-btn">Cancel</button>
+<button class="btn btn-p" id="save-ach-btn" onclick="saveAch()">Save Achievement</button>
+<div style="height:8px"></div><button class="btn btn-s" id="close-ach-btn" onclick="closeM('m-ach')">Cancel</button>
 </div></div>
 
 
@@ -1360,7 +1295,7 @@ h1.print-hd{display:none}
   <div class="ph">
     <div class="ph-title">Systems & P&IDs</div>
     <div style="display:flex;gap:6px">
-      <button class="btn btn-s btn-sm" id="btn-add-sys">+ System</button>
+      <button class="btn btn-s btn-sm" id="btn-add-sys" onclick="openAddSys()">+ System</button>
     </div>
   </div>
   <div id="sys-tree" class="sys-tree"></div>
@@ -1412,17 +1347,17 @@ h1.print-hd{display:none}
     <div class="fg"><label class="fl">Notes</label>
       <textarea class="ft" id="sys-notes" style="min-height:55px" placeholder="Description, P&ID reference..."></textarea>
     </div>
-    <button class="btn btn-p" id="save-sys-btn">Save System</button>
+    <button class="btn btn-p" id="save-sys-btn" onclick="saveSys()">Save System</button>
     <div style="height:8px"></div>
-    <button class="btn btn-d btn-sm" id="del-sys-btn" style="display:none;width:100%">Delete System</button>
+    <button class="btn btn-d btn-sm" id="del-sys-btn" onclick="delSystem()" style="display:none;width:100%">Delete System</button>
     <div style="height:6px"></div>
-    <button class="btn btn-s" id="close-sys-btn">Cancel</button>
+    <button class="btn btn-s" id="close-sys-btn" onclick="closeM('m-sys')">Cancel</button>
   </div>
 </div>
 
 <!-- ═══ CORRECTIVE MAINTENANCE ═══ -->
 <div id="view-corrective" class="view">
-  <div class="ph"><div class="ph-title">Corrective Maintenance</div><button class="btn btn-p btn-sm" id="btn-cm">+ CM Task</button></div>
+  <div class="ph"><div class="ph-title">Corrective Maintenance</div><button class="btn btn-p btn-sm" id="btn-cm" onclick="document.getElementById('cm-source-banner').style.display='none';document.getElementById('cm-source-type').value='manual';openM('m-cm')">+ CM Task</button></div>
   <div class="xbar"><span class="xbar-label">Export</span><button class="xbtn xbtn-pdf" data-export="cm-pdf">📄 PDF</button><button class="xbtn xbtn-csv" data-export="cm-csv">📊 CSV</button></div>
   <div class="cm-kpis">
     <div class="kpi kpi-sm" style="--kc:var(--r)"><div class="kpi-lbl">Open CMs</div><div class="kpi-val" id="cm-open">0</div><div class="kpi-target">Needs action</div></div>
@@ -1442,7 +1377,7 @@ h1.print-hd{display:none}
 
 <!-- ═══ INVENTORY ═══ -->
 <div id="view-inventory" class="view">
-  <div class="ph"><div class="ph-title">Spare Parts & Inventory</div><button class="btn btn-p btn-sm" id="btn-inv">+ Part</button></div>
+  <div class="ph"><div class="ph-title">Spare Parts & Inventory</div><button class="btn btn-p btn-sm" id="btn-inv" onclick="openInvModal()">+ Part</button></div>
   <div class="xbar"><span class="xbar-label">Export</span><button class="xbtn xbtn-pdf" data-export="inv-pdf">📄 PDF</button><button class="xbtn xbtn-csv" data-export="inv-csv">📊 CSV</button></div>
   <div class="inv-sum">
     <div class="ss"><div class="ss-v" id="inv-total">0</div><div class="ss-l">Total Parts</div></div>
@@ -1506,8 +1441,8 @@ h1.print-hd{display:none}
     <div class="fg"><label class="fl">Spare Parts Needed</label><input type="text" class="fi" id="cm-parts" placeholder="π.χ. Seal kit ref. SK-204, O-ring 50mm"></div>
     <div class="fg"><label class="fl">Estimated Cost (€)</label><input type="number" class="fi" id="cm-cost" placeholder="0.00" step="0.01" min="0"></div>
     <div class="fg"><label class="fl">Resolution / Action Taken</label><textarea class="ft" id="cm-resolution" placeholder="How was it resolved? (fill when closing)" style="min-height:55px"></textarea></div>
-    <button class="btn btn-p" id="save-cm-btn">Save CM Task</button>
-    <div style="height:8px"></div><button class="btn btn-s" id="close-cm-btn">Cancel</button>
+    <button class="btn btn-p" id="save-cm-btn" onclick="saveCM()">Save CM Task</button>
+    <div style="height:8px"></div><button class="btn btn-s" id="close-cm-btn" onclick="closeM('m-cm')">Cancel</button>
   </div>
 </div>
 
@@ -1545,8 +1480,8 @@ h1.print-hd{display:none}
       <div class="fg"><label class="fl">Supplier</label><select class="fs" id="inv-sup"><option value="">— None —</option></select></div>
     </div>
     <div class="fg"><label class="fl">Notes</label><textarea class="ft" id="inv-notes" style="min-height:55px" placeholder="Lead time, alternatives, specs..."></textarea></div>
-    <button class="btn btn-p" id="save-inv-btn">Save Part</button>
-    <div style="height:8px"></div><button class="btn btn-s" id="close-inv-btn">Cancel</button>
+    <button class="btn btn-p" id="save-inv-btn" onclick="saveInv()">Save Part</button>
+    <div style="height:8px"></div><button class="btn btn-s" id="close-inv-btn" onclick="closeM('m-inv')">Cancel</button>
   </div>
 </div>
 
@@ -1568,8 +1503,8 @@ h1.print-hd{display:none}
       <div class="fg"><label class="fl">Quantity</label><input type="number" class="fi" id="stock-qty" placeholder="1" min="1" value="1"></div>
     </div>
     <div class="fg"><label class="fl">Reference (WO# or note)</label><input type="text" class="fi" id="stock-ref" placeholder="π.χ. WO-042 or PO-2025-001"></div>
-    <button class="btn btn-p" id="save-stock-btn">Confirm Movement</button>
-    <div style="height:8px"></div><button class="btn btn-s" id="close-stock-btn">Cancel</button>
+    <button class="btn btn-p" id="save-stock-btn" onclick="saveStockMovement()">Confirm Movement</button>
+    <div style="height:8px"></div><button class="btn btn-s" id="close-stock-btn" onclick="closeM('m-stock')">Cancel</button>
   </div>
 </div>
 
@@ -1666,6 +1601,7 @@ h1.print-hd{display:none}
 <div class="toast" id="toast"></div>
 
 <script>
+// ══════════ SYS
 // ══════════ SYSTEMS MODULE ══════════
 var DEFAULT_SYSTEMS=[
   {id:"sys1",name:"Mixer 1",area:"Mixers",assets:[],pid:{nodes:[],pipes:[]},notes:""},
@@ -1692,8 +1628,73 @@ var AREA_ICONS={
 
 // ── Render systems tree ──
 function renderSystems(){
+  if(!S||!S.systems)return;
   var el=document.getElementById('sys-tree');if(!el)return;
-  if(!S.systems||!S.systems.length){
+  if(!S.systems.length){
+    el.innerHTML='<div class="empty"><div class="ei">🌐</div><div class="et">No systems defined</div></div>';
+    return;
+  }
+  // Group by area
+  var groups={};
+  S.systems.forEach(function(sys){
+    var a=sys.area||'Other';
+    if(!groups[a])groups[a]=[];
+    groups[a].push(sys);
+  });
+  el.innerHTML=Object.keys(groups).map(function(area){
+    var sysList=groups[area];
+    var areaIcon=AREA_ICONS[area]||'📍';
+    var totalAssets=sysList.reduce(function(n,s){return n+(s.assets||[]).length;},0);
+    var openCMs=0,bds=0;
+    sysList.forEach(function(sys){
+      (sys.assets||[]).forEach(function(eqId){
+        var eq=S.equipment.find(function(e){return e.id===eqId;});
+        if(!eq)return;
+        openCMs+=S.cm.filter(function(c){return(c.equip===eq.name||c.equip===eq.id)&&c.status!=='closed';}).length;
+        bds+=S.breakdowns.filter(function(b){return b.equip===eq.name||b.equip===eq.id;}).length;
+      });
+    });
+    return '<div class="area-group" id="ag-'+area.replace(/\s/g,'_')+'">'
+      +'<div class="area-group-hd" onclick="toggleAreaGroup(this)">'
+        +areaIcon+' '+area
+        +' <span style="margin-left:auto;display:flex;align-items:center;gap:8px">'
+        +'<span style="font-size:9px;background:rgba(64,128,255,.15);color:var(--acc);border-radius:4px;padding:2px 7px">'+sysList.length+' systems</span>'
+        +(totalAssets?'<span style="font-size:9px;color:var(--t3)">'+totalAssets+' assets</span>':'')
+        +'<span class="area-chevron">›</span></span>'
+      +'</div>'
+      +'<div class="area-group-body">'
+        +sysList.map(function(sys){return renderSysCard(sys);}).join('')
+      +'</div></div>';
+  }).join
+// ══════════ SYSTEMS MODULE ══════════
+var DEFAULT_SYSTEMS=[
+  {id:"sys1",name:"Mixer 1",area:"Mixers",assets:[],pid:{nodes:[],pipes:[]},notes:""},
+  {id:"sys2",name:"Mixer 2",area:"Mixers",assets:[],pid:{nodes:[],pipes:[]},notes:""},
+  {id:"sys3",name:"Mixer 3",area:"Mixers",assets:[],pid:{nodes:[],pipes:[]},notes:""},
+  {id:"sys4",name:"Mixer 4",area:"Mixers",assets:[],pid:{nodes:[],pipes:[]},notes:""},
+  {id:"sys5",name:"Filling Line A",area:"20L A",assets:[],pid:{nodes:[],pipes:[]},notes:""},
+  {id:"sys6",name:"Filling Line B",area:"20L B",assets:[],pid:{nodes:[],pipes:[]},notes:""},
+  {id:"sys7",name:"Filling Line 5L",area:"5L",assets:[],pid:{nodes:[],pipes:[]},notes:""},
+  {id:"sys8",name:"Treatment System",area:"WWTP",assets:[],pid:{nodes:[],pipes:[]},notes:""},
+  {id:"sys9",name:"Hypochlorite System",area:"HYPO",assets:[],pid:{nodes:[],pipes:[]},notes:""},
+  {id:"sys10",name:"RM Tank Farm",area:"RM Tanks",assets:[],pid:{nodes:[],pipes:[]},notes:""},
+  {id:"sys11",name:"Fire Suppression System",area:"Outside",assets:[],pid:{nodes:[],pipes:[]},notes:"Συγκρότημα πυρασφάλειας"},
+  {id:"sys12",name:"FLT Charging Station",area:"Warehouse",assets:[],pid:{nodes:[],pipes:[]},notes:"Χώρος φόρτισης FLT"},
+  {id:"sys13",name:"Sleeve Line",area:"Sleeve",assets:[],pid:{nodes:[],pipes:[]},notes:""}
+];
+
+// ── Area icons ──
+var AREA_ICONS={
+  "Mixers":"🌀","20L A":"🅰","20L B":"🅱","5L":"5️⃣","WWTP":"♻️",
+  "HYPO":"🧪","RM Tanks":"🛢","Sleeve":"🏷","Warehouse":"📦",
+  "Outside":"🌿","Semi Finished Tanks":"🔵","Hold Tanks":"⏸","In-Tank":"🔽"
+};
+
+// ── Render systems tree ──
+function renderSystems(){
+  if(!S||!S.systems)return;
+  var el=document.getElementById('sys-tree');if(!el)return;
+  if(!S.systems.length){
     el.innerHTML='<div class="empty"><div class="ei">🌐</div><div class="et">No systems defined</div></div>';
     return;
   }
@@ -2071,10 +2072,7 @@ function deleteSelected(){
 function savePID(){svS();toast('P&ID saved ✅');}
 
 // Global unhandled rejection handler
-window.addEventListener('unhandledrejection',function(e){
-  console.warn('Unhandled rejection:',e.reason);
-  e.preventDefault();
-});
+window.addEventListener('unhandledrejection',function(e){console.warn('Unhandled rejection:',e.reason);});
 
 
 // ══════════ STATE ══════════
@@ -2104,24 +2102,35 @@ function svC(){lsS('em_c',CFG);}
 
 // ── INIT ──
 // Security init — async
-(async function(){
-  try{
-    calY=now.getFullYear();calM=now.getMonth();
-    var barDate=document.getElementById('bar-date');
-    if(barDate)barDate.textContent=now.toLocaleDateString('el-GR',{weekday:'short',day:'numeric',month:'long',year:'numeric'});
-    var todayMonth=TODAY.slice(0,7);
-    var rptM=document.getElementById('rpt-month');if(rptM)rptM.value=todayMonth;
-    document.querySelectorAll('input[type=date]').forEach(function(e){e.value=TODAY;});
-    var ok=await initSecurity().catch(function(){return true;});
-    if(!ok)return;
-    try{await ldAll();}catch(e){console.warn('ldAll:',e);}
-    hideLockScreen();
-  }catch(err){
-    console.warn('Init error:',err);
-    try{var d=lsG('em_s');if(d)Object.assign(S,d);}catch(e){}
-    hideLockScreen();
+// ── Boot ──
+function boot(){
+  try{var d=lsG('em_s');if(d)Object.assign(S,d);}catch(e){}
+  try{var c=lsG('em_c');if(c)Object.assign(CFG,c);}catch(e){}
+  if(typeof DEFAULT_SYSTEMS!=='undefined'&&(!S.systems||!S.systems.length)){
+    S.systems=DEFAULT_SYSTEMS.map(function(s){
+      return {id:s.id,name:s.name,area:s.area,assets:[],pid:{nodes:[],pipes:[]},notes:s.notes||''};
+    });
   }
-})();
+  var barDate=document.getElementById('bar-date');
+  if(barDate)barDate.textContent=now.toLocaleDateString('el-GR',{weekday:'short',day:'numeric',month:'long',year:'numeric'});
+  var rptM=document.getElementById('rpt-month');
+  if(rptM)rptM.value=TODAY.slice(0,7);
+  document.querySelectorAll('input[type=date]').forEach(function(e){e.value=TODAY;});
+  try{seedSampleData();}catch(e){console.warn('seed:',e);}
+  initEvents();
+  try{initSearch();}catch(e){console.warn('search:',e);}
+  renderAll();
+  try{loadCFGtoUI();}catch(e){}
+  try{checkAlerts();}catch(e){}
+  try{initAI();}catch(e){}
+  try{startAutoLock();}catch(e){}
+}
+// Run after DOM ready
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded', boot);
+} else {
+  boot();
+}
 try{if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(function(){});}catch(e){}
 
 // ── HELPERS ──
@@ -2178,14 +2187,23 @@ function areaCompliance(){
 
 // ══ RENDER ALL ══
 function renderAll(){
-  renderDash();renderAnalytics();renderEquipment();renderPM();renderBreakdowns();
-  renderGemba();renderSched();renderCal();renderSup();renderAch();renderBdKpis();
-  renderCM();renderInventory();renderSystems();
+  var fns=[
+    ['renderDash',renderDash],['renderAnalytics',renderAnalytics],
+    ['renderEquipment',renderEquipment],['renderPM',renderPM],
+    ['renderBreakdowns',renderBreakdowns],['renderGemba',renderGemba],
+    ['renderSched',renderSched],['renderCal',renderCal],
+    ['renderSup',renderSup],['renderAch',renderAch],['renderBdKpis',renderBdKpis],
+    ['renderCM',renderCM],['renderInventory',renderInventory],['renderSystems',renderSystems]
+  ];
+  fns.forEach(function(pair){
+    try{pair[1]();}catch(e){console.error('CRASH in '+pair[0]+':',e.message,e.stack);}
+  });
 }
 
 // ══ DASHBOARD ══
 function renderDash(){
-  var k=S.kpis,c=CFG;
+  try{if(S.pms&&S.pms.length)autoCalcKPIs();}catch(e){}
+  var k=S.kpis||{},c=CFG||{};
   kpiSet('k-pm','k-pm-s',k.pm,'%',function(v){return v>=(c.pmT||95)?'ok':v>=(c.pmT||95)-15?'warn':'bad';},'✅ On Track','⚠️ Below Target');
   kpiSet('k-od','k-od-s',k.od,'',function(v){return v===0?'ok':'bad';},'✅ Zero','⚠️ Action Needed');
   kpiSet('k-bd','k-bd-s',k.bd,'',function(v){return v<(c.bkT||3)?'ok':'bad';},'✅ OK','⚠️ Review');
@@ -2357,6 +2375,7 @@ function delEq(i){S.equipment.splice(i,1);svS();renderEquipment();}
 
 // ══ PM LOG ══
 function renderPM(){
+  if(!S)return;
   var el=document.getElementById('pm-list');if(!el)return;
   var items=S.pms.slice().reverse();
   if(pmFilt==='due')items=items.filter(function(p){return p.status==='scheduled';});
@@ -2436,6 +2455,7 @@ document.querySelectorAll('[data-pmf]').forEach(function(b){
 
 // ══ BREAKDOWNS ══
 function renderBreakdowns(){
+  if(!S)return;
   var el=document.getElementById('bd-list');if(!el)return;
   renderBdKpis();
   if(!S.breakdowns.length){el.innerHTML=empty('⚡','No breakdowns recorded');return;}
@@ -2489,6 +2509,7 @@ function gCard(g,showA){
     '</div>';
 }
 function renderGemba(){
+  if(!S)return;
   var el=document.getElementById('gemba-list');if(!el)return;
   var items=S.gemba.slice().reverse();
   if(gFilt==='open')items=items.filter(function(g){return g.status!=='closed';});
@@ -2558,6 +2579,7 @@ function openSchedDate(d){document.getElementById('sc-date').value=d;openM('m-sc
 
 // ══ SUPPLIERS ══
 function renderSup(){
+  if(!S)return;
   document.getElementById('sup-cnt').textContent=S.sups.length;
   document.getElementById('sup-off').textContent=S.offers.length;
   var devs=S.sups.filter(function(s){return s.delivery;}).map(function(s){return parseInt(s.delivery);});
@@ -2643,6 +2665,7 @@ function saveOffer(){
 
 // ══ ACHIEVEMENTS ══
 function renderAch(){
+  if(!S)return;
   var el=document.getElementById('ach-list');if(!el)return;
   if(!S.achs.length){el.innerHTML=empty('🏆','No achievements yet');return;}
   el.innerHTML=S.achs.slice().reverse().map(function(a,ri){
@@ -2818,7 +2841,22 @@ function doClear(){if(!confirm('Delete ALL data? Cannot be undone.'))return;S={k
 // ══ EXPORT ══
 function doExport(type){
   var parts=type.split('-'),section=parts[0],format=parts[1];
-  if(format==='pdf'){toast('Opening print... 📄');setTimeout(function(){window.print();},400);return;}
+  if(format==='pdf'){
+    // Hide all views except current, print, then restore
+    var views=document.querySelectorAll('.view');
+    var active=document.querySelector('.view.on');
+    views.forEach(function(v){if(v!==active)v.style.display='none';});
+    document.body.classList.add('printing');
+    toast('Opening print... 📄');
+    setTimeout(function(){
+      window.print();
+      setTimeout(function(){
+        views.forEach(function(v){v.style.display='';});
+        document.body.classList.remove('printing');
+      },1000);
+    },300);
+    return;
+  }
   function toCSV(rows){return rows.map(function(r){return r.map(function(c){var s=String(c===null||c===undefined?'':c).replace(/"/g,'""');return(s.indexOf(',')>=0||s.indexOf('"')>=0||s.indexOf('\n')>=0)?'"'+s+'"':s;}).join(',');}).join('\n');}
   var csv='',name='EcolabMandra_'+section+'_'+TODAY;
   if(section==='pm')csv=toCSV([['Area','Equipment','PM Type','Frequency','Scheduled Date','Status','WO#','Notes','Completed Date']].concat(S.pms.map(function(p){return[p.area,p.equip,p.type,p.freq,p.sched,p.status,p.wo||'',p.notes||'',p.completedDate||''];})));
@@ -2872,7 +2910,10 @@ function initEvents(){
   var savers=[['save-eq-btn',saveEq],['save-pm-btn',savePM],['save-bd-btn',saveBd],['save-gemba-btn',saveGemba],['save-sched-btn',saveSched],['save-sup-btn',saveSup],['save-offer-btn',saveOffer],['save-kpi-btn',saveKPI],['save-proj-btn',saveProj],['save-ach-btn',saveAch],['save-settings-btn',saveSettings],['btn-gen-rpt',generateReport],['btn-print-rpt',printReport],['backup-btn',doBackup]];
   savers.forEach(function(pair){var btn=document.getElementById(pair[0]);if(btn)btn.addEventListener('click',pair[1]);});
   // CLOSE BTNS
-  ['eq','pm','bd','gemba','sched','sup','offer','kpi','proj','ach','settings'].forEach(function(k){var btn=document.getElementById('close-'+k+'-btn');if(btn)btn.addEventListener('click',function(){closeM('m-'+k);});});
+  ['eq','pm','bd','gemba','sched','sup','offer','kpi','proj','ach','settings','sys'].forEach(function(k){var btn=document.getElementById('close-'+k+'-btn');if(btn)btn.addEventListener('click',function(){closeM('m-'+k);});});
+  var addSysBtn=document.getElementById('btn-add-sys');if(addSysBtn)addSysBtn.addEventListener('click',openAddSys);
+  var saveSysBtn=document.getElementById('save-sys-btn');if(saveSysBtn)saveSysBtn.addEventListener('click',saveSys);
+  var delSysBtn=document.getElementById('del-sys-btn');if(delSysBtn)delSysBtn.addEventListener('click',delSystem);
   // FILTER BTNS
   document.querySelectorAll('[data-pmf]').forEach(function(b){b.addEventListener('click',function(){pmFilt=b.dataset.pmf;document.querySelectorAll('[data-pmf]').forEach(function(x){x.classList.remove('on');});b.classList.add('on');renderPM();});});
   document.querySelectorAll('[data-gf]').forEach(function(b){b.addEventListener('click',function(){gFilt=b.dataset.gf;document.querySelectorAll('[data-gf]').forEach(function(x){x.classList.remove('on');});b.classList.add('on');renderGemba();});});
@@ -2913,7 +2954,7 @@ function initEvents(){
     openM('m-inv');
   });
   // Reset PM equip list when PM modal is opened
-  var btnPm2=document.getElementById('btn-pm');if(btnPm2)btnPm2.addEventListener('click',function(){if(typeof pmEquipList!=='undefined'){pmEquipList=[];renderPMEquipTags();}if(typeof pmOpsList!=='undefined'){pmOpsList=[];renderPMOpsList();}resetEqPicker('pm');openM('m-pm');});
+  var btnPm2=document.getElementById('btn-pm');if(btnPm2)btnPm2.addEventListener('click',function(){if(typeof pmEquipList!=='undefined'){pmEquipList=[];renderPMEquipTags();}if(typeof pmOpsList!=='undefined'){pmOpsList=[];} if(typeof renderPMOpsList==='function')setTimeout(renderPMOpsList,50);resetEqPicker('pm');openM('m-pm');});
   var btnBd2=document.getElementById('btn-bd');if(btnBd2)btnBd2.addEventListener('click',function(){resetEqPicker('bd');openM('m-bd');});
   var saveCmBtn=document.getElementById('save-cm-btn');if(saveCmBtn)saveCmBtn.addEventListener('click',saveCM);
   var saveInvBtn=document.getElementById('save-inv-btn');if(saveInvBtn)saveInvBtn.addEventListener('click',saveInv);
@@ -2973,36 +3014,14 @@ async function hashPIN(pin){
 
 // ── Save encrypted state ──
 function svS(){
-  // Always save unencrypted immediately (fast, synchronous)
   try{localStorage.setItem('em_s',JSON.stringify(S));}catch(e){}
-  // Also save encrypted in background if crypto available
-  if(cryptoKey&&typeof crypto!=='undefined'&&crypto.subtle){
-    Promise.resolve().then(function(){
-      return encryptData({S:S,ts:Date.now()},cryptoKey);
-    }).then(function(enc){
-      try{localStorage.setItem(DATA_KEY,JSON.stringify(enc));}catch(e){}
-    }).catch(function(){});
-  }
 }
-
-// ── Load state ──
 async function ldAll(){
-  // Try encrypted first
-  if(cryptoKey&&typeof crypto!=='undefined'&&crypto.subtle){
-    try{
-      var enc=localStorage.getItem(DATA_KEY);
-      if(enc){
-        var dec=await decryptData(JSON.parse(enc),cryptoKey);
-        if(dec&&dec.S)Object.assign(S,dec.S);
-        return;
-      }
-    }catch(e){console.warn('Decrypt failed, using unencrypted',e);}
-  }
-  // Fallback: unencrypted
   try{var d=lsG('em_s');if(d)Object.assign(S,d);}catch(e){}
   try{var c=lsG('em_c');if(c)Object.assign(CFG,c);}catch(e){}
+  if(!S.systems||!S.systems.length)S.systems=DEFAULT_SYSTEMS.map(function(s){return Object.assign({},s,{assets:[],pid:{nodes:[],pipes:[]}});});
 }
-
+// ── PIN Setup ──
 // ── PIN Setup ──
 var setupPin = '';
 var setupConfirm = '';
@@ -3169,23 +3188,24 @@ function showLockScreen(){
     initSetupPad();
   }
 }
-var _appBooted=false;
+var _appBooted=true; // PIN removed
 function hideLockScreen(){
   var ls=document.getElementById('lock-screen');
-  if(ls){ls.style.display='none';}
+  if(ls)ls.style.display='none';
   document.body.style.overflow='';
   if(!_appBooted){
     _appBooted=true;
-    // Boot the app now that we're unlocked
     var todayMonth=TODAY.slice(0,7);
-    var rptM=document.getElementById('rpt-month');if(rptM)rptM.value=todayMonth;
+    var rptM=document.getElementById('rpt-month');
+    if(rptM)rptM.value=todayMonth;
     document.querySelectorAll('input[type=date]').forEach(function(e){e.value=TODAY;});
-    try{initEvents();}catch(e){console.warn('initEvents:',e);}
-    try{initSearch();}catch(e){console.warn('initSearch:',e);}
-    try{renderAll();}catch(e){console.warn('renderAll:',e);}
-    try{loadCFGtoUI();}catch(e){console.warn('loadCFGtoUI:',e);}
-    try{checkAlerts();}catch(e){console.warn('checkAlerts:',e);}
-    try{initAI();}catch(e){console.warn('AI init:',e);}
+    initEvents();
+    initSearch();
+    try{seedSampleData();}catch(e){console.warn('seed:',e);}
+    renderAll();
+    loadCFGtoUI();
+    checkAlerts();
+    try{initAI();}catch(e){}
   }
   startAutoLock();
 }
@@ -3201,37 +3221,8 @@ function resetLockTimer(){clearTimeout(lockTimer);startAutoLock();}
 document.addEventListener('touchstart',resetLockTimer,{passive:true});
 document.addEventListener('click',resetLockTimer);
 
-// ── Init Security ──
-async function initSecurity(){
-  if(typeof crypto==='undefined'||!crypto.subtle){
-    console.warn('crypto.subtle unavailable - requires HTTPS');
-    return true;
-  }
-  var hasPIN=localStorage.getItem(PIN_KEY);
-  var hasSession=sessionStorage.getItem(SESSION_KEY);
-  if(!hasPIN){
-    // First time — show setup
-    showLockScreen();
-    return false;
-  }
-  if(!hasSession){
-    // Locked — show unlock
-    showLockScreen();
-    return false;
-  }
-  // Session active — load data (already unlocked this session)
-  // Note: without crypto key we fall back to unencrypted
-  var saltArr=JSON.parse(localStorage.getItem(SALT_KEY)||'[]');
-  if(saltArr.length&&!cryptoKey){
-    // Need to re-derive key — but we don't have PIN in memory
-    // Show unlock screen to re-enter PIN for this session
-    sessionStorage.removeItem(SESSION_KEY);
-    showLockScreen();
-    return false;
-  }
-  return true;
-}
-
+// ── Init Security (PIN disabled) ──
+function initSecurity(){return true;}
 // ══════════ SEARCH MODULE ══════════
 var searchActive = false;
 
@@ -3362,13 +3353,14 @@ function gotoView(v){
   var nb=document.querySelector('.nb[data-view="'+v+'"]');if(nb)nb.classList.add('on');
   document.querySelectorAll('.view').forEach(function(x){x.classList.remove('on');});
   var vEl=document.getElementById('view-'+v);if(vEl)vEl.classList.add('on');
-  renderAll();
+  try{renderAll();}catch(e){console.error('renderAll in gotoView:',e);}
 }
 
 // ══════════ CORRECTIVE MAINTENANCE ══════════
 var cmFilt='all';
 
 function renderCM(){
+  if(!S)return;
   // KPIs
   var open=S.cm.filter(function(c){return c.status==='open';}).length;
   var prog=S.cm.filter(function(c){return c.status==='progress';}).length;
@@ -3527,6 +3519,7 @@ function cmFromBreakdown(bIdx){
 var invFilt='all';
 
 function renderInventory(){
+  if(!S)return;
   // Summary KPIs
   var total=S.inv.length;
   var low=S.inv.filter(function(p){return parseInt(p.qty||0)>0&&parseInt(p.qty||0)<=parseInt(p.min||0);}).length;
@@ -3664,7 +3657,7 @@ function saveStockMovement(){
 var AI_KEY = localStorage.getItem('gemini_key') || '';
 var aiHistory = [];
 var aiLoading = false;
-var GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=';
+var GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=';
 
 function initAI(){
   var fab = document.getElementById('ai-fab');
@@ -3881,7 +3874,7 @@ function hideTyping(){var t=document.getElementById('ai-typing');if(t)t.remove()
 
 
 // ══ EQUIPMENT TYPES & ENHANCED FUNCTIONS ══
-var EQ_TYPES={pump:{label:'Pump',icon:'💧',subtypes:['Centrifugal','Dosing','Peristaltic','Submersible','Gear','Diaphragm']},motor:{label:'Motor',icon:'⚡',subtypes:['Electric AC','Electric DC','Gearbox','Servo','Stepper']},valve:{label:'Valve',icon:'🔴',subtypes:['Ball','Butterfly','Check/NRV','Solenoid','PRV','Gate','Globe','Control']},hose:{label:'Hose/Coupling',icon:'🟡',subtypes:['Flexible Hose','Rigid Coupling','Expansion Joint','Camlock']},mixer:{label:'Mixer',icon:'🌀',subtypes:['Propeller','Paddle','Turbine','In-line','Static']},compressor:{label:'Compressor',icon:'💨',subtypes:['Reciprocating','Screw','Centrifugal','Vane']},heat_ex:{label:'Heat Exchanger',icon:'🌡️',subtypes:['Shell & Tube','Plate','Fin & Tube']},filter:{label:'Filter',icon:'🔘',subtypes:['Bag Filter','Cartridge','Y-Strainer','Self-Cleaning']},sensor:{label:'Sensor/Instrument',icon:'📡',subtypes:['Flow Meter','Pressure Gauge','Temp Sensor','Level Sensor','pH Meter','Conductivity']},conveyor:{label:'Conveyor',icon:'📦',subtypes:['Belt','Roller','Chain','Screw']},panel:{label:'Elec. Panel',icon:'⚙️',subtypes:['MCC','VFD/Inverter','PLC','Distribution Board','Starter']},vessel:{label:'Tank/Vessel',icon:'🏭',subtypes:['Storage Tank','Pressure Vessel','Buffer Tank','IBC']},other:{label:'Other',icon:'🔧',subtypes:['Custom']}};
+var EQ_TYPES={pump:{label:'Pump',icon:'💧',subtypes:['Centrifugal','Dosing','Peristaltic','Submersible','Gear','Diaphragm']},motor:{label:'Motor',icon:'⚡',subtypes:['Electric AC','Electric DC','Gearbox','Servo','Stepper']},valve:{label:'Valve',icon:'🔴',subtypes:['Ball','Butterfly','Check/NRV','Solenoid','PRV','Gate','Globe','Control']},hose:{label:'Hose/Coupling',icon:'🟡',subtypes:['Flexible Hose','Rigid Coupling','Expansion Joint','Camlock']},mixer:{label:'Mixer',icon:'🌀',subtypes:['Propeller','Paddle','Turbine','In-line','Static']},compressor:{label:'Compressor',icon:'💨',subtypes:['Reciprocating','Screw','Centrifugal','Vane']},heat_ex:{label:'Heat Exchanger',icon:'🌡️',subtypes:['Shell & Tube','Plate','Fin & Tube']},filter:{label:'Filter',icon:'🔘',subtypes:['Bag Filter','Cartridge','Y-Strainer','Self-Cleaning']},sensor:{label:'Sensor/Instrument',icon:'📡',subtypes:['Flow Meter','Pressure Gauge','Temp Sensor','Level Sensor','pH Meter','Conductivity']},conveyor:{label:'Conveyor',icon:'📦',subtypes:['Belt','Roller','Chain','Screw']},panel:{label:'Elec. Panel',icon:'⚙️',subtypes:['MCC','VFD/Inverter','PLC','Distribution Board','Starter']},vessel:{label:'Tank/Vessel',icon:'🛢',subtypes:['Storage Tank','Pressure Vessel','Buffer Tank','IBC']},other:{label:'Other',icon:'🔧',subtypes:['Custom']}};
 var EQ_SPEC_FIELDS={pump:[['Power (kW)','power'],['Flow Rate (m³/h)','flow'],['Head (m)','head'],['RPM','rpm'],['Medium','fluid']],motor:[['Power (kW)','power'],['Voltage (V)','volt'],['Current (A)','amp'],['RPM','rpm'],['Frame','frame']],valve:[['Size (DN)','size'],['Pressure Rating','press'],['Medium','fluid'],['Actuator','act']],hose:[['Diameter (mm)','diam'],['Length (m)','len'],['Pressure Rating','press'],['Material','mat']],mixer:[['Power (kW)','power'],['RPM','rpm'],['Volume (m³)','vol'],['Impeller','imp']],compressor:[['Power (kW)','power'],['Pressure (bar)','press'],['Flow (m³/h)','flow'],['Type','comptype']],heat_ex:[['Area (m²)','area'],['Design Pressure','press'],['Hot Medium','hotmed'],['Cold Medium','coldmed']],filter:[['Size (DN)','size'],['Micron Rating','micron'],['Max Pressure','press'],['Medium','fluid']],sensor:[['Range','range'],['Signal Output','signal'],['Medium','fluid'],['Accuracy','acc']],conveyor:[['Width (mm)','width'],['Speed (m/s)','speed'],['Drive Power (kW)','power'],['Length (m)','len']],panel:[['Voltage (V)','volt'],['Current (A)','amp'],['IP Rating','ip'],['Brand/PLC','brand']],vessel:[['Capacity (L)','vol'],['Material','mat'],['Pressure Rating','press'],['Medium','fluid']],other:[['Spec 1','s1'],['Spec 2','s2']]};
 var EQ_SPEC_LABELS={power:'Power',flow:'Flow',head:'Head',rpm:'RPM',fluid:'Medium',volt:'Voltage',amp:'Current',frame:'Frame',size:'Size',press:'Pressure',act:'Actuator',diam:'Diameter',len:'Length',mat:'Material',vol:'Volume',imp:'Impeller',area:'Area',hotmed:'Hot Side',coldmed:'Cold Side',micron:'Micron',range:'Range',signal:'Output',acc:'Accuracy',width:'Width',speed:'Speed',ip:'IP Rating',brand:'Brand',comptype:'Type',s1:'Spec 1',s2:'Spec 2'};
 var currentEqDetail=-1;
@@ -3895,6 +3888,7 @@ function setEqSpecs(k,specs){setTimeout(function(){Object.keys(specs||{}).forEac
 function openEqModal(){document.getElementById('eq-edit-idx').value='-1';clearIns(['eq-name','eq-tag','eq-carl-id','eq-model','eq-model-no','eq-serial','eq-notes']);buildEqTypeGrid('pump');openM('m-eq');}
 
 function renderEquipment(){
+  if(!S||!S.equipment)return;
   var el=document.getElementById('eq-list');if(!el)return;
   var tfEl=document.getElementById('eq-type-filters');
   if(tfEl){var types=Object.keys(S.equipment.reduce(function(a,e){if(e.type)a[e.type]=1;return a;},{}));tfEl.innerHTML='<button class="fb on" data-eqtype="all">All Types</button>'+types.map(function(t){var info=EQ_TYPES[t]||{icon:'🔧',label:t};return'<button class="fb" data-eqtype="'+t+'">'+info.icon+' '+info.label+'</button>';}).join('');tfEl.querySelectorAll('[data-eqtype]').forEach(function(b){b.addEventListener('click',function(){tfEl.querySelectorAll('[data-eqtype]').forEach(function(x){x.classList.remove('on');});b.classList.add('on');var f=b.dataset.eqtype;el.querySelectorAll('.eq-card').forEach(function(c){c.style.display=(f==='all'||c.dataset.type===f)?'':'none';});});});}
@@ -4235,6 +4229,107 @@ function resetEqPicker(prefix){
   var dd=document.getElementById(prefix+'-eq-picker-dropdown');
   if(dd)dd.classList.remove('open');
 }
-</script>
-</body>
-</html>
+
+// ── Auto-calculate KPIs from real data ──
+function autoCalcKPIs(){
+  try{
+    if(!S.pms||!S.breakdowns)return;
+    var now2=new Date(),month=now2.toISOString().slice(0,7);
+    var monthPMs=S.pms.filter(function(p){return(p.sched||'').slice(0,7)===month;});
+    var donePMs=monthPMs.filter(function(p){return p.status==='done';});
+    var pmRate=monthPMs.length?Math.round(donePMs.length/monthPMs.length*100):null;
+    var overdue=S.pms.filter(function(p){return p.status==='scheduled'&&p.sched<TODAY;}).length;
+    var monthBDs=S.breakdowns.filter(function(b){return(b.date||'').slice(0,7)===month;}).length;
+    var totalWOs=S.pms.filter(function(p){return p.wo;}).length;
+    var doneWOs=S.pms.filter(function(p){return p.wo&&p.status==='done';}).length;
+    var carlRate=totalWOs?Math.round(doneWOs/totalWOs*100):null;
+    S.kpis={pm:pmRate,od:overdue,bd:monthBDs,carl:carlRate};
+    if(!S.months)S.months={};
+    S.months[month]={pm:pmRate,od:overdue,bd:monthBDs,carl:carlRate};
+    svS();
+  }catch(e){console.warn('autoCalcKPIs:',e);}
+}
+
+// ── Seed sample data on first boot ──
+function seedSampleData(){
+  if(localStorage.getItem('em_seeded'))return;
+  // Equipment
+  S.equipment=[
+    {id:'eq1',name:'Pump P-101',area:'20L A',type:'pump',subtype:'Centrifugal',tag:'P-101',carl_id:'EQ-001',model:'Grundfos',model_no:'CM5-4',serial:'GF2024-001',crit:'A',status:'operational',install_date:'2022-03-15',next_service:'2025-05-01',specs:{power:'5.5',flow:'12',head:'28',rpm:'2900'},wos:['WO-042','WO-038'],notes:'Main product transfer pump'},
+    {id:'eq2',name:'Pump P-102',area:'20L A',type:'pump',subtype:'Dosing',tag:'P-102',carl_id:'EQ-002',model:'Grundfos',model_no:'DME60',serial:'GF2024-002',crit:'B',status:'operational',install_date:'2022-03-15',next_service:'2025-06-01',specs:{power:'0.37',flow:'2'},wos:[],notes:'Additive dosing pump'},
+    {id:'eq3',name:'Motor M-201',area:'Mixers',type:'motor',subtype:'Electric AC',tag:'M-201',carl_id:'EQ-003',model:'ABB',model_no:'M2AA100',serial:'ABB2023-003',crit:'A',status:'operational',install_date:'2021-06-10',next_service:'2025-04-15',specs:{power:'7.5',volt:'400',amp:'15.2',rpm:'1450'},wos:['WO-041'],notes:'Mixer 1 main drive'},
+    {id:'eq4',name:'Mixer AGT-1',area:'Mixers',type:'mixer',subtype:'Propeller',tag:'AGT-1',carl_id:'EQ-004',model:'Chemineer',model_no:'HE-3',serial:'CH2021-004',crit:'A',status:'operational',install_date:'2021-06-10',next_service:'2025-04-15',specs:{power:'7.5',rpm:'60',vol:'15'},wos:[],notes:'15m³ mixing tank'},
+    {id:'eq5',name:'Valve V-301',area:'WWTP',type:'valve',subtype:'Butterfly',tag:'V-301',carl_id:'EQ-005',model:'Crane',model_no:'BF2-4',serial:'CR2022-005',crit:'B',status:'maintenance',install_date:'2022-01-20',next_service:'2025-04-30',specs:{size:'DN100',press:'10bar'},wos:['WO-045'],notes:'Effluent control valve — seal replacement pending'},
+    {id:'eq6',name:'Compressor C-401',area:'Outside',type:'compressor',subtype:'Screw',tag:'C-401',carl_id:'EQ-006',model:'Atlas Copco',model_no:'GA15',serial:'AC2020-006',crit:'A',status:'operational',install_date:'2020-09-01',next_service:'2025-05-15',specs:{power:'15',press:'8'},wos:[],notes:'Plant air compressor'},
+    {id:'eq7',name:'Filter F-501',area:'RM Tanks',type:'filter',subtype:'Bag Filter',tag:'F-501',carl_id:'EQ-007',model:'Parker',model_no:'HF5-2',serial:'PK2023-007',crit:'C',status:'operational',install_date:'2023-02-14',next_service:'2025-04-20',specs:{size:'DN50',micron:'25'},wos:[],notes:'Raw material intake filter'},
+    {id:'eq8',name:'Level Sensor LS-601',area:'HYPO',type:'sensor',subtype:'Level Sensor',tag:'LS-601',carl_id:'EQ-008',model:'Endress+Hauser',model_no:'FMP51',serial:'EH2023-008',crit:'B',status:'operational',install_date:'2023-05-01',next_service:'2025-07-01',specs:{range:'0-5m',signal:'4-20mA'},wos:[],notes:'HYPO tank level'},
+    {id:'eq9',name:'Hose H-101A',area:'20L A',type:'hose',subtype:'Flexible Hose',tag:'H-101A',carl_id:'EQ-009',model:'Parker',model_no:'HF2-16',serial:'',crit:'C',status:'operational',install_date:'2024-01-10',next_service:'2025-06-01',specs:{diam:'25',len:'2',press:'10bar',mat:'EPDM'},wos:[],notes:'Pump P-101 outlet flexible connection'},
+    {id:'eq10',name:'Tank TK-801',area:'RM Tanks',type:'vessel',subtype:'Storage Tank',tag:'TK-801',carl_id:'EQ-010',model:'Local',model_no:'SS316',serial:'TK2019-010',crit:'A',status:'operational',install_date:'2019-06-01',next_service:'2026-01-01',specs:{vol:'50000',mat:'SS316L',press:'atmospheric'},wos:[],notes:'Raw material storage 50m³'}
+  ];
+  // PMs
+  S.pms=[
+    {area:'Mixers',equip:'Mixer AGT-1',type:'Monthly inspection + lubrication',freq:'Monthly',sched:'2025-04-15',wo:'WO-041',notes:'Check impeller, seals, gearbox oil level',status:'scheduled',operations:[{text:'Check impeller for wear/damage',done:false},{text:'Lubricate shaft bearing (grease gun)',done:false},{text:'Check gearbox oil level',done:false},{text:'Inspect mechanical seal for leaks',done:false},{text:'Measure vibration levels',done:false}]},
+    {area:'20L A',equip:'Pump P-101',type:'Monthly inspection',freq:'Monthly',sched:'2025-04-20',wo:'WO-042',notes:'Check seals, impeller, flow rate',status:'scheduled',operations:[{text:'Check mechanical seal — no leaks',done:false},{text:'Verify flow rate vs design',done:false},{text:'Inspect flexible coupling',done:false},{text:'Clean strainer',done:false}]},
+    {area:'Outside',equip:'Compressor C-401',type:'Quarterly service',freq:'Quarterly',sched:'2025-04-01',wo:'WO-043',notes:'Oil change, filter replacement',status:'done',completedDate:'2025-04-02',operations:[{text:'Change compressor oil',done:true},{text:'Replace air filter',done:true},{text:'Replace oil separator',done:true},{text:'Check belt tension',done:true},{text:'Test safety relief valve',done:true}]},
+    {area:'WWTP',equip:'Valve V-301',type:'Annual inspection',freq:'Annual',sched:'2025-03-15',wo:'WO-044',notes:'',status:'done',completedDate:'2025-03-20',operations:[]},
+    {area:'RM Tanks',equip:'Filter F-501',type:'Bag filter replacement',freq:'Monthly',sched:'2025-03-28',wo:'',notes:'Replace bags — check housing for cracks',status:'done',completedDate:'2025-03-28',operations:[{text:'Isolate filter',done:true},{text:'Drain and open housing',done:true},{text:'Replace filter bags',done:true},{text:'Pressure test before restart',done:true}]},
+    {area:'20L A',equip:'Pump P-102',type:'Quarterly inspection',freq:'Quarterly',sched:'2025-06-01',wo:'',notes:'',status:'scheduled',operations:[{text:'Check dosing accuracy',done:false},{text:'Inspect diaphragm',done:false},{text:'Clean injection valve',done:false}]}
+  ];
+  // Breakdowns
+  S.breakdowns=[
+    {id:'bd1',equip:'Valve V-301',area:'WWTP',date:'2025-03-10',duration:'3.5',rca:'mechanical',description:'Butterfly disc stuck — actuator could not complete full stroke. Caused partial flow restriction.',resolution:'Removed valve, cleaned disc and bore, replaced EPDM seat ring. Regreased shaft bearings.',cost:'185'},
+    {id:'bd2',equip:'Pump P-101',area:'20L A',date:'2025-02-18',duration:'2.0',rca:'lack_pm',description:'Mechanical seal failed — product leakage detected at pump casing. PM was overdue by 3 weeks.',resolution:'Emergency seal replacement (spare kit from inventory). Updated PM schedule.',cost:'320'},
+    {id:'bd3',equip:'Motor M-201',area:'Mixers',date:'2025-01-25',duration:'1.5',rca:'electrical',description:'VFD fault F0022 — overcurrent on startup. Mixer 1 offline for 90 min.',resolution:'Reset VFD parameters, checked motor winding resistance (OK). Increased acceleration ramp.',cost:'0'}
+  ];
+  // Gemba findings
+  S.gemba=[
+    {date:'2025-04-08',area:'WWTP',desc:'Oil drip from Valve V-301 actuator stem — approx 5ml/day. Not yet affecting performance.',priority:'medium',due:'2025-04-20',action:'Inspect and replace stem packing',wo:'WO-045',status:'open'},
+    {date:'2025-04-05',area:'20L A',desc:'Pump P-101 vibration slightly elevated — 4.2mm/s vs baseline 2.8mm/s.',priority:'high',due:'2025-04-15',action:'Check impeller balance, inspect bearings at next PM',wo:'WO-042',status:'open'},
+    {date:'2025-04-03',area:'Warehouse',desc:'FLT charger #2 cable insulation frayed near connector. Potential safety hazard.',priority:'high',due:'2025-04-07',action:'Replace charger cable immediately',wo:'',status:'closed',closedDate:'2025-04-06'},
+    {date:'2025-03-28',area:'RM Tanks',desc:'Small corrosion spots on TK-801 external surface near base plate.',priority:'low',due:'2025-06-01',action:'Sand, treat with primer and apply epoxy coating',wo:'',status:'open'},
+    {date:'2025-03-20',area:'Outside',desc:'Compressor C-401 outlet air temperature 92°C — within limits but trending up.',priority:'medium',due:'2025-05-15',action:'Check cooler fins and clean if fouled',wo:'',status:'closed',closedDate:'2025-03-22'}
+  ];
+  // CM tasks
+  S.cm=[
+    {id:'cm1',equip:'Valve V-301',area:'WWTP',desc:'Replace actuator stem packing — oil weeping from stem',priority:'medium',status:'open',date:'2025-04-20',wo:'WO-045',est_hrs:'2',act_hrs:'',parts:'Stem packing kit DN100',cost:'85',resolution:'',source:'gemba',createdDate:'2025-04-08'},
+    {id:'cm2',equip:'Pump P-101',area:'20L A',desc:'Investigate elevated vibration — 4.2mm/s, baseline 2.8mm/s',priority:'high',status:'progress',date:'2025-04-15',wo:'WO-042',est_hrs:'3',act_hrs:'',parts:'Impeller, bearings (if needed)',cost:'',resolution:'',source:'gemba',createdDate:'2025-04-05'},
+    {id:'cm3',equip:'Filter F-501',area:'RM Tanks',desc:'Housing O-ring showing compression set — minor weep at cover joint',priority:'low',status:'waiting',date:'2025-05-01',wo:'',est_hrs:'1',act_hrs:'',parts:'O-ring kit Parker HF5-2',cost:'25',resolution:'',source:'manual',createdDate:'2025-04-01'}
+  ];
+  // Suppliers
+  S.sups=[
+    {id:'sup1',name:'Grundfos Hellas SA',cat:'Spare Parts',status:'active',contact:'Γ. Παπαδόπουλος — 210 6234500',delivery:'5',credit:'30',s_quality:5,s_delivery:4,s_price:3,s_communication:5,total_score:'4.3',notes:'Preferred pump supplier — stock spare kits locally'},
+    {id:'sup2',name:'ABB Greece',cat:'Equipment',status:'active',contact:'Ν. Σταμάτης — 210 7777700',delivery:'10',credit:'45',s_quality:5,s_delivery:3,s_price:3,s_communication:4,total_score:'3.8',notes:'Motors and drives supplier'},
+    {id:'sup3',name:'Parker Hannifin Hellas',cat:'Spare Parts',status:'active',contact:'Α. Κώστας — 2310 556600',delivery:'7',credit:'30',s_quality:4,s_delivery:4,s_price:4,s_communication:4,total_score:'4.0',notes:'Filters, hoses, fittings'}
+  ];
+  // Inventory
+  S.inv=[
+    {id:'inv1',name:'Mechanical Seal Kit — CM5',ref:'GF-SEAL-CM5',equip:'Pump P-101',loc:'Shelf A1',cat:'Seals & Gaskets',qty:'2',min:'1',reorder:'3',cost:'145',supId:'sup1',movements:[],notes:'Grundfos CM5 series — critical spare'},
+    {id:'inv2',name:'Bag Filter 25 micron',ref:'PK-BAG-25',equip:'Filter F-501',loc:'Shelf B3',cat:'Filters',qty:'8',min:'4',reorder:'12',cost:'18',supId:'sup3',movements:[],notes:'Monthly replacement — 2 bags per change'},
+    {id:'inv3',name:'EPDM Butterfly Seat DN100',ref:'CR-SEAT-DN100',equip:'Valve V-301',loc:'Shelf A2',cat:'Seals & Gaskets',qty:'1',min:'2',reorder:'4',cost:'65',supId:'sup3',movements:[],notes:'LOW STOCK — reorder required'},
+    {id:'inv4',name:'VG46 Gearbox Oil 1L',ref:'OIL-VG46',equip:'Mixer AGT-1',loc:'Chemical Store',cat:'Lubricants',qty:'6',min:'3',reorder:'10',cost:'12',supId:'',movements:[],notes:'Monthly top-up'},
+    {id:'inv5',name:'Grease Cartridge SKF LGEP2',ref:'SKF-LGEP2',equip:'Motor M-201',loc:'Shelf B1',cat:'Lubricants',qty:'0',min:'2',reorder:'5',cost:'22',supId:'',movements:[],notes:'OUT OF STOCK — needed for next PM'}
+  ];
+  // KPIs
+  S.kpis={pm:83,od:1,bd:1,carl:75};
+  S.months={'2025-01':{pm:78,od:2,bd:2,carl:70},'2025-02':{pm:85,od:1,bd:1,carl:75},'2025-03':{pm:91,od:0,bd:0,carl:82},'2025-04':{pm:83,od:1,bd:1,carl:75}};
+  // Systems — link assets
+  var sysMap={sys1:['eq3','eq4'],sys5:['eq1','eq2','eq9'],sys8:['eq5'],sys10:['eq7','eq10'],sys9:['eq8'],sys6:['eq6'],sys12:[]};
+  S.systems.forEach(function(sys){if(sysMap[sys.id])sys.assets=sysMap[sys.id];});
+  // Achievements
+  S.achs=[
+    {title:'Implemented digital Gemba Walk system',date:'2025-04-01',cat:'Systems',impact:'100% finding traceability, avg closure time from unknown to 8 days',rate:'100',evidence:'This app — Gemba module'},
+    {title:'Zero unplanned downtime in March 2025',date:'2025-03-31',cat:'Maintenance',impact:'0 production stops, PM compliance 91%',rate:'91',evidence:'Carl Source WO report March 2025'},
+    {title:'Reduced Compressor C-401 oil consumption',date:'2025-03-22',cat:'Process',impact:'22% reduction after cooler cleaning program',rate:'100',evidence:'Monthly oil consumption log'}
+  ];
+  localStorage.setItem('em_seeded','1');
+  svS();
+}
+}
+
+function openInvModal(){
+  var sel=document.getElementById('inv-sup');
+  if(sel)sel.innerHTML='<option value="">— None —</option>'+S.sups.map(function(s){return'<option value="'+s.id+'">'+s.name+'</option>';}).join('');
+  document.getElementById('inv-edit-idx').value='-1';
+  openM('m-inv');
+}
+

@@ -825,27 +825,28 @@ h1.print-hd{display:none}
 </head>
 <body>
 <div class="pm-alert" id="pm-banner"><div class="pm-alert-hd">🔔 PM Alerts</div><div id="pm-items"></div></div>
-<div class="bar"><div><div class="bar-brand">Ecolab <span>Mandra</span></div><div class="bar-sub" id="bar-date"></div></div><div class="bar-right"><div class="topbar-search" id="topbar-search">
+<div class="bar"><div><div class="bar-brand">Ecolab <span>Mandra</span></div><div class="bar-sub" id="bar-date"></div></div><div class="bar-right" style="gap:5px"><div class="topbar-search" id="topbar-search">
       <span class="tsearch-icon">🔍</span>
       <input type="text" class="tsearch-input" id="search-input" placeholder="Search..." autocomplete="off" autocorrect="off" spellcheck="false">
       <button class="tsearch-clear" id="search-clear">✕</button>
       <div class="search-results" id="search-results"></div>
     </div>
-    <div class="sw"><button class="ibtn" id="btn-settings" onclick="openM('m-settings')">⚙️ Settings</button><div class="ndot" id="ndot"></div></div></div></div>
+    <div class="sw"><button class="ibtn" id="btn-settings">⚙️ Settings</button>
+      <button style="background:#ef4444;border:none;border-radius:7px;color:#fff;font-size:10px;font-weight:700;padding:6px 10px;cursor:pointer">↺ Reset</button><div class="ndot" id="ndot"></div></div></div></div>
 <div class="nav">
-  <button class="nb on" data-view="dashboard" onclick="gotoView('dashboard')">📊 Dashboard</button>
-  <button class="nb" data-view="systems" onclick="gotoView('systems')">🌐 Systems</button>
-  <button class="nb" data-view="equipment" onclick="gotoView('equipment')">🏭 Equipment</button>
-  <button class="nb" data-view="pm" onclick="gotoView('pm')">🔧 PM Plans</button>
-  <button class="nb" data-view="corrective" onclick="gotoView('corrective')">🛠️ Corrective</button>
-  <button class="nb" data-view="breakdowns" onclick="gotoView('breakdowns')">⚡ Breakdowns</button>
-  <button class="nb" data-view="gemba" onclick="gotoView('gemba')">🔍 Gemba</button>
-  <button class="nb" data-view="inventory" onclick="gotoView('inventory')">📦 Inventory</button>
-  <button class="nb" data-view="suppliers" onclick="gotoView('suppliers')">🤝 Suppliers</button>
-  <button class="nb" data-view="analytics" onclick="gotoView('analytics')">📈 Analytics</button>
-  <button class="nb" data-view="reports" onclick="gotoView('reports')">📋 Reports</button>
-  <button class="nb" data-view="schedule" onclick="gotoView('schedule')">📅 Schedule</button>
-  <button class="nb" data-view="portfolio" onclick="gotoView('portfolio')">🏆 Portfolio</button>
+  <button class="nb on" data-view="dashboard">📊 Dashboard</button>
+  <button class="nb" data-view="systems">🌐 Systems</button>
+  <button class="nb" data-view="equipment">🏭 Equipment</button>
+  <button class="nb" data-view="pm">🔧 PM Plans</button>
+  <button class="nb" data-view="corrective">🛠️ Corrective</button>
+  <button class="nb" data-view="breakdowns">⚡ Breakdowns</button>
+  <button class="nb" data-view="gemba">🔍 Gemba</button>
+  <button class="nb" data-view="inventory">📦 Inventory</button>
+  <button class="nb" data-view="suppliers">🤝 Suppliers</button>
+  <button class="nb" data-view="analytics">📈 Analytics</button>
+  <button class="nb" data-view="reports">📋 Reports</button>
+  <button class="nb" data-view="schedule">📅 Schedule</button>
+  <button class="nb" data-view="portfolio">🏆 Portfolio</button>
 </div>
 <div id="view-dashboard" class="view on">
 <h1 class="print-hd">Ecolab Mandra — Maintenance Dashboard</h1>
@@ -865,10 +866,10 @@ h1.print-hd{display:none}
 <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:13px;color:var(--t2)">Closure Rate</span><span id="k-carl" style="font-family:var(--mono);font-size:13px;color:var(--acc)">—</span></div>
 <div class="pbar"><div class="pfill" id="carl-bar" style="background:var(--acc);width:0%"></div></div>
 <div class="div"></div>
-<button class="btn btn-s" id="btn-kpi" onclick="openM('m-kpi')" style="font-size:12px;padding:10px">✏️ Update Monthly KPIs</button>
+<button class="btn btn-s" id="btn-kpi" style="font-size:12px;padding:10px">✏️ Update Monthly KPIs</button>
 </div>
 <div class="card"><div class="card-hd">Επόμενες Εκκρεμότητες — 7 ημέρες</div><div id="upcoming"></div></div>
-<div class="card"><div class="card-hd">Active Projects</div><div id="proj-list"></div><button class="btn btn-s btn-sm" id="btn-proj" onclick="openM('m-proj')" style="margin-top:8px;width:100%;padding:10px;font-size:12px">+ Add Project</button></div>
+<div class="card"><div class="card-hd">Active Projects</div><div id="proj-list"></div><button class="btn btn-s btn-sm" id="btn-proj" style="margin-top:8px;width:100%;padding:10px;font-size:12px">+ Add Project</button></div>
 <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div class="card-hd" style="margin:0">Recent Gemba</div><button class="btn btn-s btn-sm" data-goto="gemba">View all</button></div><div id="recent-g"></div></div>
 </div>
 <div id="view-analytics" class="view">
@@ -880,19 +881,19 @@ h1.print-hd{display:none}
 <div class="chart-wrap"><div class="chart-title">🔍 Gemba Findings by Area</div><div class="area-bar-wrap" id="chart-gemba-area"></div></div>
 </div>
 <div id="view-equipment" class="view">
-<div class="ph"><div class="ph-title">Equipment Register</div><button class="btn btn-p btn-sm" id="btn-eq" onclick="openEqModal()">+ Asset</button></div>
+<div class="ph"><div class="ph-title">Equipment Register</div><button class="btn btn-p btn-sm" id="btn-eq">+ Asset</button></div>
 <div class="xbar"><span class="xbar-label">Export</span><button class="xbtn xbtn-pdf" data-export="equipment-pdf">📄 PDF</button><button class="xbtn xbtn-csv" data-export="equipment-csv">📊 CSV</button></div>
 <div class="frow" id="eq-filters"></div>
 <div id="eq-list"></div>
 </div>
 <div id="view-pm" class="view">
-<div class="ph"><div class="ph-title">PM Log</div><button class="btn btn-p btn-sm" id="btn-pm" onclick="(function(){if(typeof pmEquipList!=='undefined'){pmEquipList=[];renderPMEquipTags();}if(typeof pmOpsList!=='undefined'){pmOpsList=[];renderPMOpsList();}resetEqPicker('pm');openM('m-pm');})()">+ PM</button></div>
+<div class="ph"><div class="ph-title">PM Log</div><button class="btn btn-p btn-sm" id="btn-pm">+ PM</button></div>
 <div class="xbar"><span class="xbar-label">Export</span><button class="xbtn xbtn-pdf" data-export="pm-pdf">📄 PDF</button><button class="xbtn xbtn-csv" data-export="pm-csv">📊 CSV</button></div>
 <div class="frow"><button class="fb on" data-pmf="all">All</button><button class="fb" data-pmf="due">Scheduled</button><button class="fb" data-pmf="done">✅ Done</button><button class="fb" data-pmf="overdue">⚠️ Overdue</button></div>
 <div id="pm-list"></div>
 </div>
 <div id="view-breakdowns" class="view">
-<div class="ph"><div class="ph-title">Breakdown Log</div><button class="btn btn-p btn-sm" id="btn-bd" onclick="resetEqPicker('bd');openM('m-bd')">+ Breakdown</button></div>
+<div class="ph"><div class="ph-title">Breakdown Log</div><button class="btn btn-p btn-sm" id="btn-bd">+ Breakdown</button></div>
 <div class="xbar"><span class="xbar-label">Export</span><button class="xbtn xbtn-pdf" data-export="bd-pdf">📄 PDF</button><button class="xbtn xbtn-csv" data-export="bd-csv">📊 CSV</button></div>
 <div class="kgrid-3" style="margin-bottom:12px">
 <div class="kpi kpi-sm" style="--kc:var(--r)"><div class="kpi-lbl">Total Breakdowns</div><div class="kpi-val" id="bd-total">0</div><div class="kpi-target">All time</div></div>
@@ -902,13 +903,13 @@ h1.print-hd{display:none}
 <div id="bd-list"></div>
 </div>
 <div id="view-gemba" class="view">
-<div class="ph"><div class="ph-title">Gemba Walks</div><button class="btn btn-p btn-sm" id="btn-gemba" onclick="openM('m-gemba')">+ Finding</button></div>
+<div class="ph"><div class="ph-title">Gemba Walks</div><button class="btn btn-p btn-sm" id="btn-gemba">+ Finding</button></div>
 <div class="xbar"><span class="xbar-label">Export</span><button class="xbtn xbtn-pdf" data-export="gemba-pdf">📄 PDF</button><button class="xbtn xbtn-csv" data-export="gemba-csv">📊 CSV</button></div>
 <div class="frow"><button class="fb on" data-gf="all">All</button><button class="fb" data-gf="open">Open</button><button class="fb" data-gf="high">🔴 High</button><button class="fb" data-gf="closed">✅ Closed</button></div>
 <div id="gemba-list"></div>
 </div>
 <div id="view-schedule" class="view">
-<div class="ph"><div class="ph-title">Schedule</div><button class="btn btn-p btn-sm" id="btn-sched" onclick="document.getElementById('sc-date').value=TODAY;openM('m-sched')">+ Task</button></div>
+<div class="ph"><div class="ph-title">Schedule</div><button class="btn btn-p btn-sm" id="btn-sched">+ Task</button></div>
 <div class="xbar"><span class="xbar-label">Export</span><button class="xbtn xbtn-pdf" data-export="schedule-pdf">📄 PDF</button><button class="xbtn xbtn-csv" data-export="schedule-csv">📊 CSV</button></div>
 <div class="cal-wrap">
 <div class="cal-nav"><button class="cal-btn" id="cal-prev">‹</button><div class="cal-title" id="cal-title"></div><button class="cal-btn" id="cal-next">›</button></div>
@@ -924,7 +925,7 @@ h1.print-hd{display:none}
 <div id="sched-list"></div>
 </div>
 <div id="view-suppliers" class="view">
-<div class="ph"><div class="ph-title">Suppliers</div><button class="btn btn-p btn-sm" id="btn-sup" onclick="openM('m-sup')">+ Supplier</button></div>
+<div class="ph"><div class="ph-title">Suppliers</div><button class="btn btn-p btn-sm" id="btn-sup">+ Supplier</button></div>
 <div class="xbar"><span class="xbar-label">Export</span><button class="xbtn xbtn-pdf" data-export="suppliers-pdf">📄 PDF</button><button class="xbtn xbtn-csv" data-export="suppliers-csv">📊 CSV</button></div>
 <div class="sup-sum">
 <div class="ss"><div class="ss-v" id="sup-cnt">0</div><div class="ss-l">Suppliers</div></div>
@@ -934,10 +935,10 @@ h1.print-hd{display:none}
 </div>
 <div class="frow"><button class="fb on" data-spf="all">All</button><button class="fb" data-spf="active">✅ Active</button><button class="fb" data-spf="eval">⏳ Eval</button></div>
 <div id="sup-list"></div>
-<div style="margin-top:12px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div style="font-family:var(--hd);font-size:16px">All Offers</div><button class="btn btn-p btn-sm" id="btn-offer" onclick="openOfferModal(null)">+ Offer</button></div><div id="offer-list"></div></div>
+<div style="margin-top:12px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div style="font-family:var(--hd);font-size:16px">All Offers</div><button class="btn btn-p btn-sm" id="btn-offer">+ Offer</button></div><div id="offer-list"></div></div>
 </div>
 <div id="view-portfolio" class="view">
-<div class="ph"><div class="ph-title">Portfolio</div><button class="btn btn-p btn-sm" id="btn-ach" onclick="openM('m-ach')">+ Achievement</button></div>
+<div class="ph"><div class="ph-title">Portfolio</div><button class="btn btn-p btn-sm" id="btn-ach">+ Achievement</button></div>
 <div class="xbar"><span class="xbar-label">Export</span><button class="xbtn xbtn-pdf" data-export="portfolio-pdf">📄 PDF</button><button class="xbtn xbtn-csv" data-export="portfolio-csv">📊 CSV</button></div>
 <div id="ach-list"></div>
 </div>
@@ -950,8 +951,8 @@ h1.print-hd{display:none}
 <div class="fg"><label class="fl">Month</label><input type="month" class="fi" id="rpt-month"></div>
 </div>
 <div style="display:flex;gap:8px">
-<button class="btn btn-p" id="btn-gen-rpt" onclick="generateReport()" style="flex:1">📊 Generate Report</button>
-<button class="btn btn-s btn-sm" id="btn-print-rpt" onclick="printReport()" style="padding:12px 14px">🖨️</button>
+<button class="btn btn-p" id="btn-gen-rpt" style="flex:1">📊 Generate Report</button>
+<button class="btn btn-s btn-sm" id="btn-print-rpt" style="padding:12px 14px">🖨️</button>
 </div>
 </div>
 <div id="report-preview"></div>
@@ -965,25 +966,25 @@ h1.print-hd{display:none}
 <div class="set-sec">🔔 PM Notifications</div>
 <div class="set-row"><div><div class="set-label">Ειδοποιήσεις</div><div class="set-desc">Banner για επερχόμενα PMs</div></div><label class="tog"><input type="checkbox" id="set-notif"><span class="tog-sl"></span></label></div>
 <div class="set-row"><div><div class="set-label">Προειδοποίηση (μέρες)</div></div><select class="fs" id="set-days" style="width:65px;padding:8px 10px"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="5">5</option><option value="7">7</option></select></div>
-<div class="set-row"><div><div class="set-label">Browser Notifications</div><div class="set-desc">Ειδοποιήσεις εκτός app</div></div><button class="btn btn-s btn-sm" id="set-perm-btn" onclick="reqNotif()">Enable</button></div>
+<div class="set-row"><div><div class="set-label">Browser Notifications</div><div class="set-desc">Ειδοποιήσεις εκτός app</div></div><button class="btn btn-s btn-sm" id="set-perm-btn">Enable</button></div>
 <div class="set-sec">📊 KPI Targets</div>
 <div class="fr"><div class="fg"><label class="fl">PM Rate (%)</label><input type="number" class="fi" id="set-pm-t" placeholder="95"></div><div class="fg"><label class="fl">Gemba Closed (%)</label><input type="number" class="fi" id="set-gm-t" placeholder="80"></div><div class="fg"><label class="fl">Max Breakdowns</label><input type="number" class="fi" id="set-bk-t" placeholder="3"></div></div>
-<button class="btn btn-p" id="save-settings-btn" onclick="saveSettings()">Save Settings</button>
+<button class="btn btn-p" id="save-settings-btn">Save Settings</button>
 <div class="set-sec">💾 Backup & Restore</div>
 <div class="exp-grid">
-<div class="exp-card" id="backup-btn" onclick="doBackup()"><div class="exp-ico">💾</div><div class="exp-lbl">Backup</div><div class="exp-sub">JSON file</div></div>
-<div class="exp-card" id="restore-wrap" onclick="document.getElementById('restore-file').click()"><div class="exp-ico">📥</div><div class="exp-lbl">Restore</div><div class="exp-sub">From backup</div></div>
+<div class="exp-card" id="backup-btn"><div class="exp-ico">💾</div><div class="exp-lbl">Backup</div><div class="exp-sub">JSON file</div></div>
+<div class="exp-card" id="restore-wrap"><div class="exp-ico">📥</div><div class="exp-lbl">Restore</div><div class="exp-sub">From backup</div></div>
 </div>
 <input type="file" id="restore-file" accept=".json" style="display:none">
 <div class="set-sec">🤖 AI Assistant</div>
 <div class="set-row">
   <div><div class="set-label">Gemini API Key</div><div class="set-desc" id="ai-key-status">Checking...</div></div>
-  <button class="btn btn-s btn-sm" onclick="localStorage.removeItem('gemini_key');AI_KEY='';document.getElementById('ai-key-status').textContent='Not connected';toast('API key cleared');">Reset</button>
+  <button class="btn btn-s btn-sm">Reset</button>
 </div>
 <div class="set-sec">🗑️ Data</div>
-<div class="set-row"><div><div class="set-label">Clear All Data</div><div class="set-desc">Deletes everything</div></div><button class="btn btn-d btn-sm" id="clear-btn" onclick="doClear()">Reset</button></div>
+<div class="set-row"><div><div class="set-label">Clear All Data</div><div class="set-desc">Deletes everything</div></div><button class="btn btn-d btn-sm" id="clear-btn">Reset</button></div>
 <div style="height:8px"></div>
-<button class="btn btn-s" id="close-settings-btn" onclick="closeM('m-settings')">Close</button>
+<button class="btn btn-s" id="close-settings-btn">Close</button>
 </div></div>
 
 <!-- EQUIPMENT MODAL -->
@@ -1053,9 +1054,9 @@ h1.print-hd{display:none}
     <div class="fg"><label class="fl">Notes / Location Details</label>
       <textarea class="ft" id="eq-notes" placeholder="Location, P&ID reference, specs, history..." style="min-height:60px"></textarea>
     </div>
-    <button class="btn btn-p" id="save-eq-btn" onclick="saveEq()">Save Asset</button>
+    <button class="btn btn-p" id="save-eq-btn">Save Asset</button>
     <div style="height:8px"></div>
-    <button class="btn btn-s" id="close-eq-btn" onclick="closeM('m-eq')">Cancel</button>
+    <button class="btn btn-s" id="close-eq-btn">Cancel</button>
   </div>
 </div>
 
@@ -1063,7 +1064,7 @@ h1.print-hd{display:none}
 <div class="eq-detail-overlay" id="eq-detail-overlay">
   <div class="eq-detail">
     <div class="eq-detail-header">
-      <div class="eq-detail-back" onclick="closeEqDetail()">← Back to Equipment</div>
+      <div class="eq-detail-back">← Back to Equipment</div>
       <div class="eq-detail-title" id="eqd-title">—</div>
       <div class="eq-detail-meta" id="eqd-meta">—</div>
       <div class="eq-status-row" id="eqd-status-row"></div>
@@ -1079,16 +1080,16 @@ h1.print-hd{display:none}
     <div class="eq-section">
       <div class="eq-section-title">🔗 Linked Work Orders (Carl Source)</div>
       <div id="eqd-wos"></div>
-      <button class="btn btn-s btn-sm" onclick="addWOtoEq()" style="margin-top:8px;width:100%">+ Link WO#</button>
+      <button class="btn btn-s btn-sm" style="margin-top:8px;width:100%">+ Link WO#</button>
     </div>
     <div class="eq-section">
       <div class="eq-section-title">📅 Maintenance Timeline</div>
       <div id="eqd-timeline"></div>
     </div>
     <div style="padding:14px 16px 0">
-      <button class="btn btn-s" onclick="exportEqReport()" style="margin-bottom:8px">📄 Export Asset Report (PDF)</button>
-      <button class="btn btn-s" onclick="editEqFromDetail()" style="margin-bottom:8px">✏️ Edit Asset</button>
-      <button class="btn btn-d" onclick="deleteEqFromDetail()">🗑️ Delete Asset</button>
+      <button class="btn btn-s" style="margin-bottom:8px">📄 Export Asset Report (PDF)</button>
+      <button class="btn btn-s" style="margin-bottom:8px">✏️ Edit Asset</button>
+      <button class="btn btn-d">🗑️ Delete Asset</button>
     </div>
   </div>
 </div>
@@ -1118,8 +1119,8 @@ h1.print-hd{display:none}
 <div class="fr"><div class="fg"><label class="fl">Frequency</label><select class="fs" id="pm-freq"><option>Weekly</option><option>Monthly</option><option>Quarterly</option><option>Annual</option></select></div><div class="fg"><label class="fl">Scheduled Date</label><input type="date" class="fi" id="pm-sched"></div></div>
 <div class="fg"><label class="fl">Carl Source WO#</label><input type="text" class="fi" id="pm-wo" placeholder="WO-XXX"></div>
 <div class="fg"><label class="fl">Notes / Findings</label><textarea class="ft" id="pm-notes" style="min-height:55px" placeholder="Observations..."></textarea></div>
-<button class="btn btn-p" id="save-pm-btn" onclick="savePM()">Save PM</button>
-<div style="height:8px"></div><button class="btn btn-s" id="close-pm-btn" onclick="closeM('m-pm')">Cancel</button>
+<button class="btn btn-p" id="save-pm-btn">Save PM</button>
+<div style="height:8px"></div><button class="btn btn-s" id="close-pm-btn">Cancel</button>
 </div></div>
 
 <!-- BREAKDOWN MODAL -->
@@ -1155,8 +1156,8 @@ h1.print-hd{display:none}
 <div class="fg"><label class="fl">Description</label><textarea class="ft" id="bd-desc" placeholder="What happened? What were the symptoms?" style="min-height:65px"></textarea></div>
 <div class="fg"><label class="fl">Resolution / Action Taken</label><textarea class="ft" id="bd-resolution" placeholder="How was it fixed?" style="min-height:55px"></textarea></div>
 <div class="fg"><label class="fl">Cost (€) — optional</label><input type="number" class="fi" id="bd-cost" placeholder="0.00" step="0.01" min="0"></div>
-<button class="btn btn-p" id="save-bd-btn" onclick="saveBd()">Log Breakdown</button>
-<div style="height:8px"></div><button class="btn btn-s" id="close-bd-btn" onclick="closeM('m-bd')">Cancel</button>
+<button class="btn btn-p" id="save-bd-btn">Log Breakdown</button>
+<div style="height:8px"></div><button class="btn btn-s" id="close-bd-btn">Cancel</button>
 </div></div>
 
 <!-- GEMBA MODAL -->
@@ -1183,8 +1184,8 @@ h1.print-hd{display:none}
 <div class="fg"><label class="fl">Finding Description *</label><textarea class="ft" id="g-desc" placeholder="Describe what you observed..."></textarea></div>
 <div class="fg"><label class="fl">Action Required</label><input type="text" class="fi" id="g-action" placeholder="What needs to be done?"></div>
 <div class="fr"><div class="fg"><label class="fl">Due Date</label><input type="date" class="fi" id="g-due"></div><div class="fg"><label class="fl">Carl Source WO#</label><input type="text" class="fi" id="g-wo" placeholder="WO-XXX"></div></div>
-<button class="btn btn-p" id="save-gemba-btn" onclick="saveGemba()">Save Finding</button>
-<div style="height:8px"></div><button class="btn btn-s" id="close-gemba-btn" onclick="closeM('m-gemba')">Cancel</button>
+<button class="btn btn-p" id="save-gemba-btn">Save Finding</button>
+<div style="height:8px"></div><button class="btn btn-s" id="close-gemba-btn">Cancel</button>
 </div></div>
 
 <!-- SCHEDULE MODAL -->
@@ -1212,8 +1213,8 @@ h1.print-hd{display:none}
 </select></div>
 <div class="fg"><label class="fl">Recurrence</label><select class="fs" id="sc-recur"><option value="none">None</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option></select></div>
 <div class="fg"><label class="fl">Notes</label><textarea class="ft" id="sc-notes" style="min-height:55px" placeholder="Details..."></textarea></div>
-<button class="btn btn-p" id="save-sched-btn" onclick="saveSched()">Save Task</button>
-<div style="height:8px"></div><button class="btn btn-s" id="close-sched-btn" onclick="closeM('m-sched')">Cancel</button>
+<button class="btn btn-p" id="save-sched-btn">Save Task</button>
+<div style="height:8px"></div><button class="btn btn-s" id="close-sched-btn">Cancel</button>
 </div></div>
 
 <!-- SUPPLIER MODAL -->
@@ -1231,8 +1232,8 @@ h1.print-hd{display:none}
 <div class="fr"><div class="fg"><label class="fl">Price / Value</label><input type="number" class="fi" id="sup-sp" placeholder="1-5" min="1" max="5"></div><div class="fg"><label class="fl">Communication</label><input type="number" class="fi" id="sup-sc" placeholder="1-5" min="1" max="5"></div></div>
 </div>
 <div class="fg"><label class="fl">Notes</label><textarea class="ft" id="sup-notes" style="min-height:55px" placeholder="Agreements, comments..."></textarea></div>
-<button class="btn btn-p" id="save-sup-btn" onclick="saveSup()">Save Supplier</button>
-<div style="height:8px"></div><button class="btn btn-s" id="close-sup-btn" onclick="closeM('m-sup')">Cancel</button>
+<button class="btn btn-p" id="save-sup-btn">Save Supplier</button>
+<div style="height:8px"></div><button class="btn btn-s" id="close-sup-btn">Cancel</button>
 </div></div>
 
 <!-- OFFER MODAL -->
@@ -1246,8 +1247,8 @@ h1.print-hd{display:none}
 <div class="fr"><div class="fg"><label class="fl">Offer Date</label><input type="date" class="fi" id="off-date"></div><div class="fg"><label class="fl">Valid Until</label><input type="date" class="fi" id="off-valid"></div></div>
 <div class="fr"><div class="fg"><label class="fl">Category</label><select class="fs" id="off-cat"><option>Spare Parts</option><option>Chemicals</option><option>Equipment</option><option>Services</option><option>Consumables</option><option>Other</option></select></div><div class="fg"><label class="fl">Status</label><select class="fs" id="off-status"><option value="pending">⏳ Pending</option><option value="approved">✅ Approved</option><option value="rejected">❌ Rejected</option><option value="ordered">📦 Ordered</option></select></div></div>
 <div class="fg"><label class="fl">Notes</label><textarea class="ft" id="off-notes" style="min-height:50px" placeholder="Price comparison, comments..."></textarea></div>
-<button class="btn btn-p" id="save-offer-btn" onclick="saveOffer()">Save Offer</button>
-<div style="height:8px"></div><button class="btn btn-s" id="close-offer-btn" onclick="closeM('m-offer')">Cancel</button>
+<button class="btn btn-p" id="save-offer-btn">Save Offer</button>
+<div style="height:8px"></div><button class="btn btn-s" id="close-offer-btn">Cancel</button>
 </div></div>
 
 <!-- KPI MODAL -->
@@ -1258,8 +1259,8 @@ h1.print-hd{display:none}
 <div class="fg"><label class="fl">Month</label><input type="month" class="fi" id="kpi-month"></div>
 <div class="fr"><div class="fg"><label class="fl">PM Completion (%)</label><input type="number" class="fi" id="kpi-pm" min="0" max="100" placeholder="0–100"></div><div class="fg"><label class="fl">Overdue PMs</label><input type="number" class="fi" id="kpi-od" min="0" placeholder="0"></div></div>
 <div class="fr"><div class="fg"><label class="fl">Breakdowns</label><input type="number" class="fi" id="kpi-bd" min="0" placeholder="0"></div><div class="fg"><label class="fl">Carl Closure (%)</label><input type="number" class="fi" id="kpi-carl" min="0" max="100" placeholder="0–100"></div></div>
-<button class="btn btn-p" id="save-kpi-btn" onclick="saveKPI()">Update Dashboard</button>
-<div style="height:8px"></div><button class="btn btn-s" id="close-kpi-btn" onclick="closeM('m-kpi')">Cancel</button>
+<button class="btn btn-p" id="save-kpi-btn">Update Dashboard</button>
+<div style="height:8px"></div><button class="btn btn-s" id="close-kpi-btn">Cancel</button>
 </div></div>
 
 <!-- PROJECT MODAL -->
@@ -1270,8 +1271,8 @@ h1.print-hd{display:none}
 <div class="fg"><label class="fl">Project Name *</label><input type="text" class="fi" id="proj-name" placeholder="π.χ. Carl Source Integration"></div>
 <div class="fr"><div class="fg"><label class="fl">% Complete</label><input type="number" class="fi" id="proj-pct" min="0" max="100" placeholder="0"></div><div class="fg"><label class="fl">Due Date</label><input type="date" class="fi" id="proj-due"></div></div>
 <div class="fr"><div class="fg"><label class="fl">Priority</label><select class="fs" id="proj-prio"><option value="high">🔴 High</option><option value="medium">🟡 Medium</option><option value="low">🟢 Low</option></select></div><div class="fg"><label class="fl">Status</label><select class="fs" id="proj-status"><option value="active">🔄 In Progress</option><option value="done">✅ Done</option><option value="planned">⏳ Planned</option></select></div></div>
-<button class="btn btn-p" id="save-proj-btn" onclick="saveProj()">Save Project</button>
-<div style="height:8px"></div><button class="btn btn-s" id="close-proj-btn" onclick="closeM('m-proj')">Cancel</button>
+<button class="btn btn-p" id="save-proj-btn">Save Project</button>
+<div style="height:8px"></div><button class="btn btn-s" id="close-proj-btn">Cancel</button>
 </div></div>
 
 <!-- ACHIEVEMENT MODAL -->
@@ -1284,8 +1285,8 @@ h1.print-hd{display:none}
 <div class="fg"><label class="fl">Quantified Impact</label><input type="text" class="fi" id="ach-impact" placeholder="π.χ. Reduced downtime by 20%"></div>
 <div class="fg"><label class="fl">Completion Rate (%)</label><input type="number" class="fi" id="ach-rate" placeholder="0–100" min="0" max="100"></div>
 <div class="fg"><label class="fl">Evidence / Source</label><input type="text" class="fi" id="ach-evidence" placeholder="π.χ. Carl Source report, Excel file"></div>
-<button class="btn btn-p" id="save-ach-btn" onclick="saveAch()">Save Achievement</button>
-<div style="height:8px"></div><button class="btn btn-s" id="close-ach-btn" onclick="closeM('m-ach')">Cancel</button>
+<button class="btn btn-p" id="save-ach-btn">Save Achievement</button>
+<div style="height:8px"></div><button class="btn btn-s" id="close-ach-btn">Cancel</button>
 </div></div>
 
 
@@ -1295,7 +1296,7 @@ h1.print-hd{display:none}
   <div class="ph">
     <div class="ph-title">Systems & P&IDs</div>
     <div style="display:flex;gap:6px">
-      <button class="btn btn-s btn-sm" id="btn-add-sys" onclick="openAddSys()">+ System</button>
+      <button class="btn btn-s btn-sm" id="btn-add-sys">+ System</button>
     </div>
   </div>
   <div id="sys-tree" class="sys-tree"></div>
@@ -1304,19 +1305,19 @@ h1.print-hd{display:none}
 <!-- P&ID CANVAS OVERLAY -->
 <div class="pid-overlay" id="pid-overlay">
   <div class="pid-topbar">
-    <button class="ibtn" onclick="closePID()">← Back</button>
+    <button class="ibtn">← Back</button>
     <div class="pid-title" id="pid-title">P&ID</div>
-    <button class="pid-tool-btn" id="pid-add-btn" onclick="togglePalette()">+ Asset</button>
-    <button class="pid-tool-btn" onclick="savePID()">💾 Save</button>
+    <button class="pid-tool-btn" id="pid-add-btn">+ Asset</button>
+    <button class="pid-tool-btn">💾 Save</button>
   </div>
   <div class="pid-canvas-wrap" id="pid-canvas-wrap">
     <svg class="pid-canvas" id="pid-svg"
          xmlns="http://www.w3.org/2000/svg"
          style="touch-action:none"></svg>
     <div class="pid-toolbar">
-      <button class="pid-tool-btn active" id="tool-select" onclick="setTool('select')">✋ Select</button>
-      <button class="pid-tool-btn" id="tool-pipe" onclick="setTool('pipe')">〰 Pipe</button>
-      <button class="pid-tool-btn" onclick="deleteSelected()">🗑 Delete</button>
+      <button class="pid-tool-btn active" id="tool-select">✋ Select</button>
+      <button class="pid-tool-btn" id="tool-pipe">〰 Pipe</button>
+      <button class="pid-tool-btn">🗑 Delete</button>
     </div>
     <div class="pid-asset-palette" id="pid-palette">
       <div style="font-size:10px;color:var(--t3);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Assets</div>
@@ -1347,17 +1348,17 @@ h1.print-hd{display:none}
     <div class="fg"><label class="fl">Notes</label>
       <textarea class="ft" id="sys-notes" style="min-height:55px" placeholder="Description, P&ID reference..."></textarea>
     </div>
-    <button class="btn btn-p" id="save-sys-btn" onclick="saveSys()">Save System</button>
+    <button class="btn btn-p" id="save-sys-btn">Save System</button>
     <div style="height:8px"></div>
-    <button class="btn btn-d btn-sm" id="del-sys-btn" onclick="delSystem()" style="display:none;width:100%">Delete System</button>
+    <button class="btn btn-d btn-sm" id="del-sys-btn" style="display:none;width:100%">Delete System</button>
     <div style="height:6px"></div>
-    <button class="btn btn-s" id="close-sys-btn" onclick="closeM('m-sys')">Cancel</button>
+    <button class="btn btn-s" id="close-sys-btn">Cancel</button>
   </div>
 </div>
 
 <!-- ═══ CORRECTIVE MAINTENANCE ═══ -->
 <div id="view-corrective" class="view">
-  <div class="ph"><div class="ph-title">Corrective Maintenance</div><button class="btn btn-p btn-sm" id="btn-cm" onclick="document.getElementById('cm-source-banner').style.display='none';document.getElementById('cm-source-type').value='manual';openM('m-cm')">+ CM Task</button></div>
+  <div class="ph"><div class="ph-title">Corrective Maintenance</div><button class="btn btn-p btn-sm" id="btn-cm">+ CM Task</button></div>
   <div class="xbar"><span class="xbar-label">Export</span><button class="xbtn xbtn-pdf" data-export="cm-pdf">📄 PDF</button><button class="xbtn xbtn-csv" data-export="cm-csv">📊 CSV</button></div>
   <div class="cm-kpis">
     <div class="kpi kpi-sm" style="--kc:var(--r)"><div class="kpi-lbl">Open CMs</div><div class="kpi-val" id="cm-open">0</div><div class="kpi-target">Needs action</div></div>
@@ -1377,7 +1378,7 @@ h1.print-hd{display:none}
 
 <!-- ═══ INVENTORY ═══ -->
 <div id="view-inventory" class="view">
-  <div class="ph"><div class="ph-title">Spare Parts & Inventory</div><button class="btn btn-p btn-sm" id="btn-inv" onclick="openInvModal()">+ Part</button></div>
+  <div class="ph"><div class="ph-title">Spare Parts & Inventory</div><button class="btn btn-p btn-sm" id="btn-inv">+ Part</button></div>
   <div class="xbar"><span class="xbar-label">Export</span><button class="xbtn xbtn-pdf" data-export="inv-pdf">📄 PDF</button><button class="xbtn xbtn-csv" data-export="inv-csv">📊 CSV</button></div>
   <div class="inv-sum">
     <div class="ss"><div class="ss-v" id="inv-total">0</div><div class="ss-l">Total Parts</div></div>
@@ -1405,7 +1406,7 @@ h1.print-hd{display:none}
     <div class="fr">
       <div class="fg"><label class="fl">Equipment *</label>
         <div class="eq-picker-wrap">
-          <button type="button" class="eq-picker-btn" onclick="toggleEqPicker('cm')">
+          <button type="button" class="eq-picker-btn">
             <span id="cm-eq-picker-label" style="color:var(--t3)">Select equipment...</span><span>▾</span>
           </button>
           <div class="eq-picker-dropdown" id="cm-eq-picker-dropdown">
@@ -1441,8 +1442,8 @@ h1.print-hd{display:none}
     <div class="fg"><label class="fl">Spare Parts Needed</label><input type="text" class="fi" id="cm-parts" placeholder="π.χ. Seal kit ref. SK-204, O-ring 50mm"></div>
     <div class="fg"><label class="fl">Estimated Cost (€)</label><input type="number" class="fi" id="cm-cost" placeholder="0.00" step="0.01" min="0"></div>
     <div class="fg"><label class="fl">Resolution / Action Taken</label><textarea class="ft" id="cm-resolution" placeholder="How was it resolved? (fill when closing)" style="min-height:55px"></textarea></div>
-    <button class="btn btn-p" id="save-cm-btn" onclick="saveCM()">Save CM Task</button>
-    <div style="height:8px"></div><button class="btn btn-s" id="close-cm-btn" onclick="closeM('m-cm')">Cancel</button>
+    <button class="btn btn-p" id="save-cm-btn">Save CM Task</button>
+    <div style="height:8px"></div><button class="btn btn-s" id="close-cm-btn">Cancel</button>
   </div>
 </div>
 
@@ -1480,8 +1481,8 @@ h1.print-hd{display:none}
       <div class="fg"><label class="fl">Supplier</label><select class="fs" id="inv-sup"><option value="">— None —</option></select></div>
     </div>
     <div class="fg"><label class="fl">Notes</label><textarea class="ft" id="inv-notes" style="min-height:55px" placeholder="Lead time, alternatives, specs..."></textarea></div>
-    <button class="btn btn-p" id="save-inv-btn" onclick="saveInv()">Save Part</button>
-    <div style="height:8px"></div><button class="btn btn-s" id="close-inv-btn" onclick="closeM('m-inv')">Cancel</button>
+    <button class="btn btn-p" id="save-inv-btn">Save Part</button>
+    <div style="height:8px"></div><button class="btn btn-s" id="close-inv-btn">Cancel</button>
   </div>
 </div>
 
@@ -1503,8 +1504,8 @@ h1.print-hd{display:none}
       <div class="fg"><label class="fl">Quantity</label><input type="number" class="fi" id="stock-qty" placeholder="1" min="1" value="1"></div>
     </div>
     <div class="fg"><label class="fl">Reference (WO# or note)</label><input type="text" class="fi" id="stock-ref" placeholder="π.χ. WO-042 or PO-2025-001"></div>
-    <button class="btn btn-p" id="save-stock-btn" onclick="saveStockMovement()">Confirm Movement</button>
-    <div style="height:8px"></div><button class="btn btn-s" id="close-stock-btn" onclick="closeM('m-stock')">Cancel</button>
+    <button class="btn btn-p" id="save-stock-btn">Confirm Movement</button>
+    <div style="height:8px"></div><button class="btn btn-s" id="close-stock-btn">Cancel</button>
   </div>
 </div>
 
@@ -1542,7 +1543,7 @@ h1.print-hd{display:none}
     <div class="lock-bio" id="bio-btn" style="display:none">
       👆 Use Face ID / Touch ID
     </div>
-    <div class="lock-forgot" onclick="forgotPIN()">Ξέχασα το PIN</div>
+    <div class="lock-forgot">Ξέχασα το PIN</div>
   </div>
 </div>
 
@@ -1655,7 +1656,7 @@ function renderSystems(){
       });
     });
     return '<div class="area-group" id="ag-'+area.replace(/\s/g,'_')+'">'
-      +'<div class="area-group-hd" onclick="toggleAreaGroup(this)">'
+      +'<div class="area-group-hd">'
         +areaIcon+' '+area
         +' <span style="margin-left:auto;display:flex;align-items:center;gap:8px">'
         +'<span style="font-size:9px;background:rgba(64,128,255,.15);color:var(--acc);border-radius:4px;padding:2px 7px">'+sysList.length+' systems</span>'
@@ -1719,7 +1720,7 @@ function renderSystems(){
       });
     });
     return '<div class="area-group" id="ag-'+area.replace(/\s/g,'_')+'">'
-      +'<div class="area-group-hd" onclick="toggleAreaGroup(this)">'
+      +'<div class="area-group-hd">'
         +areaIcon+' '+area
         +' <span style="margin-left:auto;display:flex;align-items:center;gap:8px">'
         +'<span style="font-size:9px;background:rgba(64,128,255,.15);color:var(--acc);border-radius:4px;padding:2px 7px">'+sysList.length+' systems</span>'
@@ -1750,7 +1751,7 @@ function renderSysCard(sys){
   assets.forEach(function(eq){pmsDue+=S.pms.filter(function(p){return p.equip===eq.name&&p.status==='scheduled'&&p.sched<=TODAY;}).length;});
   var hasPID=(sys.pid&&sys.pid.nodes&&sys.pid.nodes.length>0);
   return '<div class="sys-card" style="--sc:'+statusColor+'">'
-    +'<div class="sys-hd" onclick="toggleSysBody(\''+sys.id+'\')">'
+    +'<div class="sys-hd">'
       +'<div class="sys-icon">'+(hasPID?'🗺':'🔲')+'</div>'
       +'<div class="sys-info">'
         +'<div class="sys-name">'+sys.name+'</div>'
@@ -1769,7 +1770,7 @@ function renderSysCard(sys){
         var type=EQ_TYPES[eq.type]||{icon:'🔧'};
         var sc={operational:'var(--g)',maintenance:'var(--y)',down:'var(--r)',standby:'var(--t3)'}[eq.status]||'var(--g)';
         var eqIdx=S.equipment.indexOf(eq);
-        return '<div class="sys-asset-row" onclick="openEqDetail('+eqIdx+')">'
+        return '<div class="sys-asset-row">'
           +'<div class="sys-asset-ico">'+type.icon+'</div>'
           +'<div class="sys-asset-info">'
             +'<div class="sys-asset-name">'+eq.name+'</div>'
@@ -1781,9 +1782,9 @@ function renderSysCard(sys){
       '<div style="padding:12px 14px;color:var(--t4);font-size:12px">No assets linked yet</div>'
       )
       +'<div class="sys-actions">'
-        +'<button class="btn btn-p btn-sm" onclick="openPIDEditor(\''+sys.id+'\')">🗺 '+(hasPID?'View/Edit':'Create')+' P&ID</button>'
-        +'<button class="btn btn-s btn-sm" onclick="openAddAssetToSys(\''+sys.id+'\')">+ Asset</button>'
-        +'<button class="btn btn-s btn-sm" onclick="editSystem(\''+sys.id+'\')">✏️ Edit</button>'
+        +'<button class="btn btn-p btn-sm">🗺 '+(hasPID?'View/Edit':'Create')+' P&ID</button>'
+        +'<button class="btn btn-s btn-sm">+ Asset</button>'
+        +'<button class="btn btn-s btn-sm">✏️ Edit</button>'
       +'</div>'
     +'</div></div>';
 }
@@ -1879,7 +1880,7 @@ function openPIDEditor(sysId){
     palEl.innerHTML=allEq.map(function(eq){
       var type=EQ_TYPES[eq.type]||{icon:'🔧'};
       var inSys=(sys.assets||[]).includes(eq.id);
-      return '<div class="pal-item" onclick="addNodeToPID(\''+eq.id+'\')">'
+      return '<div class="pal-item">'
         +'<div class="pal-ico">'+type.icon+'</div>'
         +'<div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+eq.name+'</div>'
         +'<div style="font-size:9px;color:var(--t3)">'+eq.area+(inSys?' ✓':'')+'</div></div>'
@@ -2104,22 +2105,30 @@ function svC(){lsS('em_c',CFG);}
 // Security init — async
 // ── Boot ──
 function boot(){
+  // Sanitize state
   try{var d=lsG('em_s');if(d)Object.assign(S,d);}catch(e){}
   try{var c=lsG('em_c');if(c)Object.assign(CFG,c);}catch(e){}
-  if(typeof DEFAULT_SYSTEMS!=='undefined'&&(!S.systems||!S.systems.length)){
+  ['pms','breakdowns','gemba','sched','equipment','sups','offers','achs','cm','inv','projects'].forEach(function(k){
+    if(!Array.isArray(S[k]))S[k]=[];
+  });
+  if(!S.kpis||typeof S.kpis!=='object')S.kpis={pm:null,od:null,bd:null,carl:null};
+  if(!S.months||typeof S.months!=='object')S.months={};
+  if(!Array.isArray(S.systems)||!S.systems.length){
     S.systems=DEFAULT_SYSTEMS.map(function(s){
-      return {id:s.id,name:s.name,area:s.area,assets:[],pid:{nodes:[],pipes:[]},notes:s.notes||''};
+      return{id:s.id,name:s.name,area:s.area,assets:[],pid:{nodes:[],pipes:[]},notes:s.notes||''};
     });
   }
-  var barDate=document.getElementById('bar-date');
-  if(barDate)barDate.textContent=now.toLocaleDateString('el-GR',{weekday:'short',day:'numeric',month:'long',year:'numeric'});
+  if(!S.equipment.length)localStorage.removeItem('em_seeded');
+  // Date fields
   var rptM=document.getElementById('rpt-month');
   if(rptM)rptM.value=TODAY.slice(0,7);
   document.querySelectorAll('input[type=date]').forEach(function(e){e.value=TODAY;});
+  var barDate=document.getElementById('bar-date');
+  if(barDate)barDate.textContent=now.toLocaleDateString('el-GR',{weekday:'short',day:'numeric',month:'long',year:'numeric'});
+  // Boot sequence
   try{seedSampleData();}catch(e){console.warn('seed:',e);}
-  initEvents();
-  try{initSearch();}catch(e){console.warn('search:',e);}
-  renderAll();
+  try{initEvents();}catch(e){console.error('initEvents FAILED:',e);}
+  try{renderAll();}catch(e){console.error('renderAll FAILED:',e);}
   try{loadCFGtoUI();}catch(e){}
   try{checkAlerts();}catch(e){}
   try{initAI();}catch(e){}
@@ -2224,7 +2233,7 @@ function renderDash(){
       '<div style="width:7px;height:7px;border-radius:50%;background:'+catClr(t.cat)+';flex-shrink:0"></div>'+
       '<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+t.title+'</div>'+
       '<div style="font-size:10px;color:var(--t3)">'+fd(t.date)+(t.area?' · '+t.area:'')+'</div></div>'+
-      '<button class="btn btn-g btn-sm" style="padding:5px 9px;font-size:10px;flex-shrink:0" onclick="doneSchedId(\''+t.id+'\')">✓</button></div>';
+      '<button class="btn btn-g btn-sm" style="padding:5px 9px;font-size:10px;flex-shrink:0">✓</button></div>';
   }).join(''):empty('📅','No tasks this week');
   // Projects
   document.getElementById('proj-list').innerHTML=S.projects.map(function(p,i){
@@ -2235,8 +2244,8 @@ function renderDash(){
       '<div style="font-family:var(--mono);font-size:12px;color:'+pc+'">'+p.pct+'%</div></div>'+
       '<div style="font-size:10px;color:var(--t3);margin-bottom:7px">'+stl+' · Due: '+fd(p.due)+'</div>'+
       '<div class="pbar"><div class="pfill" style="background:'+pc+';width:'+p.pct+'%"></div></div>'+
-      '<div class="item-actions"><button class="btn btn-s btn-sm" onclick="updPct('+i+')">%</button>'+
-      '<button class="btn btn-d btn-sm" onclick="delProj('+i+')">✕</button></div></div>';
+      '<div class="item-actions"><button class="btn btn-s btn-sm">%</button>'+
+      '<button class="btn btn-d btn-sm">✕</button></div></div>';
   }).join('');
   var rc=S.gemba.slice().reverse().slice(0,3);
   document.getElementById('recent-g').innerHTML=rc.length?rc.map(function(g){return gCard(g,false);}).join(''):empty('🔍','No findings yet');
@@ -2394,7 +2403,7 @@ function renderPM(){
       '<div class="item-meta">'+tag(p.area)+'<span>📅 '+fd(p.sched)+'</span><span>🔁 '+p.freq+'</span>'+(p.wo?'<span>'+p.wo+'</span>':'')+'</div>'+
       '<div style="font-size:11px;color:var(--t2);margin-top:5px">'+p.type+'</div>'+
       (p.notes?'<div style="font-size:10px;color:var(--t3);margin-top:3px">'+p.notes+'</div>':'')+
-      (p.status!=='done'?'<div class="item-actions">'+(p.operations&&p.operations.length?'<button class="btn btn-p btn-sm" onclick="openPMExecution('+idx+')">▶ '+p.operations.length+' Ops</button>':'<button class="btn btn-g btn-sm" onclick="donePM('+idx+')">✓ Done</button>')+'<button class="btn btn-d btn-sm" onclick="delPM('+idx+')">Delete</button></div>':'')+
+      (p.status!=='done'?'<div class="item-actions">'+(p.operations&&p.operations.length?'<button class="btn btn-p btn-sm">▶ '+p.operations.length+' Ops</button>':'<button class="btn btn-g btn-sm">✓ Done</button>')+'<button class="btn btn-d btn-sm">Delete</button></div>':'')+
       '</div>';
   }).join('');
 }
@@ -2413,7 +2422,7 @@ function removePMEquip(i){pmEquipList.splice(i,1);renderPMEquipTags();}
 function renderPMEquipTags(){
   var el=document.getElementById('pm-equip-list');if(!el)return;
   el.innerHTML=pmEquipList.map(function(e,i){
-    return'<span style="background:rgba(64,128,255,.15);border:1px solid rgba(64,128,255,.3);border-radius:6px;padding:4px 8px;font-size:12px;color:var(--acc);cursor:pointer;display:inline-flex;align-items:center;gap:4px" onclick="removePMEquip('+i+')">'+
+    return'<span style="background:rgba(64,128,255,.15);border:1px solid rgba(64,128,255,.3);border-radius:6px;padding:4px 8px;font-size:12px;color:var(--acc);cursor:pointer;display:inline-flex;align-items:center;gap:4px">'+
       e+'<span style="opacity:.5;font-size:10px">✕</span></span>';
   }).join('');
 }
@@ -2469,7 +2478,7 @@ function renderBreakdowns(){
       '<div style="font-size:11px;color:var(--t2);margin-top:5px">'+tag((rcaLbl[b.rca]||b.rca),'tag-r')+' '+(b.description||'')+'</div>'+
       (b.resolution?'<div style="font-size:10px;color:var(--t3);margin-top:4px">✅ Resolution: '+b.resolution+'</div>':'')+
       (b.cost?'<div style="font-size:10px;color:var(--y);margin-top:3px">💶 Cost: €'+b.cost+'</div>':'')+
-      '<div class="item-actions"><button class="btn btn-y btn-sm" onclick="cmFromBreakdown('+idx+')">🛠️ → CM Task</button><button class="btn btn-d btn-sm" onclick="delBd('+idx+')">Delete</button></div>'+
+      '<div class="item-actions"><button class="btn btn-y btn-sm">🛠️ → CM Task</button><button class="btn btn-d btn-sm">Delete</button></div>'+
       '</div>';
   }).join('');
 }
@@ -2502,9 +2511,9 @@ function gCard(g,showA){
     (g.action?'<div style="font-size:11px;color:var(--t2);margin-top:5px">→ '+g.action+'</div>':'')+
     (showA!==false&&g.status!=='closed'?
       '<div class="item-actions">'+
-        '<button class="btn btn-g btn-sm" onclick="closeG('+idx+')">✓ Close</button>'+
-        '<button class="btn btn-y btn-sm" onclick="cmFromGemba('+idx+')">🛠️ CM</button>'+
-        '<button class="btn btn-d btn-sm" onclick="delG('+idx+')">Delete</button>'+
+        '<button class="btn btn-g btn-sm">✓ Close</button>'+
+        '<button class="btn btn-y btn-sm">🛠️ CM</button>'+
+        '<button class="btn btn-d btn-sm">Delete</button>'+
       '</div>':'')+
     '</div>';
 }
@@ -2545,7 +2554,7 @@ function renderSched(){
       '<div class="item-hd"><div class="item-title">'+s.title+'</div>'+b+'</div>'+
       '<div class="item-meta"><span>'+(cLbl[s.cat]||s.cat)+'</span>'+(s.area?tag(s.area):'')+(s.recur&&s.recur!=='none'?'<span>🔁</span>':'')+'</div>'+
       (s.notes?'<div style="font-size:11px;color:var(--t3);margin-top:4px">'+s.notes+'</div>':'')+
-      (s.status!=='done'?'<div class="item-actions"><button class="btn btn-g btn-sm" onclick="doneSched(\''+s.id+'\')">✓ Done</button><button class="btn btn-d btn-sm" onclick="delSched(\''+s.id+'\')">Delete</button></div>':'')+'</div>';
+      (s.status!=='done'?'<div class="item-actions"><button class="btn btn-g btn-sm">✓ Done</button><button class="btn btn-d btn-sm">Delete</button></div>':'')+'</div>';
   }).join('');
 }
 function renderCal(){
@@ -2559,7 +2568,7 @@ function renderCal(){
     var isT=ds===TODAY;
     var dts=S.sched.filter(function(s){return s.date===ds&&s.status!=='done';});
     var dots=dts.slice(0,3).map(function(t){return'<div class="cd-dot" style="background:'+catClr(t.cat)+'"></div>';}).join('');
-    h+='<div class="cd'+(isT?' today':'')+'" onclick="openSchedDate(\''+ds+'\')"><div class="cd-n">'+d+'</div>'+dots+'</div>';
+    h+='<div class="cd'+(isT?' today':'')+'"><div class="cd-n">'+d+'</div>'+dots+'</div>';
   }
   var rem=(7-(first+days)%7)%7;
   for(var d2=1;d2<=rem;d2++)h+='<div class="cd other"><div class="cd-n">'+d2+'</div></div>';
@@ -2620,8 +2629,8 @@ function renderSup(){
       scoreHTML+
       (s.notes?'<div style="font-size:11px;color:var(--t3);margin-top:6px">'+s.notes+'</div>':'')+
       '<div class="item-actions" style="margin-top:9px">'+
-      '<button class="btn btn-s btn-sm" onclick="openOfferModal(\''+s.id+'\')">+ Offer</button>'+
-      '<button class="btn btn-d btn-sm" onclick="delSup(\''+s.id+'\')">Delete</button></div>'+
+      '<button class="btn btn-s btn-sm">+ Offer</button>'+
+      '<button class="btn btn-d btn-sm">Delete</button></div>'+
       (offs.length?'<div style="margin-top:9px;font-size:9px;color:var(--t3);font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px">Offers ('+offs.length+')</div>'+offs.slice(-2).map(function(o){return offerCard(o,false);}).join(''):'')+
       '</div>';
   }).join(''):empty('🏭','No suppliers yet');
@@ -2676,7 +2685,7 @@ function renderAch(){
       '<div style="font-size:10px;color:var(--t3)">'+a.cat+' · '+fd(a.date)+'</div>'+
       (a.impact?'<div style="font-size:12px;color:var(--t2);margin-top:6px">📊 '+a.impact+'</div>':'')+
       (a.evidence?'<div style="font-size:10px;color:var(--t3);margin-top:4px">📎 '+a.evidence+'</div>':'')+
-      '<div class="item-actions" style="margin-top:8px"><button class="btn btn-d btn-sm" onclick="delAch('+idx+')">Remove</button></div></div>';
+      '<div class="item-actions" style="margin-top:8px"><button class="btn btn-d btn-sm">Remove</button></div></div>';
   }).join('');
 }
 function saveAch(){
@@ -2877,98 +2886,158 @@ function doExport(type){
 
 // ══ EVENTS ══
 function initEvents(){
+  function el(id,fn,evt){var e=document.getElementById(id);if(e)e.addEventListener(evt||'click',fn);}
   // NAV
   document.querySelectorAll('.nb').forEach(function(b){
     b.addEventListener('click',function(){
-      document.querySelectorAll('.nb').forEach(function(x){x.classList.remove('on');});b.classList.add('on');
-      document.querySelectorAll('.view').forEach(function(v){v.classList.remove('on');});
-      document.getElementById('view-'+b.dataset.view).classList.add('on');
-      renderAll();
-    });
-  });
-  document.querySelectorAll('[data-goto]').forEach(function(b){
-    b.addEventListener('click',function(){
-      var v=b.dataset.goto;
+      var v=b.dataset.view;if(!v)return;
       document.querySelectorAll('.nb').forEach(function(x){x.classList.remove('on');});
-      var nb=document.querySelector('.nb[data-view="'+v+'"]');if(nb)nb.classList.add('on');
+      b.classList.add('on');
       document.querySelectorAll('.view').forEach(function(x){x.classList.remove('on');});
       var vEl=document.getElementById('view-'+v);if(vEl)vEl.classList.add('on');
+      try{renderAll();}catch(e){console.error('renderAll:',e);}
     });
   });
-  // SETTINGS BTN
-  document.getElementById('btn-settings').addEventListener('click',function(){
-    openM('m-settings');
-    var kst=document.getElementById('ai-key-status');
-    if(kst)kst.textContent=localStorage.getItem('gemini_key')?'✅ Connected (Gemini 1.5 Flash)':'❌ Not connected';
+  // goto buttons
+  document.querySelectorAll('[data-goto]').forEach(function(b){
+    b.addEventListener('click',function(){gotoView(b.dataset.goto);});
   });
-  // EQ button
-  var btnEqBtn=document.getElementById('btn-eq');if(btnEqBtn)btnEqBtn.addEventListener('click',openEqModal);
-  // OPEN MODALS
-  var openers=[['btn-kpi','m-kpi'],['btn-proj','m-proj'],['btn-sched','m-sched'],['btn-gemba','m-gemba'],['btn-sup','m-sup'],['btn-offer','m-offer'],['btn-ach','m-ach'],['btn-eq','m-eq']];
-  openers.forEach(function(pair){var btn=document.getElementById(pair[0]);if(btn)btn.addEventListener('click',function(){if(pair[0]==='btn-sched')document.getElementById('sc-date').value=TODAY;if(pair[0]==='btn-offer')return openOfferModal(null);openM(pair[1]);});});
-  // SAVE BTNS
-  var savers=[['save-eq-btn',saveEq],['save-pm-btn',savePM],['save-bd-btn',saveBd],['save-gemba-btn',saveGemba],['save-sched-btn',saveSched],['save-sup-btn',saveSup],['save-offer-btn',saveOffer],['save-kpi-btn',saveKPI],['save-proj-btn',saveProj],['save-ach-btn',saveAch],['save-settings-btn',saveSettings],['btn-gen-rpt',generateReport],['btn-print-rpt',printReport],['backup-btn',doBackup]];
-  savers.forEach(function(pair){var btn=document.getElementById(pair[0]);if(btn)btn.addEventListener('click',pair[1]);});
-  // CLOSE BTNS
-  ['eq','pm','bd','gemba','sched','sup','offer','kpi','proj','ach','settings','sys'].forEach(function(k){var btn=document.getElementById('close-'+k+'-btn');if(btn)btn.addEventListener('click',function(){closeM('m-'+k);});});
-  var addSysBtn=document.getElementById('btn-add-sys');if(addSysBtn)addSysBtn.addEventListener('click',openAddSys);
-  var saveSysBtn=document.getElementById('save-sys-btn');if(saveSysBtn)saveSysBtn.addEventListener('click',saveSys);
-  var delSysBtn=document.getElementById('del-sys-btn');if(delSysBtn)delSysBtn.addEventListener('click',delSystem);
-  // FILTER BTNS
-  document.querySelectorAll('[data-pmf]').forEach(function(b){b.addEventListener('click',function(){pmFilt=b.dataset.pmf;document.querySelectorAll('[data-pmf]').forEach(function(x){x.classList.remove('on');});b.classList.add('on');renderPM();});});
-  document.querySelectorAll('[data-gf]').forEach(function(b){b.addEventListener('click',function(){gFilt=b.dataset.gf;document.querySelectorAll('[data-gf]').forEach(function(x){x.classList.remove('on');});b.classList.add('on');renderGemba();});});
-  document.querySelectorAll('[data-sf]').forEach(function(b){b.addEventListener('click',function(){sFilt=b.dataset.sf;document.querySelectorAll('[data-sf]').forEach(function(x){x.classList.remove('on');});b.classList.add('on');renderSched();});});
-  document.querySelectorAll('[data-spf]').forEach(function(b){b.addEventListener('click',function(){spFilt=b.dataset.spf;document.querySelectorAll('[data-spf]').forEach(function(x){x.classList.remove('on');});b.classList.add('on');renderSup();});});
-  // CALENDAR
-  document.getElementById('cal-prev').addEventListener('click',function(){calM--;if(calM<0){calM=11;calY--;}renderCal();});
-  document.getElementById('cal-next').addEventListener('click',function(){calM++;if(calM>11){calM=0;calY++;}renderCal();});
-  // EXPORT
-  document.querySelectorAll('[data-export]').forEach(function(b){b.addEventListener('click',function(){doExport(b.dataset.export);});});
-  // CM FILTERS
-  document.querySelectorAll('[data-cmf]').forEach(function(b){
-    b.addEventListener('click',function(){
-      cmFilt=b.dataset.cmf;
-      document.querySelectorAll('[data-cmf]').forEach(function(x){x.classList.remove('on');});
-      b.classList.add('on');renderCM();
-    });
+  // TOPBAR
+  el('btn-settings',function(){openM('m-settings');});
+  // DASHBOARD
+  el('btn-kpi',function(){openM('m-kpi');});
+  el('btn-proj',function(){openM('m-proj');});
+  // SYSTEMS
+  el('btn-add-sys',function(){openAddSys();});
+  el('save-sys-btn',function(){saveSys();});
+  el('del-sys-btn',function(){delSystem();});
+  el('close-sys-btn',function(){closeM('m-sys');});
+  // EQUIPMENT
+  el('btn-eq',function(){openEqModal();});
+  el('save-eq-btn',function(){saveEq();});
+  el('close-eq-btn',function(){closeM('m-eq');});
+  // PM
+  el('btn-pm',function(){
+    pmEquipList=[];renderPMEquipTags();
+    pmOpsList=[];try{renderPMOpsList();}catch(e){}
+    try{resetEqPicker('pm');}catch(e){}
+    openM('m-pm');
   });
-  // INV FILTERS
-  document.querySelectorAll('[data-invf]').forEach(function(b){
-    b.addEventListener('click',function(){
-      invFilt=b.dataset.invf;
-      document.querySelectorAll('[data-invf]').forEach(function(x){x.classList.remove('on');});
-      b.classList.add('on');renderInventory();
-    });
-  });
-  // CM/INV open buttons
-  var btnCm=document.getElementById('btn-cm');if(btnCm)btnCm.addEventListener('click',function(){
-    document.getElementById('cm-source-banner').style.display='none';
-    document.getElementById('cm-source-type').value='manual';
+  el('save-pm-btn',function(){savePM();});
+  el('close-pm-btn',function(){closeM('m-pm');});
+  // BREAKDOWNS
+  el('btn-bd',function(){try{resetEqPicker('bd');}catch(e){}openM('m-bd');});
+  el('save-bd-btn',function(){saveBd();});
+  el('close-bd-btn',function(){closeM('m-bd');});
+  // GEMBA
+  el('btn-gemba',function(){openM('m-gemba');});
+  el('save-gemba-btn',function(){saveGemba();});
+  el('close-gemba-btn',function(){closeM('m-gemba');});
+  // SCHEDULE
+  el('btn-sched',function(){var d=document.getElementById('sc-date');if(d)d.value=TODAY;openM('m-sched');});
+  el('save-sched-btn',function(){saveSched();});
+  el('close-sched-btn',function(){closeM('m-sched');});
+  el('cal-prev',function(){calM--;if(calM<0){calM=11;calY--;}renderCal();});
+  el('cal-next',function(){calM++;if(calM>11){calM=0;calY++;}renderCal();});
+  // SUPPLIERS
+  el('btn-sup',function(){openM('m-sup');});
+  el('btn-offer',function(){openOfferModal(null);});
+  el('save-sup-btn',function(){saveSup();});
+  el('close-sup-btn',function(){closeM('m-sup');});
+  el('save-offer-btn',function(){saveOffer();});
+  el('close-offer-btn',function(){closeM('m-offer');});
+  // PORTFOLIO
+  el('btn-ach',function(){openM('m-ach');});
+  el('save-ach-btn',function(){saveAch();});
+  el('close-ach-btn',function(){closeM('m-ach');});
+  // CORRECTIVE
+  el('btn-cm',function(){
+    var sb=document.getElementById('cm-source-banner');if(sb)sb.style.display='none';
+    var st=document.getElementById('cm-source-type');if(st)st.value='manual';
     openM('m-cm');
   });
-  var btnInv=document.getElementById('btn-inv');if(btnInv)btnInv.addEventListener('click',function(){
-    // Populate supplier select
+  el('save-cm-btn',function(){saveCM();});
+  el('close-cm-btn',function(){closeM('m-cm');});
+  // INVENTORY
+  el('btn-inv',function(){
     var sel=document.getElementById('inv-sup');
-    sel.innerHTML='<option value="">— None —</option>'+S.sups.map(function(s){return'<option value="'+s.id+'">'+s.name+'</option>';}).join('');
+    if(sel)sel.innerHTML='<option value="">— None —</option>'+S.sups.map(function(s){
+      return'<option value="'+s.id+'">'+s.name+'</option>';
+    }).join('');
     document.getElementById('inv-edit-idx').value='-1';
     openM('m-inv');
   });
-  // Reset PM equip list when PM modal is opened
-  var btnPm2=document.getElementById('btn-pm');if(btnPm2)btnPm2.addEventListener('click',function(){if(typeof pmEquipList!=='undefined'){pmEquipList=[];renderPMEquipTags();}if(typeof pmOpsList!=='undefined'){pmOpsList=[];} if(typeof renderPMOpsList==='function')setTimeout(renderPMOpsList,50);resetEqPicker('pm');openM('m-pm');});
-  var btnBd2=document.getElementById('btn-bd');if(btnBd2)btnBd2.addEventListener('click',function(){resetEqPicker('bd');openM('m-bd');});
-  var saveCmBtn=document.getElementById('save-cm-btn');if(saveCmBtn)saveCmBtn.addEventListener('click',saveCM);
-  var saveInvBtn=document.getElementById('save-inv-btn');if(saveInvBtn)saveInvBtn.addEventListener('click',saveInv);
-  var saveStockBtn=document.getElementById('save-stock-btn');if(saveStockBtn)saveStockBtn.addEventListener('click',saveStockMovement);
-  var closeCmBtn=document.getElementById('close-cm-btn');if(closeCmBtn)closeCmBtn.addEventListener('click',function(){closeM('m-cm');});
-  var closeInvBtn=document.getElementById('close-inv-btn');if(closeInvBtn)closeInvBtn.addEventListener('click',function(){closeM('m-inv');});
-  var closeStockBtn=document.getElementById('close-stock-btn');if(closeStockBtn)closeStockBtn.addEventListener('click',function(){closeM('m-stock');});
-  // RESTORE
-  var rf=document.getElementById('restore-file');if(rf)rf.addEventListener('change',doRestore);
-  var rw=document.getElementById('restore-wrap');if(rw)rw.addEventListener('click',function(){document.getElementById('restore-file').click();});
-  var cb=document.getElementById('clear-btn');if(cb)cb.addEventListener('click',doClear);
-  var ppb=document.getElementById('set-perm-btn');if(ppb)ppb.addEventListener('click',reqNotif);
+  el('save-inv-btn',function(){saveInv();});
+  el('close-inv-btn',function(){closeM('m-inv');});
+  el('save-stock-btn',function(){saveStockMovement();});
+  el('close-stock-btn',function(){closeM('m-stock');});
+  // KPI / PROJ / REPORTS
+  el('save-kpi-btn',function(){saveKPI();});
+  el('close-kpi-btn',function(){closeM('m-kpi');});
+  el('save-proj-btn',function(){saveProj();});
+  el('close-proj-btn',function(){closeM('m-proj');});
+  el('btn-gen-rpt',function(){generateReport();});
+  el('btn-print-rpt',function(){printReport();});
+  // SETTINGS
+  el('save-settings-btn',function(){saveSettings();});
+  el('close-settings-btn',function(){closeM('m-settings');});
+  el('backup-btn',function(){doBackup();});
+  el('restore-wrap',function(){var f=document.getElementById('restore-file');if(f)f.click();});
+  el('clear-btn',function(){doClear();});
+  el('set-perm-btn',function(){reqNotif();});
+  el('set-notif',function(){CFG.notif=this.checked;svS();checkAlerts();},'change');
+  el('restore-file',function(e){doRestore(e);},'change');
+  // EXPORT
+  document.querySelectorAll('[data-export]').forEach(function(b){
+    b.addEventListener('click',function(){doExport(b.dataset.export);});
+  });
+  // FILTERS
+  [['[data-pmf]','pmFilt',renderPM],['[data-gf]','gFilt',renderGemba],
+   ['[data-sf]','sFilt',renderSched],['[data-spf]','spFilt',renderSup],
+   ['[data-cmf]','cmFilt',renderCM],['[data-invf]','invFilt',renderInventory]
+  ].forEach(function(cfg){
+    document.querySelectorAll(cfg[0]).forEach(function(b){
+      b.addEventListener('click',function(){
+        var key=cfg[0].replace('[data-','').replace(']','');
+        window[cfg[1]]=b.dataset[key];
+        document.querySelectorAll(cfg[0]).forEach(function(x){x.classList.remove('on');});
+        b.classList.add('on');
+        try{cfg[2]();}catch(e){}
+      });
+    });
+  });
+  // AI
+  el('ai-fab',function(){openAI();});
+  el('ai-close',function(){document.getElementById('ai-overlay').classList.remove('on');});
+  el('ai-save-key',function(){
+    var key=document.getElementById('ai-key-input').value.trim();
+    if(!key)return;
+    AI_KEY=key;localStorage.setItem('gemini_key',key);
+    showAIChat();aiWelcome();
+  });
+  el('ai-send',function(){sendAIMsg().catch(function(){});});
+  var aiInp=document.getElementById('ai-input');
+  if(aiInp){
+    aiInp.addEventListener('keydown',function(e){
+      if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendAIMsg().catch(function(){});}
+    });
+    aiInp.addEventListener('input',function(){
+      this.style.height='auto';this.style.height=Math.min(this.scrollHeight,100)+'px';
+    });
+  }
+  document.querySelectorAll('.ai-sug').forEach(function(b){
+    b.addEventListener('click',function(){
+      var inp=document.getElementById('ai-input');
+      if(inp)inp.value=b.dataset.msg||'';
+      sendAIMsg().catch(function(){});
+    });
+  });
   // OVERLAY CLOSE
-  document.querySelectorAll('.overlay').forEach(function(o){o.addEventListener('click',function(e){if(e.target===o)o.classList.remove('on');});});
+  document.querySelectorAll('.overlay').forEach(function(o){
+    o.addEventListener('click',function(e){if(e.target===o)o.classList.remove('on');});
+  });
+  // SEARCH
+  try{initSearch();}catch(e){console.warn('search:',e);}
 }
 
 
@@ -3409,11 +3478,11 @@ function renderCM(){
       (c.resolution?'<div style="font-size:11px;color:var(--g);margin-top:4px">✅ '+c.resolution+'</div>':'')+
       (c.status!=='closed'?
         '<div class="item-actions">'+
-          '<button class="btn btn-s btn-sm" onclick="editCM('+idx+')">Edit</button>'+
-          '<button class="btn btn-g btn-sm" onclick="closeCM('+idx+')">✓ Close</button>'+
-          '<button class="btn btn-d btn-sm" onclick="delCM('+idx+')">Delete</button>'+
+          '<button class="btn btn-s btn-sm">Edit</button>'+
+          '<button class="btn btn-g btn-sm">✓ Close</button>'+
+          '<button class="btn btn-d btn-sm">Delete</button>'+
         '</div>':
-        '<div class="item-actions"><button class="btn btn-d btn-sm" onclick="delCM('+idx+')">Delete</button></div>'
+        '<div class="item-actions"><button class="btn btn-d btn-sm">Delete</button></div>'
       )+
       '</div>';
   }).join('');
@@ -3571,9 +3640,9 @@ function renderInventory(){
       '</div>'+
       (p.notes?'<div style="font-size:10px;color:var(--t3);margin-top:4px">'+p.notes+'</div>':'')+
       '<div class="item-actions">'+
-        '<button class="btn btn-s btn-sm" onclick="openStockModal('+idx+')">📤 Movement</button>'+
-        '<button class="btn btn-s btn-sm" onclick="editInv('+idx+')">Edit</button>'+
-        '<button class="btn btn-d btn-sm" onclick="delInv('+idx+')">Delete</button>'+
+        '<button class="btn btn-s btn-sm">📤 Movement</button>'+
+        '<button class="btn btn-s btn-sm">Edit</button>'+
+        '<button class="btn btn-d btn-sm">Delete</button>'+
       '</div>'+
       (isLow||isOut?'<div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:7px;padding:8px 10px;margin-top:8px;font-size:11px;color:var(--r)">'+
         (isOut?'❌ OUT OF STOCK — Order '+reorder+' units immediately':
@@ -3879,7 +3948,7 @@ var EQ_SPEC_FIELDS={pump:[['Power (kW)','power'],['Flow Rate (m³/h)','flow'],['
 var EQ_SPEC_LABELS={power:'Power',flow:'Flow',head:'Head',rpm:'RPM',fluid:'Medium',volt:'Voltage',amp:'Current',frame:'Frame',size:'Size',press:'Pressure',act:'Actuator',diam:'Diameter',len:'Length',mat:'Material',vol:'Volume',imp:'Impeller',area:'Area',hotmed:'Hot Side',coldmed:'Cold Side',micron:'Micron',range:'Range',signal:'Output',acc:'Accuracy',width:'Width',speed:'Speed',ip:'IP Rating',brand:'Brand',comptype:'Type',s1:'Spec 1',s2:'Spec 2'};
 var currentEqDetail=-1;
 
-function buildEqTypeGrid(sel){var grid=document.getElementById('eq-type-grid');if(!grid)return;sel=sel||'pump';grid.innerHTML=Object.keys(EQ_TYPES).map(function(k){var t=EQ_TYPES[k];return'<div class="eq-type-btn'+(k===sel?' selected':'')+'" onclick="selectEqType(\''+k+'\')"><div class="eq-type-ico">'+t.icon+'</div><div class="eq-type-lbl">'+t.label+'</div></div>';}).join('');updateEqSubtypes(sel);updateEqSpecs(sel);document.getElementById('eq-type-val').value=sel;}
+function buildEqTypeGrid(sel){var grid=document.getElementById('eq-type-grid');if(!grid)return;sel=sel||'pump';grid.innerHTML=Object.keys(EQ_TYPES).map(function(k){var t=EQ_TYPES[k];return'<div class="eq-type-btn'+(k===sel?' selected':'')+'"><div class="eq-type-ico">'+t.icon+'</div><div class="eq-type-lbl">'+t.label+'</div></div>';}).join('');updateEqSubtypes(sel);updateEqSpecs(sel);document.getElementById('eq-type-val').value=sel;}
 function selectEqType(k){document.getElementById('eq-type-val').value=k;document.querySelectorAll('.eq-type-btn').forEach(function(b){b.classList.remove('selected');});var keys=Object.keys(EQ_TYPES),idx=keys.indexOf(k);var btns=document.querySelectorAll('.eq-type-btn');if(btns[idx])btns[idx].classList.add('selected');updateEqSubtypes(k);updateEqSpecs(k);}
 function updateEqSubtypes(k){var sel=document.getElementById('eq-subtype');if(!sel)return;var t=EQ_TYPES[k];sel.innerHTML=(t?t.subtypes:[]).map(function(s){return'<option>'+s+'</option>';}).join('');}
 function updateEqSpecs(k){var wrap=document.getElementById('eq-specs-wrap');if(!wrap)return;var fields=EQ_SPEC_FIELDS[k]||EQ_SPEC_FIELDS.other;wrap.innerHTML='<div class="fr" style="flex-wrap:wrap">'+fields.map(function(f){return'<div class="fg" style="min-width:calc(50% - 5px)"><label class="fl">'+f[0]+'</label><input type="text" class="fi" id="eq-spec-'+f[1]+'" placeholder="—"></div>';}).join('')+'</div>';}
@@ -3921,9 +3990,9 @@ function renderEquipment(){
         (eq.next_service?'<span style="font-size:10px;color:var(--t3)">📅 '+fd(eq.next_service)+'</span>':'')+
       '</div>'+
       '<div class="item-actions">'+
-        '<button class="btn btn-p btn-sm" onclick="openEqDetail('+i+')">📋 Detail</button>'+
-        '<button class="btn btn-s btn-sm" onclick="editEq('+i+')">Edit</button>'+
-        '<button class="btn btn-d btn-sm" onclick="delEq('+i+')">Del</button>'+
+        '<button class="btn btn-p btn-sm">📋 Detail</button>'+
+        '<button class="btn btn-s btn-sm">Edit</button>'+
+        '<button class="btn btn-d btn-sm">Del</button>'+
       '</div></div>';
   }).join('');
 }
@@ -3957,7 +4026,7 @@ function openEqDetail(i){
   if(ss)ss.style.display=Object.keys(specs).length?'':'none';
   var wos=eq.wos||[];
   document.getElementById('eqd-wos').innerHTML=wos.length?
-    '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px">'+wos.map(function(wo,wi){return'<span class="wo-link" onclick="removeWO('+i+','+wi+')">'+wo+' <span style="opacity:.4;font-size:9px">✕</span></span>';}).join('')+'</div><div style="font-size:10px;color:var(--t3)">Tap to unlink</div>':
+    '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px">'+wos.map(function(wo,wi){return'<span class="wo-link">'+wo+' <span style="opacity:.4;font-size:9px">✕</span></span>';}).join('')+'</div><div style="font-size:10px;color:var(--t3)">Tap to unlink</div>':
     '<div style="color:var(--t4);font-size:12px;margin-bottom:8px">No WOs linked yet</div>';
   var events=[];
   S.pms.filter(function(p){return p.equip===eq.name;}).forEach(function(p){events.push({date:p.sched,title:p.type||'PM',meta:p.status==='done'?'✅ Done '+fd(p.completedDate):'⏳ Scheduled',color:'var(--acc)'});});
@@ -4005,7 +4074,7 @@ function renderPMOpsList(){
     return'<div style="display:flex;align-items:center;gap:8px;background:var(--s3);border:1px solid var(--b2);border-radius:8px;padding:8px 10px">'+
       '<span style="font-family:var(--mono);font-size:10px;color:var(--acc);flex-shrink:0;width:18px;text-align:center">'+(i+1)+'</span>'+
       '<span style="flex:1;font-size:13px">'+op.text+'</span>'+
-      '<span onclick="removePMOp('+i+')" style="cursor:pointer;color:var(--r);font-size:14px;flex-shrink:0">✕</span>'+
+      '<span style="cursor:pointer;color:var(--r);font-size:14px;flex-shrink:0">✕</span>'+
     '</div>';
   }).join('');
 }
@@ -4023,7 +4092,7 @@ function openPMExecution(i){
   wrap.addEventListener('click',function(e){if(e.target===wrap)wrap.remove();});
   var opsHtml=ops.map(function(op,oi){
     var done=op.done||false;
-    return '<div style="display:flex;align-items:flex-start;gap:10px;background:var(--s3);border:1px solid var(--b2);border-radius:9px;padding:11px;cursor:pointer;margin-bottom:6px" id="pmop-'+i+'-'+oi+'" onclick="togglePMOp('+i+','+oi+')">'
+    return '<div style="display:flex;align-items:flex-start;gap:10px;background:var(--s3);border:1px solid var(--b2);border-radius:9px;padding:11px;cursor:pointer;margin-bottom:6px" id="pmop-'+i+'-'+oi+'">'
       +'<div style="width:20px;height:20px;border-radius:6px;border:2px solid '+(done?'var(--g)':'var(--b3)')+';background:'+(done?'var(--g)':'transparent')+';flex-shrink:0;display:flex;align-items:center;justify-content:center">'
       +(done?'<span style="color:#07090e;font-size:12px;font-weight:700">✓</span>':'')
       +'</div>'
@@ -4044,7 +4113,7 @@ function openPMExecution(i){
       +'<div class="pbar"><div class="pfill" id="pmexec-bar" style="background:'+(pct===100?'var(--g)':'var(--acc)')+';width:'+pct+'%"></div></div>'
     +'</div>'
     +'<textarea class="ft" id="pm-exec-notes" placeholder="Notes / findings..." style="min-height:60px;margin-bottom:10px"></textarea>'
-    +'<button class="btn btn-g" onclick="completePMExecution('+i+')">✓ Mark PM Complete</button>'
+    +'<button class="btn btn-g">✓ Mark PM Complete</button>'
     +'<div style="height:8px"></div>'
     +'<button class="btn btn-s" id="pm-exec-cancel">Cancel</button>'
     +'</div>';
@@ -4108,7 +4177,7 @@ function renderEqPickerList(prefix,query){
   if(!el)return;
   var list=getEqList(query);
   if(!list.length){
-    el.innerHTML='<div class="eq-picker-empty">No registered equipment.<br><span style="color:var(--acc);cursor:pointer;font-size:12px" onclick="addPMEquipManual()">Type manually</span></div>';
+    el.innerHTML='<div class="eq-picker-empty">No registered equipment.<br><span style="color:var(--acc);cursor:pointer;font-size:12px">Type manually</span></div>';
     return;
   }
   el.innerHTML='';
@@ -4214,7 +4283,7 @@ renderPMEquipTags=function(){
   el.innerHTML=pmEquipList.map(function(name,i){
     var eq=S.equipment.find(function(e){return e.name===name;});
     var icon=eq&&EQ_TYPES[eq.type]?EQ_TYPES[eq.type].icon:'🔧';
-    return '<span class="asset-tag" onclick="removePMEquip('+i+')">'
+    return '<span class="asset-tag">'
       +icon+' '+name
       +' <span class="asset-tag-x">✕</span></span>';
   }).join('');

@@ -1,11 +1,11 @@
 {
-  "name": "VG Maintenance Tracker",
-  "short_name": "VG Tracker",
-  "description": "Maintenance Engineer Performance Tracker - Ecolab",
+  "name": "Ecolab Mandra — Maintenance Tracker",
+  "short_name": "Ecolab Mandra",
+  "description": "Professional Maintenance Management — Ecolab Mandra Greece",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0d0f14",
-  "theme_color": "#0d0f14",
+  "background_color": "#07090e",
+  "theme_color": "#07090e",
   "orientation": "portrait-primary",
   "icons": [
     {

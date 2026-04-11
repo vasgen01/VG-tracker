@@ -881,33 +881,12 @@ h1.print-hd{display:none}
 .pal-ico{font-size:16px;flex-shrink:0}
 
 
-/* ── ATTACHMENTS ── */
-.attach-list{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
-.attach-thumb{
-  width:72px;height:72px;border-radius:10px;object-fit:cover;
-  border:1px solid var(--b2);cursor:pointer;transition:transform .15s;
+.app-shell{max-width:1100px;margin:0 auto;position:relative}
+@media(min-width:768px){
+  .bar{padding:14px 32px}
+  .nav{padding:6px 24px}
 }
-.attach-thumb:hover{transform:scale(1.05)}
-.attach-doc{
-  display:flex;align-items:center;gap:6px;background:var(--s3);
-  border:1px solid var(--b2);border-radius:8px;padding:7px 10px;
-  cursor:pointer;font-size:12px;transition:background .15s;
-}
-.attach-doc:hover{background:var(--s4)}
-.attach-add{
-  width:72px;height:72px;border-radius:10px;border:2px dashed var(--b2);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  cursor:pointer;color:var(--t3);font-size:10px;gap:4px;transition:all .15s;
-  background:transparent;
-}
-.attach-add:hover{border-color:var(--acc);color:var(--acc)}
-.attach-add-icon{font-size:22px}
-.attach-viewer{
-  display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);
-  z-index:600;align-items:center;justify-content:center;flex-direction:column;
-}
-.attach-viewer.on{display:flex}
-.attach-viewer img{max-width:95vw;max-height:80vh;border-radius:12px;object-fit:contain}
+@media print{.bar,.nav,.ai-fab,.toast{display:none!important;}.view{display:none!important;}.view.on{display:block!important;}}
 </style>
 </head>
 <body>
@@ -915,24 +894,24 @@ h1.print-hd{display:none}
 <div class="bar"><div><div class="bar-brand">Ecolab <span>Mandra</span></div><div class="bar-sub" id="bar-date"></div></div><div class="bar-right"><div class="topbar-search" id="topbar-search">
       <span class="tsearch-icon">🔍</span>
       <input type="text" class="tsearch-input" id="search-input" placeholder="Search..." autocomplete="off" autocorrect="off" spellcheck="false">
-      <button class="tsearch-clear" id="search-clear">✕</button>
+      <button class="tsearch-clear" id="search-clear" onclick="document.getElementById('search-input').value='';this.classList.remove('visible')">✕</button>
       <div class="search-results" id="search-results"></div>
     </div>
-    <div class="sw"><button class="ibtn" id="btn-settings">⚙️ Settings</button><div class="ndot" id="ndot"></div></div></div></div>
+    <div class="sw"><button class="ibtn" id="btn-settings" onclick="openM('m-settings')">⚙️ Settings</button><div class="ndot" id="ndot"></div></div></div></div>
 <div class="nav">
   <button class="nb on" data-view="dashboard">📊 Dashboard</button>
-  <button class="nb" data-view="systems">🌐 Systems</button>
+  <button class="nb" data-view="analytics">📈 Analytics</button>
   <button class="nb" data-view="equipment">🏭 Equipment</button>
-  <button class="nb" data-view="pm">🔧 PM Plans</button>
-  <button class="nb" data-view="corrective">🛠️ Corrective</button>
+  <button class="nb" data-view="pm">🔧 PM Log</button>
   <button class="nb" data-view="breakdowns">⚡ Breakdowns</button>
   <button class="nb" data-view="gemba">🔍 Gemba</button>
-  <button class="nb" data-view="inventory">📦 Inventory</button>
-  <button class="nb" data-view="suppliers">🤝 Suppliers</button>
-  <button class="nb" data-view="analytics">📈 Analytics</button>
-  <button class="nb" data-view="reports">📋 Reports</button>
   <button class="nb" data-view="schedule">📅 Schedule</button>
+  <button class="nb" data-view="suppliers">🤝 Suppliers</button>
   <button class="nb" data-view="portfolio">🏆 Portfolio</button>
+  <button class="nb" data-view="reports">📋 Reports</button>
+  <button class="nb" data-view="systems">🌐 Systems</button>
+  <button class="nb" data-view="corrective">🛠️ Corrective</button>
+  <button class="nb" data-view="inventory">📦 Inventory</button>
 </div>
 <div id="view-dashboard" class="view on">
 <h1 class="print-hd">Ecolab Mandra — Maintenance Dashboard</h1>
@@ -952,10 +931,10 @@ h1.print-hd{display:none}
 <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:13px;color:var(--t2)">Closure Rate</span><span id="k-carl" style="font-family:var(--mono);font-size:13px;color:var(--acc)">—</span></div>
 <div class="pbar"><div class="pfill" id="carl-bar" style="background:var(--acc);width:0%"></div></div>
 <div class="div"></div>
-<div style="font-size:10px;color:var(--t3);text-align:center;padding:6px 0">KPIs auto-calculated from your data</div>
+<button class="btn btn-s" id="btn-kpi" style="font-size:12px;padding:10px">✏️ Update Monthly KPIs</button>
 </div>
 <div class="card"><div class="card-hd">Επόμενες Εκκρεμότητες — 7 ημέρες</div><div id="upcoming"></div></div>
-<div class="card"><div class="card-hd">Active Projects</div><div id="proj-list"></div><button class="btn btn-s btn-sm" id="btn-proj" style="margin-top:8px;width:100%;padding:10px;font-size:12px">+ Add Project</button></div>
+<div class="card"><div class="card-hd">Active Projects</div><div id="proj-list"></div><button class="btn btn-s btn-sm" id="btn-proj" style="margin-top:8px;width:100%;padding:10px;font-size:12px" onclick="openM('m-proj')">+ Add Project</button></div>
 <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div class="card-hd" style="margin:0">Recent Gemba</div><button class="btn btn-s btn-sm" data-goto="gemba">View all</button></div><div id="recent-g"></div></div>
 </div>
 <div id="view-analytics" class="view">
@@ -967,19 +946,20 @@ h1.print-hd{display:none}
 <div class="chart-wrap"><div class="chart-title">🔍 Gemba Findings by Area</div><div class="area-bar-wrap" id="chart-gemba-area"></div></div>
 </div>
 <div id="view-equipment" class="view">
-<div class="ph"><div class="ph-title">Equipment Register</div><button class="btn btn-p btn-sm" id="btn-eq">+ Asset</button></div>
+<div class="ph"><div class="ph-title">Equipment Register</div><button class="btn btn-p btn-sm" id="btn-eq" onclick="openEqModal(-1)">+ Asset</button></div>
 <div class="xbar"><span class="xbar-label">Export</span><button class="xbtn xbtn-pdf" data-export="equipment-pdf">📄 PDF</button><button class="xbtn xbtn-csv" data-export="equipment-csv">📊 CSV</button></div>
+<div style="display:flex;gap:5px;flex-wrap:nowrap;padding:0 16px 6px;overflow-x:auto;-webkit-overflow-scrolling:touch"><button class="fb on" onclick="eqFilt='all';document.querySelectorAll('[data-eqft]').forEach(function(b){b.classList.remove('on')});this.classList.add('on');renderEquipment()" data-eqft="all">All Types</button><button class="fb" onclick="eqFilt='pump';document.querySelectorAll('[data-eqft]').forEach(function(b){b.classList.remove('on')});this.classList.add('on');renderEquipment()" data-eqft="pump">💧 Pumps</button><button class="fb" onclick="eqFilt='motor';document.querySelectorAll('[data-eqft]').forEach(function(b){b.classList.remove('on')});this.classList.add('on');renderEquipment()" data-eqft="motor">⚡ Motors</button><button class="fb" onclick="eqFilt='valve';document.querySelectorAll('[data-eqft]').forEach(function(b){b.classList.remove('on')});this.classList.add('on');renderEquipment()" data-eqft="valve">🔴 Valves</button><button class="fb" onclick="eqFilt='hose';document.querySelectorAll('[data-eqft]').forEach(function(b){b.classList.remove('on')});this.classList.add('on');renderEquipment()" data-eqft="hose">🟡 Hoses</button><button class="fb" onclick="eqFilt='mixer';document.querySelectorAll('[data-eqft]').forEach(function(b){b.classList.remove('on')});this.classList.add('on');renderEquipment()" data-eqft="mixer">🌀 Mixers</button><button class="fb" onclick="eqFilt='vessel';document.querySelectorAll('[data-eqft]').forEach(function(b){b.classList.remove('on')});this.classList.add('on');renderEquipment()" data-eqft="vessel">🛢 Tanks</button><button class="fb" onclick="eqFilt='other';document.querySelectorAll('[data-eqft]').forEach(function(b){b.classList.remove('on')});this.classList.add('on');renderEquipment()" data-eqft="other">🔧 Other</button></div><div id="eq-area-chips" style="display:flex;gap:5px;flex-wrap:nowrap;padding:0 16px 10px;overflow-x:auto;-webkit-overflow-scrolling:touch"><button class="fb on">📍 All Areas</button></div>
 <div class="frow" id="eq-filters"></div>
 <div id="eq-list"></div>
 </div>
 <div id="view-pm" class="view">
-<div class="ph"><div class="ph-title">PM Log</div><button class="btn btn-p btn-sm" id="btn-pm">+ PM</button></div>
+<div class="ph"><div class="ph-title">PM Log</div><button class="btn btn-p btn-sm" id="btn-pm" onclick="openM('m-pm')">+ PM</button></div>
 <div class="xbar"><span class="xbar-label">Export</span><button class="xbtn xbtn-pdf" data-export="pm-pdf">📄 PDF</button><button class="xbtn xbtn-csv" data-export="pm-csv">📊 CSV</button></div>
 <div class="frow"><button class="fb on" data-pmf="all">All</button><button class="fb" data-pmf="due">Scheduled</button><button class="fb" data-pmf="done">✅ Done</button><button class="fb" data-pmf="overdue">⚠️ Overdue</button></div>
 <div id="pm-list"></div>
 </div>
 <div id="view-breakdowns" class="view">
-<div class="ph"><div class="ph-title">Breakdown Log</div><button class="btn btn-p btn-sm" id="btn-bd">+ Breakdown</button></div>
+<div class="ph"><div class="ph-title">Breakdown Log</div><button class="btn btn-p btn-sm" id="btn-bd" onclick="openM('m-bd')">+ Breakdown</button></div>
 <div class="xbar"><span class="xbar-label">Export</span><button class="xbtn xbtn-pdf" data-export="bd-pdf">📄 PDF</button><button class="xbtn xbtn-csv" data-export="bd-csv">📊 CSV</button></div>
 <div class="kgrid-3" style="margin-bottom:12px">
 <div class="kpi kpi-sm" style="--kc:var(--r)"><div class="kpi-lbl">Total Breakdowns</div><div class="kpi-val" id="bd-total">0</div><div class="kpi-target">All time</div></div>
@@ -989,16 +969,16 @@ h1.print-hd{display:none}
 <div id="bd-list"></div>
 </div>
 <div id="view-gemba" class="view">
-<div class="ph"><div class="ph-title">Gemba Walks</div><button class="btn btn-p btn-sm" id="btn-gemba">+ Finding</button></div>
+<div class="ph"><div class="ph-title">Gemba Walks</div><button class="btn btn-p btn-sm" id="btn-gemba" onclick="openM('m-gemba')">+ Finding</button></div>
 <div class="xbar"><span class="xbar-label">Export</span><button class="xbtn xbtn-pdf" data-export="gemba-pdf">📄 PDF</button><button class="xbtn xbtn-csv" data-export="gemba-csv">📊 CSV</button></div>
 <div class="frow"><button class="fb on" data-gf="all">All</button><button class="fb" data-gf="open">Open</button><button class="fb" data-gf="high">🔴 High</button><button class="fb" data-gf="closed">✅ Closed</button></div>
 <div id="gemba-list"></div>
 </div>
 <div id="view-schedule" class="view">
-<div class="ph"><div class="ph-title">Schedule</div><button class="btn btn-p btn-sm" id="btn-sched">+ Task</button></div>
+<div class="ph"><div class="ph-title">Schedule</div><button class="btn btn-p btn-sm" id="btn-sched" onclick="document.getElementById('sc-date').value=TODAY;openM('m-sched')">+ Task</button></div>
 <div class="xbar"><span class="xbar-label">Export</span><button class="xbtn xbtn-pdf" data-export="schedule-pdf">📄 PDF</button><button class="xbtn xbtn-csv" data-export="schedule-csv">📊 CSV</button></div>
 <div class="cal-wrap">
-<div class="cal-nav"><button class="cal-btn" id="cal-prev">‹</button><div class="cal-title" id="cal-title"></div><button class="cal-btn" id="cal-next">›</button></div>
+<div class="cal-nav"><button class="cal-btn" id="cal-prev" onclick="calM--;if(calM<0){calM=11;calY--}renderCal()">‹</button><div class="cal-title" id="cal-title"></div><button class="cal-btn" id="cal-next" onclick="calM++;if(calM>11){calM=0;calY++}renderCal()">›</button></div>
 <div class="wkhd"><div class="wkl">Κυ</div><div class="wkl">Δε</div><div class="wkl">Τρ</div><div class="wkl">Τε</div><div class="wkl">Πε</div><div class="wkl">Πα</div><div class="wkl">Σα</div></div>
 <div class="cgrid" id="cal-grid"></div>
 <div class="cal-legend">
@@ -1011,7 +991,7 @@ h1.print-hd{display:none}
 <div id="sched-list"></div>
 </div>
 <div id="view-suppliers" class="view">
-<div class="ph"><div class="ph-title">Suppliers</div><button class="btn btn-p btn-sm" id="btn-sup">+ Supplier</button></div>
+<div class="ph"><div class="ph-title">Suppliers</div><button class="btn btn-p btn-sm" id="btn-sup" onclick="openM('m-sup')">+ Supplier</button></div>
 <div class="xbar"><span class="xbar-label">Export</span><button class="xbtn xbtn-pdf" data-export="suppliers-pdf">📄 PDF</button><button class="xbtn xbtn-csv" data-export="suppliers-csv">📊 CSV</button></div>
 <div class="sup-sum">
 <div class="ss"><div class="ss-v" id="sup-cnt">0</div><div class="ss-l">Suppliers</div></div>
@@ -1021,10 +1001,10 @@ h1.print-hd{display:none}
 </div>
 <div class="frow"><button class="fb on" data-spf="all">All</button><button class="fb" data-spf="active">✅ Active</button><button class="fb" data-spf="eval">⏳ Eval</button></div>
 <div id="sup-list"></div>
-<div style="margin-top:12px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div style="font-family:var(--hd);font-size:16px">All Offers</div><button class="btn btn-p btn-sm" id="btn-offer">+ Offer</button></div><div id="offer-list"></div></div>
+<div style="margin-top:12px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div style="font-family:var(--hd);font-size:16px">All Offers</div><button class="btn btn-p btn-sm" id="btn-offer" onclick="openOfferModal(null)">+ Offer</button></div><div id="offer-list"></div></div>
 </div>
 <div id="view-portfolio" class="view">
-<div class="ph"><div class="ph-title">Portfolio</div><button class="btn btn-p btn-sm" id="btn-ach">+ Achievement</button></div>
+<div class="ph"><div class="ph-title">Portfolio</div><button class="btn btn-p btn-sm" id="btn-ach" onclick="openM('m-ach')">+ Achievement</button></div>
 <div class="xbar"><span class="xbar-label">Export</span><button class="xbtn xbtn-pdf" data-export="portfolio-pdf">📄 PDF</button><button class="xbtn xbtn-csv" data-export="portfolio-csv">📊 CSV</button></div>
 <div id="ach-list"></div>
 </div>
@@ -1037,8 +1017,8 @@ h1.print-hd{display:none}
 <div class="fg"><label class="fl">Month</label><input type="month" class="fi" id="rpt-month"></div>
 </div>
 <div style="display:flex;gap:8px">
-<button class="btn btn-p" id="btn-gen-rpt" style="flex:1">📊 Generate Report</button>
-<button class="btn btn-s btn-sm" id="btn-print-rpt" style="padding:12px 14px">🖨️</button>
+<button class="btn btn-p" id="btn-gen-rpt" style="flex:1" onclick="generateReport()">📊 Generate Report</button>
+<button class="btn btn-s btn-sm" id="btn-print-rpt" style="padding:12px 14px" onclick="printReport()">🖨️</button>
 </div>
 </div>
 <div id="report-preview"></div>
@@ -1052,14 +1032,14 @@ h1.print-hd{display:none}
 <div class="set-sec">🔔 PM Notifications</div>
 <div class="set-row"><div><div class="set-label">Ειδοποιήσεις</div><div class="set-desc">Banner για επερχόμενα PMs</div></div><label class="tog"><input type="checkbox" id="set-notif"><span class="tog-sl"></span></label></div>
 <div class="set-row"><div><div class="set-label">Προειδοποίηση (μέρες)</div></div><select class="fs" id="set-days" style="width:65px;padding:8px 10px"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="5">5</option><option value="7">7</option></select></div>
-<div class="set-row"><div><div class="set-label">Browser Notifications</div><div class="set-desc">Ειδοποιήσεις εκτός app</div></div><button class="btn btn-s btn-sm" id="set-perm-btn">Enable</button></div>
+<div class="set-row"><div><div class="set-label">Browser Notifications</div><div class="set-desc">Ειδοποιήσεις εκτός app</div></div><button class="btn btn-s btn-sm" id="set-perm-btn" onclick="reqNotif()">Enable</button></div>
 <div class="set-sec">📊 KPI Targets</div>
 <div class="fr"><div class="fg"><label class="fl">PM Rate (%)</label><input type="number" class="fi" id="set-pm-t" placeholder="95"></div><div class="fg"><label class="fl">Gemba Closed (%)</label><input type="number" class="fi" id="set-gm-t" placeholder="80"></div><div class="fg"><label class="fl">Max Breakdowns</label><input type="number" class="fi" id="set-bk-t" placeholder="3"></div></div>
-<button class="btn btn-p" id="save-settings-btn">Save Settings</button>
+<button class="btn btn-p" id="save-settings-btn" onclick="saveSettings()">Save Settings</button>
 <div class="set-sec">💾 Backup & Restore</div>
 <div class="exp-grid">
-<div class="exp-card" id="backup-btn"><div class="exp-ico">💾</div><div class="exp-lbl">Backup</div><div class="exp-sub">JSON file</div></div>
-<div class="exp-card" id="restore-wrap"><div class="exp-ico">📥</div><div class="exp-lbl">Restore</div><div class="exp-sub">From backup</div></div>
+<div class="exp-card" id="backup-btn" onclick="doBackup()"><div class="exp-ico">💾</div><div class="exp-lbl">Backup</div><div class="exp-sub">JSON file</div></div>
+<div class="exp-card" id="restore-wrap" onclick="document.getElementById('restore-file').click()"><div class="exp-ico">📥</div><div class="exp-lbl">Restore</div><div class="exp-sub">From backup</div></div>
 </div>
 <input type="file" id="restore-file" accept=".json" style="display:none">
 <div class="set-sec">🤖 AI Assistant</div>
@@ -1068,9 +1048,9 @@ h1.print-hd{display:none}
   <button class="btn btn-s btn-sm" onclick="localStorage.removeItem('gemini_key');AI_KEY='';document.getElementById('ai-key-status').textContent='Not connected';toast('API key cleared');">Reset</button>
 </div>
 <div class="set-sec">🗑️ Data</div>
-<div class="set-row"><div><div class="set-label">Clear All Data</div><div class="set-desc">Deletes everything</div></div><button class="btn btn-d btn-sm" id="clear-btn">Reset</button></div>
+<div class="set-row"><div><div class="set-label">Clear All Data</div><div class="set-desc">Deletes everything</div></div><button class="btn btn-d btn-sm" id="clear-btn" onclick="doClear()">Reset</button></div>
 <div style="height:8px"></div>
-<button class="btn btn-s" id="close-settings-btn">Close</button>
+<button class="btn btn-s" id="close-settings-btn" onclick="closeM('m-settings')">Close</button>
 </div></div>
 
 <!-- EQUIPMENT MODAL -->
@@ -1136,13 +1116,19 @@ h1.print-hd{display:none}
         <input type="date" class="fi" id="eq-next">
       </div>
     </div>
-
+    <div class="fg"><label class="fl">PM Frequency</label>
+      <select class="fs" id="eq-pm-freq">
+        <option value="">— Not scheduled —</option>
+        <option value="weekly">Weekly</option><option value="monthly">Monthly</option>
+        <option value="quarterly">Quarterly</option><option value="annual">Annual</option>
+      </select>
+    </div>
     <div class="fg"><label class="fl">Notes / Location Details</label>
       <textarea class="ft" id="eq-notes" placeholder="Location, P&ID reference, specs, history..." style="min-height:60px"></textarea>
     </div>
-    <button class="btn btn-p" id="save-eq-btn">Save Asset</button>
+    <button class="btn btn-p" id="save-eq-btn" onclick="saveEq()">Save Asset</button>
     <div style="height:8px"></div>
-    <button class="btn btn-s" id="close-eq-btn">Cancel</button>
+    <button class="btn btn-s" id="close-eq-btn" onclick="closeM('m-eq')">Cancel</button>
   </div>
 </div>
 
@@ -1171,7 +1157,6 @@ h1.print-hd{display:none}
     <div class="eq-section">
       <div class="eq-section-title">📅 Maintenance Timeline</div>
       <div id="eqd-timeline"></div>
-      <div style="margin-top:16px"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:8px">📎 Attachments</div><div id="eqd-attach-list" class="attach-list"></div></div>
     </div>
     <div style="padding:14px 16px 0">
       <button class="btn btn-s" onclick="exportEqReport()" style="margin-bottom:8px">📄 Export Asset Report (PDF)</button>
@@ -1206,8 +1191,8 @@ h1.print-hd{display:none}
 <div class="fr"><div class="fg"><label class="fl">Frequency</label><select class="fs" id="pm-freq"><option>Weekly</option><option>Monthly</option><option>Quarterly</option><option>Annual</option></select></div><div class="fg"><label class="fl">Scheduled Date</label><input type="date" class="fi" id="pm-sched"></div></div>
 <div class="fg"><label class="fl">Carl Source WO#</label><input type="text" class="fi" id="pm-wo" placeholder="WO-XXX"></div>
 <div class="fg"><label class="fl">Notes / Findings</label><textarea class="ft" id="pm-notes" style="min-height:55px" placeholder="Observations..."></textarea></div>
-<button class="btn btn-p" id="save-pm-btn">Save PM</button>
-<div style="height:8px"></div><button class="btn btn-s" id="close-pm-btn">Cancel</button>
+<button class="btn btn-p" id="save-pm-btn" onclick="savePM()">Save PM</button>
+<div style="height:8px"></div><button class="btn btn-s" id="close-pm-btn" onclick="closeM('m-pm')">Cancel</button>
 </div></div>
 
 <!-- BREAKDOWN MODAL -->
@@ -1243,8 +1228,8 @@ h1.print-hd{display:none}
 <div class="fg"><label class="fl">Description</label><textarea class="ft" id="bd-desc" placeholder="What happened? What were the symptoms?" style="min-height:65px"></textarea></div>
 <div class="fg"><label class="fl">Resolution / Action Taken</label><textarea class="ft" id="bd-resolution" placeholder="How was it fixed?" style="min-height:55px"></textarea></div>
 <div class="fg"><label class="fl">Cost (€) — optional</label><input type="number" class="fi" id="bd-cost" placeholder="0.00" step="0.01" min="0"></div>
-<button class="btn btn-p" id="save-bd-btn">Log Breakdown</button>
-<div style="height:8px"></div><button class="btn btn-s" id="close-bd-btn">Cancel</button>
+<button class="btn btn-p" id="save-bd-btn" onclick="saveBd()">Log Breakdown</button>
+<div style="height:8px"></div><button class="btn btn-s" id="close-bd-btn" onclick="closeM('m-bd')">Cancel</button>
 </div></div>
 
 <!-- GEMBA MODAL -->
@@ -1271,8 +1256,8 @@ h1.print-hd{display:none}
 <div class="fg"><label class="fl">Finding Description *</label><textarea class="ft" id="g-desc" placeholder="Describe what you observed..."></textarea></div>
 <div class="fg"><label class="fl">Action Required</label><input type="text" class="fi" id="g-action" placeholder="What needs to be done?"></div>
 <div class="fr"><div class="fg"><label class="fl">Due Date</label><input type="date" class="fi" id="g-due"></div><div class="fg"><label class="fl">Carl Source WO#</label><input type="text" class="fi" id="g-wo" placeholder="WO-XXX"></div></div>
-<button class="btn btn-p" id="save-gemba-btn">Save Finding</button>
-<div style="height:8px"></div><button class="btn btn-s" id="close-gemba-btn">Cancel</button>
+<button class="btn btn-p" id="save-gemba-btn" onclick="saveGemba()">Save Finding</button>
+<div style="height:8px"></div><button class="btn btn-s" id="close-gemba-btn" onclick="closeM('m-gemba')">Cancel</button>
 </div></div>
 
 <!-- SCHEDULE MODAL -->
@@ -1300,8 +1285,8 @@ h1.print-hd{display:none}
 </select></div>
 <div class="fg"><label class="fl">Recurrence</label><select class="fs" id="sc-recur"><option value="none">None</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option></select></div>
 <div class="fg"><label class="fl">Notes</label><textarea class="ft" id="sc-notes" style="min-height:55px" placeholder="Details..."></textarea></div>
-<button class="btn btn-p" id="save-sched-btn">Save Task</button>
-<div style="height:8px"></div><button class="btn btn-s" id="close-sched-btn">Cancel</button>
+<button class="btn btn-p" id="save-sched-btn" onclick="saveSched()">Save Task</button>
+<div style="height:8px"></div><button class="btn btn-s" id="close-sched-btn" onclick="closeM('m-sched')">Cancel</button>
 </div></div>
 
 <!-- SUPPLIER MODAL -->
@@ -1319,8 +1304,8 @@ h1.print-hd{display:none}
 <div class="fr"><div class="fg"><label class="fl">Price / Value</label><input type="number" class="fi" id="sup-sp" placeholder="1-5" min="1" max="5"></div><div class="fg"><label class="fl">Communication</label><input type="number" class="fi" id="sup-sc" placeholder="1-5" min="1" max="5"></div></div>
 </div>
 <div class="fg"><label class="fl">Notes</label><textarea class="ft" id="sup-notes" style="min-height:55px" placeholder="Agreements, comments..."></textarea></div>
-<button class="btn btn-p" id="save-sup-btn">Save Supplier</button>
-<div style="height:8px"></div><button class="btn btn-s" id="close-sup-btn">Cancel</button>
+<button class="btn btn-p" id="save-sup-btn" onclick="saveSup()">Save Supplier</button>
+<div style="height:8px"></div><button class="btn btn-s" id="close-sup-btn" onclick="closeM('m-sup')">Cancel</button>
 </div></div>
 
 <!-- OFFER MODAL -->
@@ -1334,8 +1319,8 @@ h1.print-hd{display:none}
 <div class="fr"><div class="fg"><label class="fl">Offer Date</label><input type="date" class="fi" id="off-date"></div><div class="fg"><label class="fl">Valid Until</label><input type="date" class="fi" id="off-valid"></div></div>
 <div class="fr"><div class="fg"><label class="fl">Category</label><select class="fs" id="off-cat"><option>Spare Parts</option><option>Chemicals</option><option>Equipment</option><option>Services</option><option>Consumables</option><option>Other</option></select></div><div class="fg"><label class="fl">Status</label><select class="fs" id="off-status"><option value="pending">⏳ Pending</option><option value="approved">✅ Approved</option><option value="rejected">❌ Rejected</option><option value="ordered">📦 Ordered</option></select></div></div>
 <div class="fg"><label class="fl">Notes</label><textarea class="ft" id="off-notes" style="min-height:50px" placeholder="Price comparison, comments..."></textarea></div>
-<button class="btn btn-p" id="save-offer-btn">Save Offer</button>
-<div style="height:8px"></div><button class="btn btn-s" id="close-offer-btn">Cancel</button>
+<button class="btn btn-p" id="save-offer-btn" onclick="saveOffer()">Save Offer</button>
+<div style="height:8px"></div><button class="btn btn-s" id="close-offer-btn" onclick="closeM('m-offer')">Cancel</button>
 </div></div>
 
 <!-- KPI MODAL -->
@@ -1346,8 +1331,8 @@ h1.print-hd{display:none}
 <div class="fg"><label class="fl">Month</label><input type="month" class="fi" id="kpi-month"></div>
 <div class="fr"><div class="fg"><label class="fl">PM Completion (%)</label><input type="number" class="fi" id="kpi-pm" min="0" max="100" placeholder="0–100"></div><div class="fg"><label class="fl">Overdue PMs</label><input type="number" class="fi" id="kpi-od" min="0" placeholder="0"></div></div>
 <div class="fr"><div class="fg"><label class="fl">Breakdowns</label><input type="number" class="fi" id="kpi-bd" min="0" placeholder="0"></div><div class="fg"><label class="fl">Carl Closure (%)</label><input type="number" class="fi" id="kpi-carl" min="0" max="100" placeholder="0–100"></div></div>
-<button class="btn btn-p" id="save-kpi-btn">Update Dashboard</button>
-<div style="height:8px"></div><button class="btn btn-s" id="close-kpi-btn">Cancel</button>
+<button class="btn btn-p" id="save-kpi-btn" onclick="saveKPI()">Update Dashboard</button>
+<div style="height:8px"></div><button class="btn btn-s" id="close-kpi-btn" onclick="closeM('m-kpi')">Cancel</button>
 </div></div>
 
 <!-- PROJECT MODAL -->
@@ -1358,8 +1343,8 @@ h1.print-hd{display:none}
 <div class="fg"><label class="fl">Project Name *</label><input type="text" class="fi" id="proj-name" placeholder="π.χ. Carl Source Integration"></div>
 <div class="fr"><div class="fg"><label class="fl">% Complete</label><input type="number" class="fi" id="proj-pct" min="0" max="100" placeholder="0"></div><div class="fg"><label class="fl">Due Date</label><input type="date" class="fi" id="proj-due"></div></div>
 <div class="fr"><div class="fg"><label class="fl">Priority</label><select class="fs" id="proj-prio"><option value="high">🔴 High</option><option value="medium">🟡 Medium</option><option value="low">🟢 Low</option></select></div><div class="fg"><label class="fl">Status</label><select class="fs" id="proj-status"><option value="active">🔄 In Progress</option><option value="done">✅ Done</option><option value="planned">⏳ Planned</option></select></div></div>
-<button class="btn btn-p" id="save-proj-btn">Save Project</button>
-<div style="height:8px"></div><button class="btn btn-s" id="close-proj-btn">Cancel</button>
+<button class="btn btn-p" id="save-proj-btn" onclick="saveProj()">Save Project</button>
+<div style="height:8px"></div><button class="btn btn-s" id="close-proj-btn" onclick="closeM('m-proj')">Cancel</button>
 </div></div>
 
 <!-- ACHIEVEMENT MODAL -->
@@ -1372,8 +1357,8 @@ h1.print-hd{display:none}
 <div class="fg"><label class="fl">Quantified Impact</label><input type="text" class="fi" id="ach-impact" placeholder="π.χ. Reduced downtime by 20%"></div>
 <div class="fg"><label class="fl">Completion Rate (%)</label><input type="number" class="fi" id="ach-rate" placeholder="0–100" min="0" max="100"></div>
 <div class="fg"><label class="fl">Evidence / Source</label><input type="text" class="fi" id="ach-evidence" placeholder="π.χ. Carl Source report, Excel file"></div>
-<button class="btn btn-p" id="save-ach-btn">Save Achievement</button>
-<div style="height:8px"></div><button class="btn btn-s" id="close-ach-btn">Cancel</button>
+<button class="btn btn-p" id="save-ach-btn" onclick="saveAch()">Save Achievement</button>
+<div style="height:8px"></div><button class="btn btn-s" id="close-ach-btn" onclick="closeM('m-ach')">Cancel</button>
 </div></div>
 
 
@@ -1383,18 +1368,12 @@ h1.print-hd{display:none}
   <div class="ph">
     <div class="ph-title">Systems & P&IDs</div>
     <div style="display:flex;gap:6px">
-      <button class="btn btn-s btn-sm" id="btn-add-sys">+ System</button>
+      <button class="btn btn-s btn-sm" id="btn-add-sys" onclick="openAddSys()">+ System</button>
     </div>
   </div>
   <div id="sys-tree" class="sys-tree"></div>
 </div>
 
-<!-- Attachment Viewer -->
-<div class="attach-viewer" id="attach-viewer">
-  <button style="position:absolute;top:20px;right:20px;background:none;border:none;color:#fff;font-size:28px;cursor:pointer" id="attach-viewer-close">✕</button>
-  <img id="attach-viewer-img" src="" alt="">
-  <div id="attach-viewer-name" style="color:rgba(255,255,255,.6);font-size:12px;margin-top:10px"></div>
-</div>
 <!-- P&ID CANVAS OVERLAY -->
 <div class="pid-overlay" id="pid-overlay">
   <div class="pid-topbar">
@@ -1441,17 +1420,17 @@ h1.print-hd{display:none}
     <div class="fg"><label class="fl">Notes</label>
       <textarea class="ft" id="sys-notes" style="min-height:55px" placeholder="Description, P&ID reference..."></textarea>
     </div>
-    <button class="btn btn-p" id="save-sys-btn">Save System</button>
+    <button class="btn btn-p" id="save-sys-btn" onclick="saveSys()">Save System</button>
     <div style="height:8px"></div>
     <button class="btn btn-d btn-sm" id="del-sys-btn" style="display:none;width:100%">Delete System</button>
     <div style="height:6px"></div>
-    <button class="btn btn-s" id="close-sys-btn">Cancel</button>
+    <button class="btn btn-s" id="close-sys-btn" onclick="closeM('m-sys')">Cancel</button>
   </div>
 </div>
 
 <!-- ═══ CORRECTIVE MAINTENANCE ═══ -->
 <div id="view-corrective" class="view">
-  <div class="ph"><div class="ph-title">Corrective Maintenance</div><button class="btn btn-p btn-sm" id="btn-cm">+ CM Task</button></div>
+  <div class="ph"><div class="ph-title">Corrective Maintenance</div><button class="btn btn-p btn-sm" id="btn-cm" onclick="document.getElementById('cm-source-banner').style.display='none';openM('m-cm')">+ CM Task</button></div>
   <div class="xbar"><span class="xbar-label">Export</span><button class="xbtn xbtn-pdf" data-export="cm-pdf">📄 PDF</button><button class="xbtn xbtn-csv" data-export="cm-csv">📊 CSV</button></div>
   <div class="cm-kpis">
     <div class="kpi kpi-sm" style="--kc:var(--r)"><div class="kpi-lbl">Open CMs</div><div class="kpi-val" id="cm-open">0</div><div class="kpi-target">Needs action</div></div>
@@ -1471,7 +1450,7 @@ h1.print-hd{display:none}
 
 <!-- ═══ INVENTORY ═══ -->
 <div id="view-inventory" class="view">
-  <div class="ph"><div class="ph-title">Spare Parts & Inventory</div><button class="btn btn-p btn-sm" id="btn-inv">+ Part</button></div>
+  <div class="ph"><div class="ph-title">Spare Parts & Inventory</div><button class="btn btn-p btn-sm" id="btn-inv" onclick="openM('m-inv')">+ Part</button></div>
   <div class="xbar"><span class="xbar-label">Export</span><button class="xbtn xbtn-pdf" data-export="inv-pdf">📄 PDF</button><button class="xbtn xbtn-csv" data-export="inv-csv">📊 CSV</button></div>
   <div class="inv-sum">
     <div class="ss"><div class="ss-v" id="inv-total">0</div><div class="ss-l">Total Parts</div></div>
@@ -1535,8 +1514,8 @@ h1.print-hd{display:none}
     <div class="fg"><label class="fl">Spare Parts Needed</label><input type="text" class="fi" id="cm-parts" placeholder="π.χ. Seal kit ref. SK-204, O-ring 50mm"></div>
     <div class="fg"><label class="fl">Estimated Cost (€)</label><input type="number" class="fi" id="cm-cost" placeholder="0.00" step="0.01" min="0"></div>
     <div class="fg"><label class="fl">Resolution / Action Taken</label><textarea class="ft" id="cm-resolution" placeholder="How was it resolved? (fill when closing)" style="min-height:55px"></textarea></div>
-    <button class="btn btn-p" id="save-cm-btn">Save CM Task</button>
-    <div style="height:8px"></div><button class="btn btn-s" id="close-cm-btn">Cancel</button>
+    <button class="btn btn-p" id="save-cm-btn" onclick="saveCM()">Save CM Task</button>
+    <div style="height:8px"></div><button class="btn btn-s" id="close-cm-btn" onclick="closeM('m-cm')">Cancel</button>
   </div>
 </div>
 
@@ -1574,8 +1553,8 @@ h1.print-hd{display:none}
       <div class="fg"><label class="fl">Supplier</label><select class="fs" id="inv-sup"><option value="">— None —</option></select></div>
     </div>
     <div class="fg"><label class="fl">Notes</label><textarea class="ft" id="inv-notes" style="min-height:55px" placeholder="Lead time, alternatives, specs..."></textarea></div>
-    <button class="btn btn-p" id="save-inv-btn">Save Part</button>
-    <div style="height:8px"></div><button class="btn btn-s" id="close-inv-btn">Cancel</button>
+    <button class="btn btn-p" id="save-inv-btn" onclick="saveInv()">Save Part</button>
+    <div style="height:8px"></div><button class="btn btn-s" id="close-inv-btn" onclick="closeM('m-inv')">Cancel</button>
   </div>
 </div>
 
@@ -1597,8 +1576,8 @@ h1.print-hd{display:none}
       <div class="fg"><label class="fl">Quantity</label><input type="number" class="fi" id="stock-qty" placeholder="1" min="1" value="1"></div>
     </div>
     <div class="fg"><label class="fl">Reference (WO# or note)</label><input type="text" class="fi" id="stock-ref" placeholder="π.χ. WO-042 or PO-2025-001"></div>
-    <button class="btn btn-p" id="save-stock-btn">Confirm Movement</button>
-    <div style="height:8px"></div><button class="btn btn-s" id="close-stock-btn">Cancel</button>
+    <button class="btn btn-p" id="save-stock-btn" onclick="saveStockMovement()">Confirm Movement</button>
+    <div style="height:8px"></div><button class="btn btn-s" id="close-stock-btn" onclick="closeM('m-stock')">Cancel</button>
   </div>
 </div>
 
@@ -1643,7 +1622,7 @@ h1.print-hd{display:none}
 
 
 <!-- AI FLOATING BUTTON -->
-<button class="ai-fab" id="ai-fab" title="Ask AI">
+<button class="ai-fab" id="ai-fab" title="Ask AI" onclick="openAI()">
   ✨
 </button>
 
@@ -1658,7 +1637,7 @@ h1.print-hd{display:none}
           <div class="ai-status" id="ai-status-lbl">Powered by Gemini</div>
         </div>
       </div>
-      <button class="ai-close-btn" id="ai-close">✕</button>
+      <button class="ai-close-btn" id="ai-close" onclick="document.getElementById('ai-overlay').classList.remove('on')">✕</button>
     </div>
 
     <!-- Setup screen (no API key) -->
@@ -1667,7 +1646,7 @@ h1.print-hd{display:none}
       <div class="ai-setup-title">Σύνδεση Gemini AI</div>
       <div class="ai-setup-desc">Χρειάζεσαι δωρεάν Google Gemini API key.<br>Πλήρως δωρεάν — χωρίς κάρτα.</div>
       <input type="text" class="ai-key-input" id="ai-key-input" placeholder="Paste your Gemini API key here...">
-      <button class="btn btn-p" id="ai-save-key" style="margin-bottom:10px">✓ Αποθήκευση & Σύνδεση</button>
+      <button class="btn btn-p" id="ai-save-key" style="margin-bottom:10px" onclick="var k=document.getElementById('ai-key-input').value.trim();if(k){AI_KEY=k;localStorage.setItem('gemini_key',k);showAIChat();aiWelcome()}">✓ Αποθήκευση & Σύνδεση</button>
       <div>
         <a href="https://aistudio.google.com/app/apikey" target="_blank" class="ai-link">🔗 Πάρε δωρεάν API key από aistudio.google.com</a>
       </div>
@@ -1686,7 +1665,7 @@ h1.print-hd{display:none}
       </div>
       <div class="ai-input-wrap">
         <textarea class="ai-input" id="ai-input" placeholder="Ρώτα με ό,τι θέλεις..." rows="1"></textarea>
-        <button class="ai-send" id="ai-send">➤</button>
+        <button class="ai-send" id="ai-send" onclick="sendAIMsg().catch(function(){})">➤</button>
       </div>
     </div>
   </div>
@@ -2119,7 +2098,7 @@ var S={
   months:{} // monthly PM data: {"2025-04":{pm:95,od:0,bd:1,carl:88}}
 };
 var CFG={notif:true,days:3,pmT:95,gmT:80,bkT:3};
-var gFilt='all',pmFilt='all',sFilt='all',spFilt='all';
+var gFilt='all',pmFilt='all',sFilt='all',spFilt='all',eqFilt='all',eqAreaFilt='all';
 var calY,calM;
 var TODAY=new Date().toISOString().split('T')[0];
 var now=new Date();
@@ -2213,75 +2192,7 @@ function renderAll(){
 }
 
 // ══ DASHBOARD ══
-
-function seedSampleData(){
-  if(localStorage.getItem('em_seeded_v5'))return;
-  S.equipment=[
-    {id:'eq1',name:'Pump P-101',area:'20L A',type:'pump',subtype:'Centrifugal',tag:'P-101',carl_id:'EQ-001',model:'Grundfos CM5-4',serial:'GF2024-001',crit:'A',status:'operational',install_date:'2022-03-15',specs:{power:'5.5kW',flow:'12m³/h',head:'28m'},notes:'Main product transfer pump'},
-    {id:'eq2',name:'Motor M-201',area:'Mixers',type:'motor',subtype:'Electric AC',tag:'M-201',carl_id:'EQ-003',model:'ABB M2AA100',serial:'ABB2023-003',crit:'A',status:'operational',install_date:'2021-06-10',specs:{power:'7.5kW',volt:'400V',rpm:'1450'},notes:'Mixer 1 drive motor'},
-    {id:'eq3',name:'Mixer AGT-1',area:'Mixers',type:'mixer',subtype:'Propeller',tag:'AGT-1',carl_id:'EQ-004',model:'Chemineer HE-3',serial:'CH2021-004',crit:'A',status:'operational',install_date:'2021-06-10',specs:{power:'7.5kW',vol:'15m³'},notes:'15m³ mixing tank'},
-    {id:'eq4',name:'Valve V-301',area:'WWTP',type:'valve',subtype:'Butterfly',tag:'V-301',carl_id:'EQ-005',model:'Crane BF2-4',serial:'CR2022-005',crit:'B',status:'maintenance',install_date:'2022-01-20',specs:{size:'DN100',press:'10bar'},notes:'Effluent control — seal replacement pending'},
-    {id:'eq5',name:'Compressor C-401',area:'Outside',type:'compressor',subtype:'Screw',tag:'C-401',carl_id:'EQ-006',model:'Atlas Copco GA15',serial:'AC2020-006',crit:'A',status:'operational',install_date:'2020-09-01',specs:{power:'15kW',press:'8bar'},notes:'Plant air compressor'},
-    {id:'eq6',name:'Tank TK-801',area:'RM Tanks',type:'vessel',subtype:'Storage Tank',tag:'TK-801',carl_id:'EQ-010',model:'SS316L',serial:'TK2019-010',crit:'A',status:'operational',install_date:'2019-06-01',specs:{vol:'50m³',mat:'SS316L'},notes:'Raw material storage'}
-  ];
-  S.pms=[
-    {area:'Mixers',equip:'Mixer AGT-1',type:'Monthly inspection + lubrication',freq:'Monthly',sched:'2025-04-15',wo:'WO-041',notes:'Check impeller, seals, gearbox oil',status:'scheduled',operations:[{text:'Check impeller for wear',done:false},{text:'Lubricate shaft bearing',done:false},{text:'Check gearbox oil level',done:false},{text:'Inspect mechanical seal',done:false}]},
-    {area:'20L A',equip:'Pump P-101',type:'Monthly inspection',freq:'Monthly',sched:'2025-04-20',wo:'WO-042',notes:'Check seals, impeller, flow rate',status:'scheduled',operations:[{text:'Check mechanical seal',done:false},{text:'Verify flow rate',done:false},{text:'Clean strainer',done:false}]},
-    {area:'Outside',equip:'Compressor C-401',type:'Quarterly service',freq:'Quarterly',sched:'2025-04-01',wo:'WO-043',notes:'Oil change, filter replacement',status:'done',completedDate:'2025-04-02',operations:[{text:'Change compressor oil',done:true},{text:'Replace air filter',done:true},{text:'Test safety relief valve',done:true}]}
-  ];
-  S.breakdowns=[
-    {equip:'Valve V-301',area:'WWTP',date:'2025-03-10',duration:'3.5',rca:'mechanical',description:'Butterfly disc stuck — partial flow restriction.',resolution:'Replaced EPDM seat ring, regreased shaft bearings.',cost:'185'},
-    {equip:'Pump P-101',area:'20L A',date:'2025-02-18',duration:'2.0',rca:'lack_pm',description:'Mechanical seal failed — product leakage. PM overdue by 3 weeks.',resolution:'Emergency seal replacement.',cost:'320'}
-  ];
-  S.gemba=[
-    {date:'2025-04-08',area:'WWTP',desc:'Oil drip from Valve V-301 actuator stem — 5ml/day.',priority:'medium',due:'2025-04-20',action:'Replace stem packing',wo:'WO-045',status:'open'},
-    {date:'2025-04-05',area:'20L A',desc:'Pump P-101 vibration elevated — 4.2mm/s vs baseline 2.8mm/s.',priority:'high',due:'2025-04-15',action:'Inspect bearings at next PM',wo:'WO-042',status:'open'},
-    {date:'2025-04-03',area:'Warehouse',desc:'FLT charger cable insulation frayed. Safety hazard.',priority:'high',due:'2025-04-07',action:'Replace charger cable',wo:'',status:'closed',closedDate:'2025-04-06'}
-  ];
-  S.cm=[
-    {equip:'Valve V-301',area:'WWTP',desc:'Replace actuator stem packing — oil weeping',priority:'medium',status:'open',date:'2025-04-20',wo:'WO-045',est_hrs:'2',parts:'Stem packing kit DN100',cost:'85',source:'gemba',createdDate:'2025-04-08'},
-    {equip:'Pump P-101',area:'20L A',desc:'Investigate elevated vibration — 4.2mm/s',priority:'high',status:'progress',date:'2025-04-15',wo:'WO-042',est_hrs:'3',parts:'Bearings if needed',cost:'',source:'gemba',createdDate:'2025-04-05'}
-  ];
-  S.sups=[
-    {id:'sup1',name:'Grundfos Hellas SA',cat:'Spare Parts',status:'active',contact:'210 6234500',delivery:'5',credit:'30',s_quality:5,s_delivery:4,s_price:3,s_communication:5,notes:'Preferred pump supplier'},
-    {id:'sup2',name:'Parker Hannifin Hellas',cat:'Spare Parts',status:'active',contact:'2310 556600',delivery:'7',credit:'30',s_quality:4,s_delivery:4,s_price:4,s_communication:4,notes:'Filters, hoses, fittings'}
-  ];
-  S.inv=[
-    {id:'inv1',name:'Mechanical Seal Kit CM5',ref:'GF-SEAL-CM5',equip:'Pump P-101',loc:'Shelf A1',cat:'Seals',qty:'2',min:'1',reorder:'3',cost:'145',notes:'Critical spare — Grundfos CM5'},
-    {id:'inv2',name:'VG46 Gearbox Oil 1L',ref:'OIL-VG46',equip:'Mixer AGT-1',loc:'Chemical Store',cat:'Lubricants',qty:'6',min:'3',reorder:'10',cost:'12',notes:'Monthly top-up'},
-    {id:'inv3',name:'Grease SKF LGEP2',ref:'SKF-LGEP2',equip:'Motor M-201',loc:'Shelf B1',cat:'Lubricants',qty:'0',min:'2',reorder:'5',cost:'22',notes:'OUT OF STOCK'}
-  ];
-  S.achs=[
-    {title:'Implemented digital Gemba Walk system',date:'2025-04-01',cat:'Systems',impact:'100% finding traceability',rate:'100',evidence:'Ecolab Mandra Maintenance App'},
-    {title:'Zero unplanned downtime in March 2025',date:'2025-03-31',cat:'Maintenance',impact:'PM compliance 91%',rate:'91',evidence:'Carl Source WO report March 2025'}
-  ];
-  S.kpis={pm:83,od:1,bd:1,carl:75};
-  S.months={'2025-02':{pm:85,od:1,bd:1,carl:75},'2025-03':{pm:91,od:0,bd:0,carl:82},'2025-04':{pm:83,od:1,bd:1,carl:75}};
-  var sysMap={'sys1':['eq2','eq3'],'sys5':['eq1'],'sys8':['eq4'],'sys10':['eq6'],'sys6':['eq5']};
-  if(Array.isArray(S.systems))S.systems.forEach(function(sys){if(sysMap[sys.id])sys.assets=sysMap[sys.id];});
-  localStorage.setItem('em_seeded_v5','1');
-  svS();
-}
-
-function autoCalcKPIs(){
-  try{
-    if(!Array.isArray(S.pms))return;
-    var month=new Date().toISOString().slice(0,7);
-    var mPMs=S.pms.filter(function(p){return(p.sched||'').slice(0,7)===month;});
-    var done=mPMs.filter(function(p){return p.status==='done';});
-    S.kpis=S.kpis||{};
-    S.kpis.pm=mPMs.length?Math.round(done.length/mPMs.length*100):null;
-    S.kpis.od=S.pms.filter(function(p){return p.status==='scheduled'&&p.sched<TODAY;}).length;
-    S.kpis.bd=Array.isArray(S.breakdowns)?S.breakdowns.filter(function(b){return(b.date||'').slice(0,7)===month;}).length:0;
-    var tw=S.pms.filter(function(p){return p.wo;}).length;
-    var dw=S.pms.filter(function(p){return p.wo&&p.status==='done';}).length;
-    S.kpis.carl=tw?Math.round(dw/tw*100):null;
-    S.months=S.months||{};
-    S.months[month]={pm:S.kpis.pm,od:S.kpis.od,bd:S.kpis.bd,carl:S.kpis.carl};
-  }catch(e){}
-}
 function renderDash(){
-  if(Array.isArray(S.pms)&&S.pms.length)autoCalcKPIs();
   var k=S.kpis,c=CFG;
   kpiSet('k-pm','k-pm-s',k.pm,'%',function(v){return v>=(c.pmT||95)?'ok':v>=(c.pmT||95)-15?'warn':'bad';},'✅ On Track','⚠️ Below Target');
   kpiSet('k-od','k-od-s',k.od,'',function(v){return v===0?'ok':'bad';},'✅ Zero','⚠️ Action Needed');
@@ -2494,30 +2405,6 @@ function renderPMEquipTags(){
     return'<span style="background:rgba(64,128,255,.15);border:1px solid rgba(64,128,255,.3);border-radius:6px;padding:4px 8px;font-size:12px;color:var(--acc);cursor:pointer;display:inline-flex;align-items:center;gap:4px" onclick="removePMEquip('+i+')">'+
       e+'<span style="opacity:.5;font-size:10px">✕</span></span>';
   }).join('');
-}
-
-var pmOpsList=[];
-function renderPMOpsList(){
-  var el=document.getElementById('pm-ops-list');if(!el)return;
-  if(!pmOpsList.length){el.innerHTML='<div style="color:var(--t4);font-size:11px;padding:4px 0">No operations added</div>';return;}
-  el.innerHTML=pmOpsList.map(function(op,i){
-    return '<div style="display:flex;align-items:center;gap:8px;background:var(--s3);border:1px solid var(--b2);border-radius:8px;padding:8px 10px">'
-      +'<span style="font-family:var(--mono);font-size:10px;color:var(--acc);width:16px;text-align:center;flex-shrink:0">'+(i+1)+'</span>'
-      +'<span style="flex:1;font-size:13px">'+op+'</span>'
-      +'<span style="cursor:pointer;color:var(--r);font-size:13px;flex-shrink:0" id="rm-op-'+i+'">✕</span>'
-      +'</div>';
-  }).join('');
-  pmOpsList.forEach(function(op,i){
-    var rm=document.getElementById('rm-op-'+i);
-    if(rm)rm.addEventListener('click',function(){pmOpsList.splice(i,1);renderPMOpsList();});
-  });
-}
-function addPMOp(){
-  var inp=document.getElementById('pm-op-input');
-  if(!inp||!inp.value.trim())return;
-  pmOpsList.push(inp.value.trim());
-  inp.value='';
-  renderPMOpsList();
 }
 function savePM(){
   var area=document.getElementById('pm-area').value;
@@ -2939,17 +2826,7 @@ function doClear(){if(!confirm('Delete ALL data? Cannot be undone.'))return;S={k
 // ══ EXPORT ══
 function doExport(type){
   var parts=type.split('-'),section=parts[0],format=parts[1];
-  if(format==='pdf'){
-    var allViews=document.querySelectorAll('.view');
-    var activeView=document.querySelector('.view.on');
-    allViews.forEach(function(v){if(v!==activeView)v.style.display='none';});
-    toast('Printing current view... 📄');
-    setTimeout(function(){
-      window.print();
-      setTimeout(function(){allViews.forEach(function(v){v.style.display='';});},800);
-    },300);
-    return;
-  }
+  if(format==='pdf'){toast('Opening print... 📄');setTimeout(function(){window.print();},400);return;}
   function toCSV(rows){return rows.map(function(r){return r.map(function(c){var s=String(c===null||c===undefined?'':c).replace(/"/g,'""');return(s.indexOf(',')>=0||s.indexOf('"')>=0||s.indexOf('\n')>=0)?'"'+s+'"':s;}).join(',');}).join('\n');}
   var csv='',name='EcolabMandra_'+section+'_'+TODAY;
   if(section==='pm')csv=toCSV([['Area','Equipment','PM Type','Frequency','Scheduled Date','Status','WO#','Notes','Completed Date']].concat(S.pms.map(function(p){return[p.area,p.equip,p.type,p.freq,p.sched,p.status,p.wo||'',p.notes||'',p.completedDate||''];})));
@@ -3003,7 +2880,7 @@ function initEvents(){
   var savers=[['save-eq-btn',saveEq],['save-pm-btn',savePM],['save-bd-btn',saveBd],['save-gemba-btn',saveGemba],['save-sched-btn',saveSched],['save-sup-btn',saveSup],['save-offer-btn',saveOffer],['save-kpi-btn',saveKPI],['save-proj-btn',saveProj],['save-ach-btn',saveAch],['save-settings-btn',saveSettings],['btn-gen-rpt',generateReport],['btn-print-rpt',printReport],['backup-btn',doBackup]];
   savers.forEach(function(pair){var btn=document.getElementById(pair[0]);if(btn)btn.addEventListener('click',pair[1]);});
   // CLOSE BTNS
-  ['eq','pm','bd','gemba','sched','sup','offer','kpi','proj','ach','settings','sys'].forEach(function(k){var btn=document.getElementById('close-'+k+'-btn');if(btn)btn.addEventListener('click',function(){closeM('m-'+k);});});
+  ['eq','pm','bd','gemba','sched','sup','offer','kpi','proj','ach','settings'].forEach(function(k){var btn=document.getElementById('close-'+k+'-btn');if(btn)btn.addEventListener('click',function(){closeM('m-'+k);});});
   // FILTER BTNS
   document.querySelectorAll('[data-pmf]').forEach(function(b){b.addEventListener('click',function(){pmFilt=b.dataset.pmf;document.querySelectorAll('[data-pmf]').forEach(function(x){x.classList.remove('on');});b.classList.add('on');renderPM();});});
   document.querySelectorAll('[data-gf]').forEach(function(b){b.addEventListener('click',function(){gFilt=b.dataset.gf;document.querySelectorAll('[data-gf]').forEach(function(x){x.classList.remove('on');});b.classList.add('on');renderGemba();});});
@@ -3044,8 +2921,7 @@ function initEvents(){
     openM('m-inv');
   });
   // Reset PM equip list when PM modal is opened
-  var addPmOp=document.getElementById('btn-add-pm-op');if(addPmOp)addPmOp.addEventListener('click',addPMOp);
-  var btnPm2=document.getElementById('btn-pm');if(btnPm2)btnPm2.addEventListener('click',function(){pmOpsList=[];renderPMOpsList();if(typeof pmEquipList!=='undefined'){pmEquipList=[];renderPMEquipTags();}if(typeof pmOpsList!=='undefined'){pmOpsList=[];renderPMOpsList();}resetEqPicker('pm');openM('m-pm');});
+  var btnPm2=document.getElementById('btn-pm');if(btnPm2)btnPm2.addEventListener('click',function(){if(typeof pmEquipList!=='undefined'){pmEquipList=[];renderPMEquipTags();}if(typeof pmOpsList!=='undefined'){pmOpsList=[];renderPMOpsList();}resetEqPicker('pm');openM('m-pm');});
   var btnBd2=document.getElementById('btn-bd');if(btnBd2)btnBd2.addEventListener('click',function(){resetEqPicker('bd');openM('m-bd');});
   var saveCmBtn=document.getElementById('save-cm-btn');if(saveCmBtn)saveCmBtn.addEventListener('click',saveCM);
   var saveInvBtn=document.getElementById('save-inv-btn');if(saveInvBtn)saveInvBtn.addEventListener('click',saveInv);
@@ -3119,20 +2995,15 @@ function svS(){
 
 // ── Load state ──
 async function ldAll(){
-  // Try encrypted first
-  if(cryptoKey&&typeof crypto!=='undefined'&&crypto.subtle){
-    try{
-      var enc=localStorage.getItem(DATA_KEY);
-      if(enc){
-        var dec=await decryptData(JSON.parse(enc),cryptoKey);
-        if(dec&&dec.S)Object.assign(S,dec.S);
-        return;
-      }
-    }catch(e){console.warn('Decrypt failed, using unencrypted',e);}
-  }
-  // Fallback: unencrypted
-  try{var d=lsG('em_s');if(d)Object.assign(S,d);}catch(e){}
-  try{var c=lsG('em_c');if(c)Object.assign(CFG,c);}catch(e){}
+  try{var d=JSON.parse(localStorage.getItem('em_s')||'null');if(d)Object.assign(S,d);}catch(e){}
+  try{var c=JSON.parse(localStorage.getItem('em_c')||'null');if(c)Object.assign(CFG,c);}catch(e){}
+  ['pms','breakdowns','gemba','sched','equipment','sups','offers','achs','cm','inv','projects'].forEach(function(k){
+    if(!Array.isArray(S[k]))S[k]=[];
+  });
+  if(!S.kpis||typeof S.kpis!=='object')S.kpis={};
+  if(!S.months||typeof S.months!=='object')S.months={};
+  if(!Array.isArray(S.systems))S.systems=[];
+  if(!S.equipment.length)localStorage.removeItem('em_seeded');
 }
 
 // ── PIN Setup ──
@@ -3336,32 +3207,7 @@ document.addEventListener('click',resetLockTimer);
 
 // ── Init Security ──
 async function initSecurity(){
-  if(typeof crypto==='undefined'||!crypto.subtle){
-    console.warn('crypto.subtle unavailable - requires HTTPS');
-    return true;
-  }
-  var hasPIN=localStorage.getItem(PIN_KEY);
-  var hasSession=sessionStorage.getItem(SESSION_KEY);
-  if(!hasPIN){
-    // First time — show setup
-    showLockScreen();
-    return false;
-  }
-  if(!hasSession){
-    // Locked — show unlock
-    showLockScreen();
-    return false;
-  }
-  // Session active — load data (already unlocked this session)
-  // Note: without crypto key we fall back to unencrypted
-  var saltArr=JSON.parse(localStorage.getItem(SALT_KEY)||'[]');
-  if(saltArr.length&&!cryptoKey){
-    // Need to re-derive key — but we don't have PIN in memory
-    // Show unlock screen to re-enter PIN for this session
-    sessionStorage.removeItem(SESSION_KEY);
-    showLockScreen();
-    return false;
-  }
+  // PIN disabled - Cloudflare Access handles auth
   return true;
 }
 
@@ -4014,7 +3860,7 @@ function hideTyping(){var t=document.getElementById('ai-typing');if(t)t.remove()
 
 
 // ══ EQUIPMENT TYPES & ENHANCED FUNCTIONS ══
-var EQ_TYPES={pump:{label:'Pump',icon:'💧',subtypes:['Centrifugal','Dosing','Peristaltic','Submersible','Gear','Diaphragm']},motor:{label:'Motor',icon:'⚡',subtypes:['Electric AC','Electric DC','Gearbox','Servo','Stepper']},valve:{label:'Valve',icon:'🔴',subtypes:['Ball','Butterfly','Check/NRV','Solenoid','PRV','Gate','Globe','Control']},hose:{label:'Hose/Coupling',icon:'🟡',subtypes:['Flexible Hose','Rigid Coupling','Expansion Joint','Camlock']},mixer:{label:'Mixer',icon:'🌀',subtypes:['Propeller','Paddle','Turbine','In-line','Static']},compressor:{label:'Compressor',icon:'💨',subtypes:['Reciprocating','Screw','Centrifugal','Vane']},heat_ex:{label:'Heat Exchanger',icon:'🌡️',subtypes:['Shell & Tube','Plate','Fin & Tube']},filter:{label:'Filter',icon:'🔘',subtypes:['Bag Filter','Cartridge','Y-Strainer','Self-Cleaning']},sensor:{label:'Sensor/Instrument',icon:'📡',subtypes:['Flow Meter','Pressure Gauge','Temp Sensor','Level Sensor','pH Meter','Conductivity']},conveyor:{label:'Conveyor',icon:'📦',subtypes:['Belt','Roller','Chain','Screw']},panel:{label:'Elec. Panel',icon:'⚙️',subtypes:['MCC','VFD/Inverter','PLC','Distribution Board','Starter']},vessel:{label:'Tank/Vessel',icon:'🛢',subtypes:['Storage Tank','Pressure Vessel','Buffer Tank','IBC']},other:{label:'Other',icon:'🔧',subtypes:['Custom']}};
+var EQ_TYPES={pump:{label:'Pump',icon:'💧',subtypes:['Centrifugal','Dosing','Peristaltic','Submersible','Gear','Diaphragm']},motor:{label:'Motor',icon:'⚡',subtypes:['Electric AC','Electric DC','Gearbox','Servo','Stepper']},valve:{label:'Valve',icon:'🔴',subtypes:['Ball','Butterfly','Check/NRV','Solenoid','PRV','Gate','Globe','Control']},hose:{label:'Hose/Coupling',icon:'🟡',subtypes:['Flexible Hose','Rigid Coupling','Expansion Joint','Camlock']},mixer:{label:'Mixer',icon:'🌀',subtypes:['Propeller','Paddle','Turbine','In-line','Static']},compressor:{label:'Compressor',icon:'💨',subtypes:['Reciprocating','Screw','Centrifugal','Vane']},heat_ex:{label:'Heat Exchanger',icon:'🌡️',subtypes:['Shell & Tube','Plate','Fin & Tube']},filter:{label:'Filter',icon:'🔘',subtypes:['Bag Filter','Cartridge','Y-Strainer','Self-Cleaning']},sensor:{label:'Sensor/Instrument',icon:'📡',subtypes:['Flow Meter','Pressure Gauge','Temp Sensor','Level Sensor','pH Meter','Conductivity']},conveyor:{label:'Conveyor',icon:'📦',subtypes:['Belt','Roller','Chain','Screw']},panel:{label:'Elec. Panel',icon:'⚙️',subtypes:['MCC','VFD/Inverter','PLC','Distribution Board','Starter']},vessel:{label:'Tank/Vessel',icon:'🏭',subtypes:['Storage Tank','Pressure Vessel','Buffer Tank','IBC']},other:{label:'Other',icon:'🔧',subtypes:['Custom']}};
 var EQ_SPEC_FIELDS={pump:[['Power (kW)','power'],['Flow Rate (m³/h)','flow'],['Head (m)','head'],['RPM','rpm'],['Medium','fluid']],motor:[['Power (kW)','power'],['Voltage (V)','volt'],['Current (A)','amp'],['RPM','rpm'],['Frame','frame']],valve:[['Size (DN)','size'],['Pressure Rating','press'],['Medium','fluid'],['Actuator','act']],hose:[['Diameter (mm)','diam'],['Length (m)','len'],['Pressure Rating','press'],['Material','mat']],mixer:[['Power (kW)','power'],['RPM','rpm'],['Volume (m³)','vol'],['Impeller','imp']],compressor:[['Power (kW)','power'],['Pressure (bar)','press'],['Flow (m³/h)','flow'],['Type','comptype']],heat_ex:[['Area (m²)','area'],['Design Pressure','press'],['Hot Medium','hotmed'],['Cold Medium','coldmed']],filter:[['Size (DN)','size'],['Micron Rating','micron'],['Max Pressure','press'],['Medium','fluid']],sensor:[['Range','range'],['Signal Output','signal'],['Medium','fluid'],['Accuracy','acc']],conveyor:[['Width (mm)','width'],['Speed (m/s)','speed'],['Drive Power (kW)','power'],['Length (m)','len']],panel:[['Voltage (V)','volt'],['Current (A)','amp'],['IP Rating','ip'],['Brand/PLC','brand']],vessel:[['Capacity (L)','vol'],['Material','mat'],['Pressure Rating','press'],['Medium','fluid']],other:[['Spec 1','s1'],['Spec 2','s2']]};
 var EQ_SPEC_LABELS={power:'Power',flow:'Flow',head:'Head',rpm:'RPM',fluid:'Medium',volt:'Voltage',amp:'Current',frame:'Frame',size:'Size',press:'Pressure',act:'Actuator',diam:'Diameter',len:'Length',mat:'Material',vol:'Volume',imp:'Impeller',area:'Area',hotmed:'Hot Side',coldmed:'Cold Side',micron:'Micron',range:'Range',signal:'Output',acc:'Accuracy',width:'Width',speed:'Speed',ip:'IP Rating',brand:'Brand',comptype:'Type',s1:'Spec 1',s2:'Spec 2'};
 var currentEqDetail=-1;
@@ -4029,42 +3875,61 @@ function openEqModal(){document.getElementById('eq-edit-idx').value='-1';clearIn
 
 function renderEquipment(){
   var el=document.getElementById('eq-list');if(!el)return;
-  var tfEl=document.getElementById('eq-type-filters');
-  if(tfEl){var types=Object.keys(S.equipment.reduce(function(a,e){if(e.type)a[e.type]=1;return a;},{}));tfEl.innerHTML='<button class="fb on" data-eqtype="all">All Types</button>'+types.map(function(t){var info=EQ_TYPES[t]||{icon:'🔧',label:t};return'<button class="fb" data-eqtype="'+t+'">'+info.icon+' '+info.label+'</button>';}).join('');tfEl.querySelectorAll('[data-eqtype]').forEach(function(b){b.addEventListener('click',function(){tfEl.querySelectorAll('[data-eqtype]').forEach(function(x){x.classList.remove('on');});b.classList.add('on');var f=b.dataset.eqtype;el.querySelectorAll('.eq-card').forEach(function(c){c.style.display=(f==='all'||c.dataset.type===f)?'':'none';});});});}
-  var fEl=document.getElementById('eq-filters');
-  if(fEl){var areas=['All'].concat(Object.keys(S.equipment.reduce(function(a,e){if(e.area)a[e.area]=1;return a;},{})));fEl.innerHTML=areas.map(function(a){return'<button class="fb'+(a==='All'?' on':'')+'" data-eqf="'+a+'">'+a+'</button>';}).join('');fEl.querySelectorAll('[data-eqf]').forEach(function(b){b.addEventListener('click',function(){fEl.querySelectorAll('[data-eqf]').forEach(function(x){x.classList.remove('on');});b.classList.add('on');var f=b.dataset.eqf;el.querySelectorAll('.eq-card').forEach(function(c){c.style.display=(f==='All'||c.dataset.area===f)?'':'none';});});});}
-  if(!S.equipment.length){el.innerHTML=empty('🏭','No equipment registered yet');return;}
-  el.innerHTML=S.equipment.map(function(eq,i){
-    var type=EQ_TYPES[eq.type]||{icon:'🔧',label:eq.type||'Other'};
-    var pmsDone=S.pms.filter(function(p){return p.equip===eq.name&&p.status==='done';}).length;
-    var bds=S.breakdowns.filter(function(b){return b.equip===eq.name||b.equip===eq.id;}).length;
-    var openCM=S.cm.filter(function(c){return(c.equip===eq.name||c.equip===eq.id)&&c.status!=='closed';}).length;
-    var sc={operational:'var(--g)',maintenance:'var(--y)',down:'var(--r)',standby:'var(--t3)'}[eq.status]||'var(--g)';
-    var sl={operational:'✅ Operational',maintenance:'🔧 Maintenance',down:'❌ Down',standby:'⏸️ Standby'}[eq.status]||eq.status;
-    var crit={A:'crit-a',B:'crit-b',C:'crit-c'}[eq.crit]||'crit-c';
-    return'<div class="eq-card" style="--ic:'+sc+'" data-area="'+eq.area+'" data-type="'+(eq.type||'other')+'">'+
-      '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5px">'+
-        '<div style="display:flex;gap:10px;align-items:flex-start"><div style="font-size:22px;flex-shrink:0;margin-top:2px">'+type.icon+'</div>'+
-        '<div><div class="eq-name">'+eq.name+'</div>'+
-        '<div class="eq-meta">'+type.label+(eq.subtype?' · '+eq.subtype:'')+(eq.tag?' · <span style="font-family:var(--mono);color:var(--acc);font-size:9px">'+eq.tag+'</span>':'')+' · '+eq.area+'</div></div>'+
-        '</div><span class="crit-badge '+crit+'">'+eq.crit+'</span></div>'+
-      '<div class="eq-grid">'+
-        '<div class="eq-kpi"><div class="eq-kv ok">'+pmsDone+'</div><div class="eq-kl">PMs Done</div></div>'+
-        '<div class="eq-kpi"><div class="eq-kv '+(bds>0?'bad':'ok')+'">'+bds+'</div><div class="eq-kl">Breakdowns</div></div>'+
-        '<div class="eq-kpi"><div class="eq-kv '+(openCM>0?'warn':'ok')+'">'+openCM+'</div><div class="eq-kl">Open CM</div></div>'+
-        '<div class="eq-kpi"><div class="eq-kv" style="color:var(--acc)">'+(eq.wos||[]).length+'</div><div class="eq-kl">WOs</div></div>'+
-      '</div>'+
-      (eq.model||eq.serial?'<div style="font-size:10px;color:var(--t3);margin-bottom:7px">'+(eq.model||'')+(eq.model_no?' '+eq.model_no:'')+(eq.serial?' · SN: '+eq.serial:'')+(eq.carl_id?' · Carl ID: <span style="color:var(--g)">'+eq.carl_id+'</span>':'')+'</div>':'')+
-      '<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:8px">'+
-        badge({operational:'bg',maintenance:'by',down:'br',standby:'bb'}[eq.status]||'bb',sl)+
-        (eq.next_service?'<span style="font-size:10px;color:var(--t3)">📅 '+fd(eq.next_service)+'</span>':'')+
-      '</div>'+
-      '<div class="item-actions">'+
-        '<button class="btn btn-p btn-sm" onclick="openEqDetail('+i+')">📋 Detail</button>'+
-        '<button class="btn btn-s btn-sm" onclick="editEq('+i+')">Edit</button>'+
-        '<button class="btn btn-d btn-sm" onclick="delEq('+i+')">Del</button>'+
-      '</div></div>';
-  }).join('');
+  try{renderEqAreaChips();}catch(e){}
+  var items=S.equipment.slice();
+  if(eqAreaFilt&&eqAreaFilt!=='all')items=items.filter(function(e){return e.area===eqAreaFilt;});
+  if(eqFilt&&eqFilt!=='all')items=items.filter(function(e){return e.type===eqFilt;});
+  if(!items.length){el.innerHTML=empty('🏭','No equipment found');return;}
+  if(eqFilt!=='all'||eqAreaFilt!=='all'){
+    el.innerHTML=items.map(function(eq){return renderEqCard(eq);}).join('');
+  } else {
+    var groups={};
+    items.forEach(function(eq){var a=eq.area||'Other';if(!groups[a])groups[a]=[];groups[a].push(eq);});
+    el.innerHTML=Object.keys(groups).sort().map(function(area){
+      return '<div style="margin-bottom:14px">'
+        +'<div style="font-size:10px;font-weight:700;color:var(--acc);text-transform:uppercase;'
+        +'letter-spacing:.8px;padding:4px 0 8px;border-bottom:1px solid var(--b1);margin-bottom:6px">'
+        +'📍 '+area+' <span style="color:var(--t3);font-weight:400">('+groups[area].length+')</span></div>'
+        +groups[area].map(function(eq){return renderEqCard(eq);}).join('')
+        +'</div>';
+    }).join('');
+  }
+}
+function renderEqCard(eq){
+  var type=EQ_TYPES[eq.type]||{icon:'🔧',label:'Other'};
+  var sc={operational:'var(--g)',maintenance:'var(--y)',down:'var(--r)',standby:'var(--t3)'}[eq.status]||'var(--g)';
+  var idx=S.equipment.indexOf(eq);
+  var openCMs=(S.cm||[]).filter(function(c){return c.equip===eq.name&&c.status!=='closed';}).length;
+  return '<div style="background:var(--s2);border:1px solid var(--b1);border-radius:11px;padding:12px;'
+    +'margin-bottom:7px;display:flex;align-items:center;gap:12px;cursor:pointer" onclick="openEqDetail('+idx+')">'
+    +'<div style="width:38px;height:38px;border-radius:9px;background:var(--s3);'
+    +'display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">'+type.icon+'</div>'
+    +'<div style="flex:1;min-width:0">'
+      +'<div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+eq.name+'</div>'
+      +'<div style="font-size:10px;color:var(--t3);margin-top:2px">'
+        +(eq.tag?eq.tag+' &middot; ':'')+type.label+(eq.subtype?' &middot; '+eq.subtype:'')
+      +'</div>'
+    +'</div>'
+    +'<div style="display:flex;align-items:center;gap:7px;flex-shrink:0">'
+      +(openCMs?'<span class="badge br">'+openCMs+' CM</span>':'')
+      +'<div style="width:8px;height:8px;border-radius:50%;background:'+sc+'"></div>'
+    +'</div>'
+    +'</div>';
+}
+function renderEqAreaChips(){
+  var el=document.getElementById('eq-area-chips');if(!el)return;
+  var areas={};
+  (S.equipment||[]).forEach(function(e){if(e.area)areas[e.area]=1;});
+  var aList=Object.keys(areas).sort();
+  var q="'";
+  el.innerHTML='<button class="fb'+(eqAreaFilt==='all'?' on':'')+'" '
+    +'onclick="eqAreaFilt='+q+'all'+q+';renderEqAreaChips();renderEquipment()">'
+    +'📍 All Areas</button>'
+    +aList.map(function(a){
+      return '<button class="fb'+(eqAreaFilt===a?' on':'')+'" '
+        +'onclick="eqAreaFilt='+q+a+q+';renderEqAreaChips();renderEquipment()">'
+        +'📍 '+a+'</button>';
+    }).join('');
 }
 
 function openEqDetail(i){
@@ -4106,37 +3971,6 @@ function openEqDetail(i){
   document.getElementById('eqd-timeline').innerHTML=events.length?events.map(function(ev){return'<div class="timeline-item"><div class="timeline-dot" style="color:'+ev.color+'"></div><div class="timeline-content"><div class="timeline-date">'+fd(ev.date)+'</div><div class="timeline-title">'+ev.title+'</div>'+(ev.meta?'<div class="timeline-meta">'+ev.meta+'</div>':'')+'</div></div>';}).join(''):'<div style="color:var(--t4);font-size:12px;padding:10px 0">No history yet</div>';
   document.getElementById('eq-detail-overlay').classList.add('on');
   document.body.style.overflow='hidden';
-  // Render attachments
-  var attEl=document.getElementById('eqd-attach-list');
-  if(attEl){
-    var eqIdx2=idx;
-    attEl.innerHTML='';
-    var atts2=eq.attachments||[];
-    var isImg2=function(t){return t&&t.indexOf('image/')===0;};
-    atts2.forEach(function(a){
-      var w=document.createElement('div');w.style.cssText='position:relative;display:inline-block';
-      if(isImg2(a.type)){
-        var im=document.createElement('img');im.className='attach-thumb';im.src=a.data;im.title=a.name;
-        im.addEventListener('click',function(){openAttachViewer(a.data,a.name);});
-        var d=document.createElement('button');
-        d.style.cssText='position:absolute;top:-4px;right:-4px;background:var(--r);border:none;border-radius:50%;width:18px;height:18px;color:#fff;font-size:10px;cursor:pointer;line-height:18px;text-align:center';
-        d.textContent='✕';d.addEventListener('click',function(){deleteAttachment(eqIdx2,a.id);openEqDetail(eqIdx2);});
-        w.appendChild(im);w.appendChild(d);
-      } else {
-        w.className='attach-doc';
-        w.innerHTML='📄 <span>'+a.name+'</span>';
-        w.addEventListener('click',function(){openAttachViewer(a.data,a.name);});
-      }
-      attEl.appendChild(w);
-    });
-    var lbl2=document.createElement('label');
-    lbl2.className='attach-add';lbl2.title='Add photo or file';
-    lbl2.innerHTML='<span class="attach-add-icon">📎</span><span>Add</span>';
-    var inp2=document.createElement('input');
-    inp2.type='file';inp2.accept='image/*,.pdf,.doc,.docx,.xls,.xlsx';inp2.style.display='none';
-    inp2.addEventListener('change',function(){if(inp2.files[0])addAttachment(eqIdx2,inp2.files[0]);openEqDetail(eqIdx2);});
-    lbl2.appendChild(inp2);attEl.appendChild(lbl2);
-  }
 }
 function closeEqDetail(){document.getElementById('eq-detail-overlay').classList.remove('on');document.body.style.overflow='';currentEqDetail=-1;}
 function addWOtoEq(){var wo=prompt('Carl Source WO#:');if(!wo||!wo.trim())return;var eq=S.equipment[currentEqDetail];if(!eq)return;if(!eq.wos)eq.wos=[];if(eq.wos.includes(wo.trim())){toast('Already linked',false);return;}eq.wos.push(wo.trim());svS();openEqDetail(currentEqDetail);toast('WO linked ✅');}
@@ -4181,61 +4015,70 @@ function renderPMOpsList(){
 }
 
 // ══ PM EXECUTION VIEW (when completing a PM) ══
-function openPMExecution(pmIdx){
-  var p=S.pms[pmIdx];if(!p)return;
+function openPMExecution(i){
+  var p=S.pms[i];if(!p)return;
   var ops=p.operations||[];
-  if(!ops.length){donePM(pmIdx);return;}
-  var existing=document.getElementById('pm-exec-modal');if(existing)existing.remove();
+  if(!ops.length){donePM(i);return;}
+  var existing=document.getElementById('pm-exec-modal');
+  if(existing)existing.remove();
   var wrap=document.createElement('div');
-  wrap.className='overlay on';wrap.id='pm-exec-modal';
+  wrap.id='pm-exec-modal';
+  wrap.className='overlay on';
   wrap.addEventListener('click',function(e){if(e.target===wrap)wrap.remove();});
-  function renderOps(){
-    var done=ops.filter(function(o){return o.done;}).length;
-    var pct=ops.length?Math.round(done/ops.length*100):0;
-    var opsHtml=ops.map(function(op,oi){
-      return '<div class="pm-op-row" data-oi="'+oi+'" style="display:flex;align-items:flex-start;gap:10px;background:var(--s3);border:1px solid var(--b2);border-radius:9px;padding:11px;cursor:pointer;margin-bottom:6px;transition:opacity .15s;opacity:'+(op.done?'0.6':'1')+'">'
-        +'<div style="width:22px;height:22px;border-radius:7px;border:2px solid '+(op.done?'var(--g)':'var(--b3)')+';background:'+(op.done?'var(--g)':'transparent')+';flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s">'
-        +(op.done?'<span style="color:#07090e;font-size:13px;font-weight:700">✓</span>':'')
-        +'</div>'
-        +'<span style="flex:1;font-size:13px;'+(op.done?'text-decoration:line-through;color:var(--t3)':'')+'">'+op.text+'</span>'
-        +'</div>';
-    }).join('');
-    wrap.innerHTML='<div class="modal">'
-      +'<div class="modal-handle"></div>'
-      +'<div class="modal-title">🔧 Execute PM</div>'
-      +'<div style="font-size:14px;font-weight:600;margin-bottom:2px">'+p.equip+'</div>'
-      +'<div style="font-size:11px;color:var(--t3);margin-bottom:14px">'+p.area+'</div>'
-      +opsHtml
-      +'<div style="margin:10px 0 14px">'
-        +'<div style="display:flex;justify-content:space-between;margin-bottom:4px">'
-          +'<span style="font-size:11px;color:var(--t2)">Progress</span>'
-          +'<span style="font-family:var(--mono);font-size:11px;color:'+(pct===100?'var(--g)':'var(--acc)')+'">'+done+'/'+ops.length+' ('+pct+'%)</span>'
-        +'</div>'
-        +'<div class="pbar"><div class="pfill" style="width:'+pct+'%;background:'+(pct===100?'var(--g)':'var(--acc)')+'"></div></div>'
+  var opsHtml=ops.map(function(op,oi){
+    var done=op.done||false;
+    return '<div style="display:flex;align-items:flex-start;gap:10px;background:var(--s3);border:1px solid var(--b2);border-radius:9px;padding:11px;cursor:pointer;margin-bottom:6px" id="pmop-'+i+'-'+oi+'" onclick="togglePMOp('+i+','+oi+')">'
+      +'<div style="width:20px;height:20px;border-radius:6px;border:2px solid '+(done?'var(--g)':'var(--b3)')+';background:'+(done?'var(--g)':'transparent')+';flex-shrink:0;display:flex;align-items:center;justify-content:center">'
+      +(done?'<span style="color:#07090e;font-size:12px;font-weight:700">✓</span>':'')
       +'</div>'
-      +'<textarea class="ft" id="pm-exec-notes" placeholder="Notes / findings..." style="min-height:55px;margin-bottom:10px">'+(p.notes||'')+'</textarea>'
-      +(pct===100?'<button class="btn btn-g" id="pm-exec-done">✓ Mark PM Complete</button>':'<button class="btn btn-p" id="pm-exec-done">Mark Done ('+(100-pct)+'% remaining)</button>')
-      +'<div style="height:8px"></div>'
-      +'<button class="btn btn-s" id="pm-exec-close">Cancel</button>'
+      +'<div style="flex:1;font-size:13px;font-weight:500;'+(done?'text-decoration:line-through;color:var(--t3)':'')+'">'+op.text+'</div>'
       +'</div>';
-    // Wire op checkboxes
-    wrap.querySelectorAll('.pm-op-row').forEach(function(row){
-      row.addEventListener('click',function(){
-        var oi=parseInt(row.dataset.oi);
-        ops[oi].done=!ops[oi].done;
-        p.operations=ops;svS();
-        renderOps(); // re-render in place
-      });
-    });
-    var doneBtn=document.getElementById('pm-exec-done');
-    if(doneBtn)doneBtn.addEventListener('click',function(){completePMExecution(pmIdx,wrap);});
-    var closeBtn=document.getElementById('pm-exec-close');
-    if(closeBtn)closeBtn.addEventListener('click',function(){wrap.remove();});
-  }
-  renderOps();
+  }).join('');
+  var doneCnt=ops.filter(function(o){return o.done;}).length;
+  var pct=Math.round(doneCnt/ops.length*100);
+  wrap.innerHTML='<div class="modal">'
+    +'<div class="modal-handle"></div>'
+    +'<div class="modal-title">🔧 PM Execution</div>'
+    +'<div style="font-family:var(--hd);font-size:15px;margin-bottom:3px">'+p.equip+'</div>'
+    +'<div style="font-size:12px;color:var(--t3);margin-bottom:14px">'+p.area+' · '+(p.type||'PM')+'</div>'
+    +opsHtml
+    +'<div id="pmexec-prog" style="margin:12px 0">'
+      +'<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:12px;color:var(--t2)">Progress</span>'
+      +'<span style="font-family:var(--mono);font-size:12px;color:'+(pct===100?'var(--g)':'var(--acc)')+'">'+doneCnt+'/'+ops.length+' ('+pct+'%)</span></div>'
+      +'<div class="pbar"><div class="pfill" id="pmexec-bar" style="background:'+(pct===100?'var(--g)':'var(--acc)')+';width:'+pct+'%"></div></div>'
+    +'</div>'
+    +'<textarea class="ft" id="pm-exec-notes" placeholder="Notes / findings..." style="min-height:60px;margin-bottom:10px"></textarea>'
+    +'<button class="btn btn-g" onclick="completePMExecution('+i+')">✓ Mark PM Complete</button>'
+    +'<div style="height:8px"></div>'
+    +'<button class="btn btn-s" id="pm-exec-cancel">Cancel</button>'
+    +'</div>';
   document.body.appendChild(wrap);
+  document.getElementById('pm-exec-cancel').addEventListener('click',function(){wrap.remove();});
 }
 
+function togglePMOp(pmIdx,opIdx){
+  var p=S.pms[pmIdx];if(!p||!p.operations)return;
+  p.operations[opIdx].done=!p.operations[opIdx].done;
+  svS();
+  // Re-render the checkbox
+  var el=document.getElementById('pm-op-'+pmIdx+'-'+opIdx);
+  if(el){
+    var op=p.operations[opIdx];
+    var box=el.querySelector('div');
+    var txt=el.querySelector('div:last-child div:first-child');
+    if(box){box.style.background=op.done?'var(--g)':'transparent';box.style.borderColor=op.done?'var(--g)':'var(--b3)';box.innerHTML=op.done?'<span style="color:#07090e;font-size:12px;font-weight:700">✓</span>':'';}
+    if(txt){txt.style.textDecoration=op.done?'line-through':'none';txt.style.color=op.done?'var(--t3)':'';}
+  }
+  updatePMExecProgress(pmIdx);
+}
+function updatePMExecProgress(pmIdx){
+  var p=S.pms[pmIdx];if(!p||!p.operations)return;
+  var done=p.operations.filter(function(o){return o.done;}).length;
+  var total=p.operations.length;
+  var pct=Math.round(done/total*100);
+  var bar=document.getElementById('pmexec-bar');
+  if(bar){bar.style.width=pct+'%';bar.style.background=pct===100?'var(--g)':'var(--acc)';}
+}
 function completePMExecution(pmIdx){
   var p=S.pms[pmIdx];if(!p)return;
   var ops=p.operations||[];
@@ -4391,66 +4234,72 @@ function resetEqPicker(prefix){
   if(dd)dd.classList.remove('open');
 }
 
-// ══ ATTACHMENTS ══
-function openAttachViewer(src, name){
-  var v=document.getElementById('attach-viewer');
-  var img=document.getElementById('attach-viewer-img');
-  var nm=document.getElementById('attach-viewer-name');
-  if(v&&img){img.src=src;if(nm)nm.textContent=name||'';v.classList.add('on');}
-}
-function closeAttachViewer(){
-  var v=document.getElementById('attach-viewer');if(v)v.classList.remove('on');
-  var img=document.getElementById('attach-viewer-img');if(img)img.src='';
-}
-function addAttachment(eqIdx, file){
-  var eq=S.equipment[eqIdx];if(!eq)return;
-  if(!eq.attachments)eq.attachments=[];
-  var reader=new FileReader();
-  reader.onload=function(e){
-    var data=e.target.result;
-    var att={id:'att'+Date.now(),name:file.name,type:file.type,data:data,date:TODAY};
-    eq.attachments.push(att);
-    svS();
-    renderEqAttachments(eqIdx);
-    toast(file.name+' attached ✅');
-  };
-  reader.readAsDataURL(file);
-}
-function deleteAttachment(eqIdx, attId){
-  var eq=S.equipment[eqIdx];if(!eq||!eq.attachments)return;
-  if(!confirm('Delete this attachment?'))return;
-  eq.attachments=eq.attachments.filter(function(a){return a.id!==attId;});
-  svS();renderEqAttachments(eqIdx);
-}
-// renderEqAttachments: see DOM version above
-
-function renderEqAttachmentsInEl(el, eqIdx){
-  var eq=S.equipment[eqIdx];if(!eq)return;
-  el.innerHTML='';
-  var atts=eq.attachments||[];
-  var isImg=function(t){return t&&t.indexOf('image/')===0;};
-  atts.forEach(function(a){
-    var w=document.createElement('div');
-    if(isImg(a.type)){
-      w.style.cssText='position:relative;display:inline-block';
-      var im=document.createElement('img');im.className='attach-thumb';im.src=a.data;im.title=a.name;
-      im.addEventListener('click',function(){openAttachViewer(a.data,a.name);});
-      w.appendChild(im);
-    } else {
-      w.className='attach-doc';w.innerHTML='📄 <span style="font-size:12px">'+a.name+'</span>';
-      w.addEventListener('click',function(){openAttachViewer(a.data,a.name);});
-    }
-    el.appendChild(w);
-  });
-  var lbl=document.createElement('label');
-  lbl.className='attach-add';lbl.title='Add';
-  lbl.innerHTML='<span class="attach-add-icon">📎</span><span>Add</span>';
-  var inp=document.createElement('input');
-  inp.type='file';inp.accept='image/*,.pdf,.doc,.docx,.xls,.xlsx';inp.style.display='none';
-  inp.addEventListener('change',function(){
-    if(inp.files[0])addAttachment(eqIdx,inp.files[0]);
-  });
-  lbl.appendChild(inp);el.appendChild(lbl);
+function seedSampleData(){
+  if(localStorage.getItem('em_seeded'))return;
+  S.equipment=[
+    {id:'eq1',name:'Pump P-101',area:'20L A',type:'pump',subtype:'Centrifugal',tag:'P-101',carl_id:'EQ-001',model:'Grundfos',model_no:'CM5-4',crit:'A',status:'operational',install_date:'2022-03-15',specs:{power:'5.5',flow:'12'},notes:'Main transfer pump'},
+    {id:'eq2',name:'Pump P-102',area:'20L B',type:'pump',subtype:'Dosing',tag:'P-102',carl_id:'EQ-002',model:'Grundfos',model_no:'DME60',crit:'B',status:'operational',install_date:'2022-06-10',specs:{power:'0.37',flow:'2'},notes:'Additive dosing pump'},
+    {id:'eq3',name:'Motor M-101',area:'Mixers',type:'motor',subtype:'Electric AC',tag:'M-101',carl_id:'EQ-003',model:'ABB',model_no:'M2AA100',crit:'A',status:'operational',install_date:'2021-06-10',specs:{power:'7.5',volt:'400'},notes:'Mixer 1 drive'},
+    {id:'eq4',name:'Motor M-201',area:'Mixers',type:'motor',subtype:'Electric AC',tag:'M-201',carl_id:'EQ-004',model:'ABB',model_no:'M2AA100',crit:'A',status:'operational',install_date:'2021-06-10',specs:{power:'7.5',volt:'400'},notes:'Mixer 2 drive'},
+    {id:'eq5',name:'Mixer AGT-1',area:'Mixers',type:'mixer',subtype:'Propeller',tag:'AGT-1',carl_id:'EQ-005',model:'Chemineer',model_no:'HE-3',crit:'A',status:'operational',install_date:'2021-06-10',specs:{vol:'15',rpm:'60'},notes:'Mixer 1 - 15m3'},
+    {id:'eq6',name:'Mixer AGT-2',area:'Mixers',type:'mixer',subtype:'Propeller',tag:'AGT-2',carl_id:'EQ-006',model:'Chemineer',model_no:'HE-3',crit:'A',status:'maintenance',install_date:'2021-09-01',specs:{vol:'15',rpm:'60'},notes:'Mixer 2 - seal in progress'},
+    {id:'eq7',name:'Valve V-301',area:'WWTP',type:'valve',subtype:'Butterfly',tag:'V-301',carl_id:'EQ-007',model:'Crane',model_no:'BF2-4',crit:'B',status:'maintenance',install_date:'2022-01-20',specs:{size:'DN100'},notes:'Effluent control valve'},
+    {id:'eq8',name:'Valve V-501',area:'5L',type:'valve',subtype:'Ball',tag:'V-501',carl_id:'EQ-008',model:'Kitz',model_no:'150UB',crit:'C',status:'operational',install_date:'2022-03-01',specs:{size:'DN50'},notes:'5L line isolation'},
+    {id:'eq9',name:'Compressor C-401',area:'Outside',type:'compressor',subtype:'Screw',tag:'C-401',carl_id:'EQ-009',model:'Atlas Copco',model_no:'GA15',crit:'A',status:'operational',install_date:'2020-09-01',specs:{power:'15',press:'8'},notes:'Plant air compressor'},
+    {id:'eq10',name:'Filter F-501',area:'RM Tanks',type:'filter',subtype:'Bag Filter',tag:'F-501',carl_id:'EQ-010',model:'Parker',model_no:'HF5-2',crit:'C',status:'operational',install_date:'2023-02-14',specs:{micron:'25'},notes:'RM intake filter'},
+    {id:'eq11',name:'Tank TK-801',area:'RM Tanks',type:'vessel',subtype:'Storage Tank',tag:'TK-801',carl_id:'EQ-012',model:'Local',model_no:'SS316L',crit:'A',status:'operational',install_date:'2019-06-01',specs:{vol:'50000'},notes:'Raw material 50m3'},
+    {id:'eq12',name:'Hose H-101',area:'20L A',type:'hose',subtype:'Flex Hose',tag:'H-101',carl_id:'EQ-013',model:'Parker',model_no:'HF2-16',crit:'C',status:'operational',install_date:'2024-01-10',specs:{diam:'25',len:'2'},notes:'P-101 flex connection'}
+  ];
+  S.pms=[
+    {area:'Mixers',equip:'Mixer AGT-1',type:'Monthly inspection + lubrication',freq:'Monthly',sched:'2025-04-15',wo:'WO-041',notes:'',status:'scheduled',operations:[{text:'Check impeller',done:false},{text:'Lubricate bearing',done:false},{text:'Check oil level',done:false}]},
+    {area:'Mixers',equip:'Mixer AGT-2',type:'Monthly inspection + lubrication',freq:'Monthly',sched:'2025-04-15',wo:'WO-042',notes:'Seal replacement in progress',status:'scheduled',operations:[{text:'Check impeller',done:false},{text:'Replace mechanical seal',done:false}]},
+    {area:'20L A',equip:'Pump P-101',type:'Monthly inspection',freq:'Monthly',sched:'2025-04-20',wo:'WO-043',notes:'',status:'scheduled',operations:[{text:'Check seal',done:false},{text:'Verify flow',done:false},{text:'Clean strainer',done:false}]},
+    {area:'Outside',equip:'Compressor C-401',type:'Quarterly service',freq:'Quarterly',sched:'2025-04-01',wo:'WO-044',notes:'',status:'done',completedDate:'2025-04-02',operations:[{text:'Change oil',done:true},{text:'Replace filter',done:true}]},
+    {area:'WWTP',equip:'Valve V-301',type:'Annual inspection',freq:'Annual',sched:'2025-03-15',wo:'WO-045',notes:'',status:'done',completedDate:'2025-03-20',operations:[]},
+    {area:'RM Tanks',equip:'Filter F-501',type:'Monthly bag replacement',freq:'Monthly',sched:'2025-03-28',wo:'WO-046',notes:'',status:'done',completedDate:'2025-03-28',operations:[{text:'Replace bags',done:true}]}
+  ];
+  S.breakdowns=[
+    {id:'bd1',equip:'Valve V-301',area:'WWTP',date:'2025-03-10',duration:'3.5',rca:'mechanical',description:'Butterfly disc stuck - flow restriction.',resolution:'Replaced EPDM seat ring.',cost:'185'},
+    {id:'bd2',equip:'Pump P-101',area:'20L A',date:'2025-02-18',duration:'2.0',rca:'lack_pm',description:'Mechanical seal failed. PM 3 weeks overdue.',resolution:'Emergency seal replacement.',cost:'320'},
+    {id:'bd3',equip:'Mixer AGT-1',area:'Mixers',date:'2025-01-25',duration:'1.5',rca:'electrical',description:'VFD fault F0022 overcurrent.',resolution:'Reset VFD, increased ramp to 10s.',cost:'0'},
+    {id:'bd4',equip:'Compressor C-401',area:'Outside',date:'2024-12-05',duration:'4.0',rca:'mechanical',description:'Belt failure. Plant air dropped to 4 bar.',resolution:'Replaced both belts.',cost:'145'}
+  ];
+  S.gemba=[
+    {date:'2025-04-08',area:'WWTP',desc:'Oil drip from V-301 actuator stem approx 5ml/day.',priority:'medium',due:'2025-04-20',action:'Replace stem packing',wo:'WO-047',status:'open'},
+    {date:'2025-04-05',area:'20L A',desc:'P-101 vibration 4.2mm/s vs baseline 2.8.',priority:'high',due:'2025-04-15',action:'Check bearings at next PM',wo:'WO-043',status:'open'},
+    {date:'2025-04-03',area:'Warehouse',desc:'FLT charger cable insulation frayed near connector.',priority:'high',due:'2025-04-07',action:'Replace cable',wo:'',status:'closed',closedDate:'2025-04-06'},
+    {date:'2025-03-28',area:'RM Tanks',desc:'Corrosion spots on TK-801 base plate. Early stage.',priority:'low',due:'2025-06-01',action:'Epoxy coat at annual PM',wo:'',status:'open'},
+    {date:'2025-04-10',area:'5L',desc:'V-501 handle broken. Still manually operable.',priority:'low',due:'2025-04-30',action:'Replace handle assembly',wo:'',status:'open'}
+  ];
+  S.cm=[
+    {id:'cm1',equip:'Valve V-301',area:'WWTP',desc:'Replace actuator stem packing - oil weeping',priority:'medium',status:'open',date:'2025-04-20',wo:'WO-047',est_hrs:'2',cost:'85',source:'gemba',createdDate:'2025-04-08'},
+    {id:'cm2',equip:'Pump P-101',area:'20L A',desc:'Investigate elevated vibration 4.2mm/s',priority:'high',status:'progress',date:'2025-04-15',wo:'WO-043',est_hrs:'3',source:'gemba',createdDate:'2025-04-05'},
+    {id:'cm3',equip:'Filter F-501',area:'RM Tanks',desc:'O-ring weep at cover joint',priority:'low',status:'waiting',date:'2025-05-01',est_hrs:'1',cost:'25',source:'manual',createdDate:'2025-04-01'},
+    {id:'cm4',equip:'Mixer AGT-2',area:'Mixers',desc:'Mechanical seal replacement',priority:'high',status:'progress',date:'2025-04-10',wo:'WO-042',est_hrs:'6',act_hrs:'3',cost:'380',source:'breakdown',createdDate:'2025-04-06'}
+  ];
+  S.sups=[
+    {id:'sup1',name:'Grundfos Hellas SA',cat:'Equipment',status:'active',contact:'210 6234500',delivery:'5',credit:'30',s_quality:5,s_delivery:4,s_price:3,s_communication:5,total_score:'4.3',notes:'Preferred pump supplier'},
+    {id:'sup2',name:'ABB Greece',cat:'Electrical',status:'active',contact:'210 7777700',delivery:'10',credit:'45',s_quality:5,s_delivery:3,s_price:3,s_communication:4,total_score:'3.8',notes:'Motors and drives'},
+    {id:'sup3',name:'Parker Hannifin Hellas',cat:'Spare Parts',status:'active',contact:'2310 556600',delivery:'7',credit:'30',s_quality:4,s_delivery:4,s_price:4,s_communication:4,total_score:'4.0',notes:'Filters, hoses, fittings'}
+  ];
+  S.offers=[
+    {id:'off1',supId:'sup1',desc:'Mechanical Seal Kit CM5-4',cat:'Spare Parts',price:'145',qty:'2',status:'ordered',date:'2025-04-01',notes:'For Pump P-101'},
+    {id:'off2',supId:'sup3',desc:'Bag Filter 25 micron x20',cat:'Consumables',price:'18',qty:'20',status:'pending',date:'2025-04-05',notes:''},
+    {id:'off3',supId:'sup2',desc:'ABB VFD spare board',cat:'Electrical',price:'850',qty:'1',status:'approved',date:'2025-03-25',notes:'Spare for Mixers'},
+    {id:'off4',supId:'sup3',desc:'Atlas Copco GA15 Service Kit',cat:'Consumables',price:'380',qty:'1',status:'received',date:'2025-04-02',receivedDate:'2025-04-03',notes:'Quarterly service done'}
+  ];
+  S.inv=[
+    {id:'inv1',name:'Mechanical Seal Kit CM5',ref:'GF-SEAL-CM5',loc:'Shelf A1',cat:'Seals',qty:'2',min:'1',reorder:'3',cost:'145',notes:'Critical spare P-101'},
+    {id:'inv2',name:'Bag Filter 25 micron',ref:'PK-BAG-25',loc:'Shelf B3',cat:'Filters',qty:'8',min:'4',reorder:'12',cost:'18',notes:'Monthly replacement'},
+    {id:'inv3',name:'EPDM Seat Ring DN100',ref:'CR-SEAT-DN100',loc:'Shelf A2',cat:'Seals',qty:'1',min:'2',reorder:'4',cost:'65',notes:'LOW STOCK - order needed'},
+    {id:'inv4',name:'VG46 Gearbox Oil 1L',ref:'OIL-VG46',loc:'Chemical Store',cat:'Lubricants',qty:'6',min:'3',reorder:'10',cost:'12',notes:'Monthly mixer top-up'},
+    {id:'inv5',name:'Mechanical Seal AGT',ref:'CH-SEAL-AGT',loc:'Shelf A1',cat:'Seals',qty:'1',min:'1',reorder:'2',cost:'380',notes:'Critical Mixer seal'}
+  ];
+  S.kpis={pm:83,od:1,bd:1,carl:75};
+  S.months={'2025-01':{pm:75,od:3,bd:2},'2025-02':{pm:85,od:1,bd:1},'2025-03':{pm:91,od:0,bd:0},'2025-04':{pm:83,od:1,bd:1}};
+  S.achs=[{title:'Zero unplanned downtime March 2025',date:'2025-03-31',cat:'Maintenance',impact:'PM 91%, zero breakdowns',rate:'91',evidence:'Carl Source WO report'}];
+  localStorage.setItem('em_seeded','1');
+  svS();
 }
 </script>
 </body>

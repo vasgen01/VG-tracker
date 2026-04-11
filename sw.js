@@ -1,4 +1,4 @@
-var CACHE = 'ecolab-mandra-v5';
+var CACHE = 'ecolab-v7';
 var ASSETS = ['/', '/index.html', '/manifest.json'];
 
 self.addEventListener('install', function(e) {

@@ -517,6 +517,65 @@ h1.print-hd{display:none}
 .ai-link{color:var(--acc);text-decoration:none;font-size:12px}
 
 
+/* ── LOCK SCREEN ── */
+.lock-screen{
+  position:fixed;inset:0;z-index:1000;
+  background:linear-gradient(145deg,#07090e 0%,#0d1220 50%,#0a0f1a 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:40px 24px;
+}
+.lock-logo{
+  font-family:var(--hd);font-size:24px;letter-spacing:-.5px;
+  margin-bottom:6px;color:var(--t1);
+}
+.lock-logo span{color:var(--acc)}
+.lock-sub{font-family:var(--mono);font-size:11px;color:var(--t3);margin-bottom:48px;letter-spacing:.5px}
+.lock-icon{font-size:52px;margin-bottom:24px;filter:drop-shadow(0 4px 24px rgba(64,128,255,.4))}
+.lock-title{font-family:var(--hd);font-size:20px;margin-bottom:8px;text-align:center}
+.lock-desc{font-size:13px;color:var(--t2);text-align:center;margin-bottom:32px;line-height:1.5}
+.pin-dots{display:flex;gap:14px;justify-content:center;margin-bottom:28px}
+.pin-dot{
+  width:14px;height:14px;border-radius:50%;
+  border:2px solid var(--b3);background:transparent;
+  transition:all .2s cubic-bezier(.4,0,.2,1);
+}
+.pin-dot.filled{background:var(--acc);border-color:var(--acc);box-shadow:0 0 12px rgba(64,128,255,.5)}
+.pin-dot.error{background:var(--r);border-color:var(--r);animation:shake .4s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.pin-error{color:var(--r);font-size:12px;text-align:center;margin-bottom:16px;min-height:16px;font-weight:600}
+.pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:260px;width:100%}
+.pin-btn{
+  height:64px;border-radius:14px;border:1px solid var(--b2);
+  background:var(--s2);color:var(--t1);cursor:pointer;
+  font-family:var(--hd);font-size:22px;font-weight:700;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:all .15s;gap:2px;
+  box-shadow:0 2px 8px rgba(0,0,0,.3);
+}
+.pin-btn:hover{background:var(--s3);border-color:var(--b3)}
+.pin-btn:active{background:var(--acc);border-color:var(--acc);transform:scale(.94)}
+.pin-btn-sub{font-size:7px;letter-spacing:.8px;color:var(--t3);font-family:var(--sans);font-weight:600;text-transform:uppercase}
+.pin-btn.del{font-size:20px;color:var(--t2)}
+.pin-btn.del:active{background:var(--r);border-color:var(--r)}
+.pin-btn.zero{grid-column:2}
+.lock-setup-input{
+  width:100%;max-width:260px;background:var(--s2);border:1px solid var(--b2);
+  border-radius:12px;padding:14px;color:var(--t1);font-family:var(--mono);
+  font-size:18px;text-align:center;letter-spacing:8px;outline:none;
+  margin-bottom:12px;transition:border-color .2s;
+}
+.lock-setup-input:focus{border-color:var(--acc)}
+.lock-bio{
+  margin-top:20px;color:var(--t3);font-size:13px;cursor:pointer;
+  display:flex;align-items:center;gap:6px;transition:color .2s;
+}
+.lock-bio:hover{color:var(--acc)}
+.lock-forgot{
+  position:absolute;bottom:32px;left:50%;transform:translateX(-50%);
+  color:var(--t4);font-size:11px;cursor:pointer;white-space:nowrap;
+  text-decoration:underline;
+}
+
 /* ── SEARCH BAR ── */
 .search-wrap{
   padding:8px 14px 6px;background:rgba(7,9,14,.97);
@@ -821,18 +880,45 @@ h1.print-hd{display:none}
 .pal-item:hover{background:rgba(64,128,255,.1);border-color:rgba(64,128,255,.2)}
 .pal-ico{font-size:16px;flex-shrink:0}
 
+
+/* ── ATTACHMENTS ── */
+.attach-list{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.attach-thumb{
+  width:72px;height:72px;border-radius:10px;object-fit:cover;
+  border:1px solid var(--b2);cursor:pointer;transition:transform .15s;
+}
+.attach-thumb:hover{transform:scale(1.05)}
+.attach-doc{
+  display:flex;align-items:center;gap:6px;background:var(--s3);
+  border:1px solid var(--b2);border-radius:8px;padding:7px 10px;
+  cursor:pointer;font-size:12px;transition:background .15s;
+}
+.attach-doc:hover{background:var(--s4)}
+.attach-add{
+  width:72px;height:72px;border-radius:10px;border:2px dashed var(--b2);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--t3);font-size:10px;gap:4px;transition:all .15s;
+  background:transparent;
+}
+.attach-add:hover{border-color:var(--acc);color:var(--acc)}
+.attach-add-icon{font-size:22px}
+.attach-viewer{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);
+  z-index:600;align-items:center;justify-content:center;flex-direction:column;
+}
+.attach-viewer.on{display:flex}
+.attach-viewer img{max-width:95vw;max-height:80vh;border-radius:12px;object-fit:contain}
 </style>
 </head>
 <body>
 <div class="pm-alert" id="pm-banner"><div class="pm-alert-hd">🔔 PM Alerts</div><div id="pm-items"></div></div>
-<div class="bar"><div><div class="bar-brand">Ecolab <span>Mandra</span></div><div class="bar-sub" id="bar-date"></div></div><div class="bar-right" style="gap:5px"><div class="topbar-search" id="topbar-search">
+<div class="bar"><div><div class="bar-brand">Ecolab <span>Mandra</span></div><div class="bar-sub" id="bar-date"></div></div><div class="bar-right"><div class="topbar-search" id="topbar-search">
       <span class="tsearch-icon">🔍</span>
       <input type="text" class="tsearch-input" id="search-input" placeholder="Search..." autocomplete="off" autocorrect="off" spellcheck="false">
       <button class="tsearch-clear" id="search-clear">✕</button>
       <div class="search-results" id="search-results"></div>
     </div>
-    <div class="sw"><button class="ibtn" id="btn-settings">⚙️ Settings</button>
-      <button style="background:#ef4444;border:none;border-radius:7px;color:#fff;font-size:10px;font-weight:700;padding:6px 10px;cursor:pointer">↺ Reset</button><div class="ndot" id="ndot"></div></div></div></div>
+    <div class="sw"><button class="ibtn" id="btn-settings">⚙️ Settings</button><div class="ndot" id="ndot"></div></div></div></div>
 <div class="nav">
   <button class="nb on" data-view="dashboard">📊 Dashboard</button>
   <button class="nb" data-view="systems">🌐 Systems</button>
@@ -866,7 +952,7 @@ h1.print-hd{display:none}
 <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:13px;color:var(--t2)">Closure Rate</span><span id="k-carl" style="font-family:var(--mono);font-size:13px;color:var(--acc)">—</span></div>
 <div class="pbar"><div class="pfill" id="carl-bar" style="background:var(--acc);width:0%"></div></div>
 <div class="div"></div>
-<button class="btn btn-s" id="btn-kpi" style="font-size:12px;padding:10px">✏️ Update Monthly KPIs</button>
+<div style="font-size:10px;color:var(--t3);text-align:center;padding:6px 0">KPIs auto-calculated from your data</div>
 </div>
 <div class="card"><div class="card-hd">Επόμενες Εκκρεμότητες — 7 ημέρες</div><div id="upcoming"></div></div>
 <div class="card"><div class="card-hd">Active Projects</div><div id="proj-list"></div><button class="btn btn-s btn-sm" id="btn-proj" style="margin-top:8px;width:100%;padding:10px;font-size:12px">+ Add Project</button></div>
@@ -979,7 +1065,7 @@ h1.print-hd{display:none}
 <div class="set-sec">🤖 AI Assistant</div>
 <div class="set-row">
   <div><div class="set-label">Gemini API Key</div><div class="set-desc" id="ai-key-status">Checking...</div></div>
-  <button class="btn btn-s btn-sm">Reset</button>
+  <button class="btn btn-s btn-sm" onclick="localStorage.removeItem('gemini_key');AI_KEY='';document.getElementById('ai-key-status').textContent='Not connected';toast('API key cleared');">Reset</button>
 </div>
 <div class="set-sec">🗑️ Data</div>
 <div class="set-row"><div><div class="set-label">Clear All Data</div><div class="set-desc">Deletes everything</div></div><button class="btn btn-d btn-sm" id="clear-btn">Reset</button></div>
@@ -1064,7 +1150,7 @@ h1.print-hd{display:none}
 <div class="eq-detail-overlay" id="eq-detail-overlay">
   <div class="eq-detail">
     <div class="eq-detail-header">
-      <div class="eq-detail-back">← Back to Equipment</div>
+      <div class="eq-detail-back" onclick="closeEqDetail()">← Back to Equipment</div>
       <div class="eq-detail-title" id="eqd-title">—</div>
       <div class="eq-detail-meta" id="eqd-meta">—</div>
       <div class="eq-status-row" id="eqd-status-row"></div>
@@ -1080,16 +1166,17 @@ h1.print-hd{display:none}
     <div class="eq-section">
       <div class="eq-section-title">🔗 Linked Work Orders (Carl Source)</div>
       <div id="eqd-wos"></div>
-      <button class="btn btn-s btn-sm" style="margin-top:8px;width:100%">+ Link WO#</button>
+      <button class="btn btn-s btn-sm" onclick="addWOtoEq()" style="margin-top:8px;width:100%">+ Link WO#</button>
     </div>
     <div class="eq-section">
       <div class="eq-section-title">📅 Maintenance Timeline</div>
       <div id="eqd-timeline"></div>
+      <div style="margin-top:16px"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:8px">📎 Attachments</div><div id="eqd-attach-list" class="attach-list"></div></div>
     </div>
     <div style="padding:14px 16px 0">
-      <button class="btn btn-s" style="margin-bottom:8px">📄 Export Asset Report (PDF)</button>
-      <button class="btn btn-s" style="margin-bottom:8px">✏️ Edit Asset</button>
-      <button class="btn btn-d">🗑️ Delete Asset</button>
+      <button class="btn btn-s" onclick="exportEqReport()" style="margin-bottom:8px">📄 Export Asset Report (PDF)</button>
+      <button class="btn btn-s" onclick="editEqFromDetail()" style="margin-bottom:8px">✏️ Edit Asset</button>
+      <button class="btn btn-d" onclick="deleteEqFromDetail()">🗑️ Delete Asset</button>
     </div>
   </div>
 </div>
@@ -1302,22 +1389,28 @@ h1.print-hd{display:none}
   <div id="sys-tree" class="sys-tree"></div>
 </div>
 
+<!-- Attachment Viewer -->
+<div class="attach-viewer" id="attach-viewer">
+  <button style="position:absolute;top:20px;right:20px;background:none;border:none;color:#fff;font-size:28px;cursor:pointer" id="attach-viewer-close">✕</button>
+  <img id="attach-viewer-img" src="" alt="">
+  <div id="attach-viewer-name" style="color:rgba(255,255,255,.6);font-size:12px;margin-top:10px"></div>
+</div>
 <!-- P&ID CANVAS OVERLAY -->
 <div class="pid-overlay" id="pid-overlay">
   <div class="pid-topbar">
-    <button class="ibtn">← Back</button>
+    <button class="ibtn" onclick="closePID()">← Back</button>
     <div class="pid-title" id="pid-title">P&ID</div>
-    <button class="pid-tool-btn" id="pid-add-btn">+ Asset</button>
-    <button class="pid-tool-btn">💾 Save</button>
+    <button class="pid-tool-btn" id="pid-add-btn" onclick="togglePalette()">+ Asset</button>
+    <button class="pid-tool-btn" onclick="savePID()">💾 Save</button>
   </div>
   <div class="pid-canvas-wrap" id="pid-canvas-wrap">
     <svg class="pid-canvas" id="pid-svg"
          xmlns="http://www.w3.org/2000/svg"
          style="touch-action:none"></svg>
     <div class="pid-toolbar">
-      <button class="pid-tool-btn active" id="tool-select">✋ Select</button>
-      <button class="pid-tool-btn" id="tool-pipe">〰 Pipe</button>
-      <button class="pid-tool-btn">🗑 Delete</button>
+      <button class="pid-tool-btn active" id="tool-select" onclick="setTool('select')">✋ Select</button>
+      <button class="pid-tool-btn" id="tool-pipe" onclick="setTool('pipe')">〰 Pipe</button>
+      <button class="pid-tool-btn" onclick="deleteSelected()">🗑 Delete</button>
     </div>
     <div class="pid-asset-palette" id="pid-palette">
       <div style="font-size:10px;color:var(--t3);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Assets</div>
@@ -1406,7 +1499,7 @@ h1.print-hd{display:none}
     <div class="fr">
       <div class="fg"><label class="fl">Equipment *</label>
         <div class="eq-picker-wrap">
-          <button type="button" class="eq-picker-btn">
+          <button type="button" class="eq-picker-btn" onclick="toggleEqPicker('cm')">
             <span id="cm-eq-picker-label" style="color:var(--t3)">Select equipment...</span><span>▾</span>
           </button>
           <div class="eq-picker-dropdown" id="cm-eq-picker-dropdown">
@@ -1543,7 +1636,7 @@ h1.print-hd{display:none}
     <div class="lock-bio" id="bio-btn" style="display:none">
       👆 Use Face ID / Touch ID
     </div>
-    <div class="lock-forgot">Ξέχασα το PIN</div>
+    <div class="lock-forgot" onclick="forgotPIN()">Ξέχασα το PIN</div>
   </div>
 </div>
 
@@ -1602,7 +1695,6 @@ h1.print-hd{display:none}
 <div class="toast" id="toast"></div>
 
 <script>
-// ══════════ SYS
 // ══════════ SYSTEMS MODULE ══════════
 var DEFAULT_SYSTEMS=[
   {id:"sys1",name:"Mixer 1",area:"Mixers",assets:[],pid:{nodes:[],pipes:[]},notes:""},
@@ -1629,9 +1721,8 @@ var AREA_ICONS={
 
 // ── Render systems tree ──
 function renderSystems(){
-  if(!S||!S.systems)return;
   var el=document.getElementById('sys-tree');if(!el)return;
-  if(!S.systems.length){
+  if(!S.systems||!S.systems.length){
     el.innerHTML='<div class="empty"><div class="ei">🌐</div><div class="et">No systems defined</div></div>';
     return;
   }
@@ -1656,71 +1747,7 @@ function renderSystems(){
       });
     });
     return '<div class="area-group" id="ag-'+area.replace(/\s/g,'_')+'">'
-      +'<div class="area-group-hd">'
-        +areaIcon+' '+area
-        +' <span style="margin-left:auto;display:flex;align-items:center;gap:8px">'
-        +'<span style="font-size:9px;background:rgba(64,128,255,.15);color:var(--acc);border-radius:4px;padding:2px 7px">'+sysList.length+' systems</span>'
-        +(totalAssets?'<span style="font-size:9px;color:var(--t3)">'+totalAssets+' assets</span>':'')
-        +'<span class="area-chevron">›</span></span>'
-      +'</div>'
-      +'<div class="area-group-body">'
-        +sysList.map(function(sys){return renderSysCard(sys);}).join('')
-      +'</div></div>';
-  }).join
-// ══════════ SYSTEMS MODULE ══════════
-var DEFAULT_SYSTEMS=[
-  {id:"sys1",name:"Mixer 1",area:"Mixers",assets:[],pid:{nodes:[],pipes:[]},notes:""},
-  {id:"sys2",name:"Mixer 2",area:"Mixers",assets:[],pid:{nodes:[],pipes:[]},notes:""},
-  {id:"sys3",name:"Mixer 3",area:"Mixers",assets:[],pid:{nodes:[],pipes:[]},notes:""},
-  {id:"sys4",name:"Mixer 4",area:"Mixers",assets:[],pid:{nodes:[],pipes:[]},notes:""},
-  {id:"sys5",name:"Filling Line A",area:"20L A",assets:[],pid:{nodes:[],pipes:[]},notes:""},
-  {id:"sys6",name:"Filling Line B",area:"20L B",assets:[],pid:{nodes:[],pipes:[]},notes:""},
-  {id:"sys7",name:"Filling Line 5L",area:"5L",assets:[],pid:{nodes:[],pipes:[]},notes:""},
-  {id:"sys8",name:"Treatment System",area:"WWTP",assets:[],pid:{nodes:[],pipes:[]},notes:""},
-  {id:"sys9",name:"Hypochlorite System",area:"HYPO",assets:[],pid:{nodes:[],pipes:[]},notes:""},
-  {id:"sys10",name:"RM Tank Farm",area:"RM Tanks",assets:[],pid:{nodes:[],pipes:[]},notes:""},
-  {id:"sys11",name:"Fire Suppression System",area:"Outside",assets:[],pid:{nodes:[],pipes:[]},notes:"Συγκρότημα πυρασφάλειας"},
-  {id:"sys12",name:"FLT Charging Station",area:"Warehouse",assets:[],pid:{nodes:[],pipes:[]},notes:"Χώρος φόρτισης FLT"},
-  {id:"sys13",name:"Sleeve Line",area:"Sleeve",assets:[],pid:{nodes:[],pipes:[]},notes:""}
-];
-
-// ── Area icons ──
-var AREA_ICONS={
-  "Mixers":"🌀","20L A":"🅰","20L B":"🅱","5L":"5️⃣","WWTP":"♻️",
-  "HYPO":"🧪","RM Tanks":"🛢","Sleeve":"🏷","Warehouse":"📦",
-  "Outside":"🌿","Semi Finished Tanks":"🔵","Hold Tanks":"⏸","In-Tank":"🔽"
-};
-
-// ── Render systems tree ──
-function renderSystems(){
-  if(!S||!S.systems)return;
-  var el=document.getElementById('sys-tree');if(!el)return;
-  if(!S.systems.length){
-    el.innerHTML='<div class="empty"><div class="ei">🌐</div><div class="et">No systems defined</div></div>';
-    return;
-  }
-  // Group by area
-  var groups={};
-  S.systems.forEach(function(sys){
-    var a=sys.area||'Other';
-    if(!groups[a])groups[a]=[];
-    groups[a].push(sys);
-  });
-  el.innerHTML=Object.keys(groups).map(function(area){
-    var sysList=groups[area];
-    var areaIcon=AREA_ICONS[area]||'📍';
-    var totalAssets=sysList.reduce(function(n,s){return n+(s.assets||[]).length;},0);
-    var openCMs=0,bds=0;
-    sysList.forEach(function(sys){
-      (sys.assets||[]).forEach(function(eqId){
-        var eq=S.equipment.find(function(e){return e.id===eqId;});
-        if(!eq)return;
-        openCMs+=S.cm.filter(function(c){return(c.equip===eq.name||c.equip===eq.id)&&c.status!=='closed';}).length;
-        bds+=S.breakdowns.filter(function(b){return b.equip===eq.name||b.equip===eq.id;}).length;
-      });
-    });
-    return '<div class="area-group" id="ag-'+area.replace(/\s/g,'_')+'">'
-      +'<div class="area-group-hd">'
+      +'<div class="area-group-hd" onclick="toggleAreaGroup(this)">'
         +areaIcon+' '+area
         +' <span style="margin-left:auto;display:flex;align-items:center;gap:8px">'
         +'<span style="font-size:9px;background:rgba(64,128,255,.15);color:var(--acc);border-radius:4px;padding:2px 7px">'+sysList.length+' systems</span>'
@@ -1751,7 +1778,7 @@ function renderSysCard(sys){
   assets.forEach(function(eq){pmsDue+=S.pms.filter(function(p){return p.equip===eq.name&&p.status==='scheduled'&&p.sched<=TODAY;}).length;});
   var hasPID=(sys.pid&&sys.pid.nodes&&sys.pid.nodes.length>0);
   return '<div class="sys-card" style="--sc:'+statusColor+'">'
-    +'<div class="sys-hd">'
+    +'<div class="sys-hd" onclick="toggleSysBody(\''+sys.id+'\')">'
       +'<div class="sys-icon">'+(hasPID?'🗺':'🔲')+'</div>'
       +'<div class="sys-info">'
         +'<div class="sys-name">'+sys.name+'</div>'
@@ -1770,7 +1797,7 @@ function renderSysCard(sys){
         var type=EQ_TYPES[eq.type]||{icon:'🔧'};
         var sc={operational:'var(--g)',maintenance:'var(--y)',down:'var(--r)',standby:'var(--t3)'}[eq.status]||'var(--g)';
         var eqIdx=S.equipment.indexOf(eq);
-        return '<div class="sys-asset-row">'
+        return '<div class="sys-asset-row" onclick="openEqDetail('+eqIdx+')">'
           +'<div class="sys-asset-ico">'+type.icon+'</div>'
           +'<div class="sys-asset-info">'
             +'<div class="sys-asset-name">'+eq.name+'</div>'
@@ -1782,9 +1809,9 @@ function renderSysCard(sys){
       '<div style="padding:12px 14px;color:var(--t4);font-size:12px">No assets linked yet</div>'
       )
       +'<div class="sys-actions">'
-        +'<button class="btn btn-p btn-sm">🗺 '+(hasPID?'View/Edit':'Create')+' P&ID</button>'
-        +'<button class="btn btn-s btn-sm">+ Asset</button>'
-        +'<button class="btn btn-s btn-sm">✏️ Edit</button>'
+        +'<button class="btn btn-p btn-sm" onclick="openPIDEditor(\''+sys.id+'\')">🗺 '+(hasPID?'View/Edit':'Create')+' P&ID</button>'
+        +'<button class="btn btn-s btn-sm" onclick="openAddAssetToSys(\''+sys.id+'\')">+ Asset</button>'
+        +'<button class="btn btn-s btn-sm" onclick="editSystem(\''+sys.id+'\')">✏️ Edit</button>'
       +'</div>'
     +'</div></div>';
 }
@@ -1880,7 +1907,7 @@ function openPIDEditor(sysId){
     palEl.innerHTML=allEq.map(function(eq){
       var type=EQ_TYPES[eq.type]||{icon:'🔧'};
       var inSys=(sys.assets||[]).includes(eq.id);
-      return '<div class="pal-item">'
+      return '<div class="pal-item" onclick="addNodeToPID(\''+eq.id+'\')">'
         +'<div class="pal-ico">'+type.icon+'</div>'
         +'<div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+eq.name+'</div>'
         +'<div style="font-size:9px;color:var(--t3)">'+eq.area+(inSys?' ✓':'')+'</div></div>'
@@ -2073,7 +2100,10 @@ function deleteSelected(){
 function savePID(){svS();toast('P&ID saved ✅');}
 
 // Global unhandled rejection handler
-window.addEventListener('unhandledrejection',function(e){console.warn('Unhandled rejection:',e.reason);});
+window.addEventListener('unhandledrejection',function(e){
+  console.warn('Unhandled rejection:',e.reason);
+  e.preventDefault();
+});
 
 
 // ══════════ STATE ══════════
@@ -2103,43 +2133,24 @@ function svC(){lsS('em_c',CFG);}
 
 // ── INIT ──
 // Security init — async
-// ── Boot ──
-function boot(){
-  // Sanitize state
-  try{var d=lsG('em_s');if(d)Object.assign(S,d);}catch(e){}
-  try{var c=lsG('em_c');if(c)Object.assign(CFG,c);}catch(e){}
-  ['pms','breakdowns','gemba','sched','equipment','sups','offers','achs','cm','inv','projects'].forEach(function(k){
-    if(!Array.isArray(S[k]))S[k]=[];
-  });
-  if(!S.kpis||typeof S.kpis!=='object')S.kpis={pm:null,od:null,bd:null,carl:null};
-  if(!S.months||typeof S.months!=='object')S.months={};
-  if(!Array.isArray(S.systems)||!S.systems.length){
-    S.systems=DEFAULT_SYSTEMS.map(function(s){
-      return{id:s.id,name:s.name,area:s.area,assets:[],pid:{nodes:[],pipes:[]},notes:s.notes||''};
-    });
+(async function(){
+  try{
+    calY=now.getFullYear();calM=now.getMonth();
+    var barDate=document.getElementById('bar-date');
+    if(barDate)barDate.textContent=now.toLocaleDateString('el-GR',{weekday:'short',day:'numeric',month:'long',year:'numeric'});
+    var todayMonth=TODAY.slice(0,7);
+    var rptM=document.getElementById('rpt-month');if(rptM)rptM.value=todayMonth;
+    document.querySelectorAll('input[type=date]').forEach(function(e){e.value=TODAY;});
+    var ok=await initSecurity().catch(function(){return true;});
+    if(!ok)return;
+    try{await ldAll();}catch(e){console.warn('ldAll:',e);}
+    hideLockScreen();
+  }catch(err){
+    console.warn('Init error:',err);
+    try{var d=lsG('em_s');if(d)Object.assign(S,d);}catch(e){}
+    hideLockScreen();
   }
-  if(!S.equipment.length)localStorage.removeItem('em_seeded');
-  // Date fields
-  var rptM=document.getElementById('rpt-month');
-  if(rptM)rptM.value=TODAY.slice(0,7);
-  document.querySelectorAll('input[type=date]').forEach(function(e){e.value=TODAY;});
-  var barDate=document.getElementById('bar-date');
-  if(barDate)barDate.textContent=now.toLocaleDateString('el-GR',{weekday:'short',day:'numeric',month:'long',year:'numeric'});
-  // Boot sequence
-  try{seedSampleData();}catch(e){console.warn('seed:',e);}
-  try{initEvents();}catch(e){console.error('initEvents FAILED:',e);}
-  try{renderAll();}catch(e){console.error('renderAll FAILED:',e);}
-  try{loadCFGtoUI();}catch(e){}
-  try{checkAlerts();}catch(e){}
-  try{initAI();}catch(e){}
-  try{startAutoLock();}catch(e){}
-}
-// Run after DOM ready
-if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded', boot);
-} else {
-  boot();
-}
+})();
 try{if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(function(){});}catch(e){}
 
 // ── HELPERS ──
@@ -2196,23 +2207,82 @@ function areaCompliance(){
 
 // ══ RENDER ALL ══
 function renderAll(){
-  var fns=[
-    ['renderDash',renderDash],['renderAnalytics',renderAnalytics],
-    ['renderEquipment',renderEquipment],['renderPM',renderPM],
-    ['renderBreakdowns',renderBreakdowns],['renderGemba',renderGemba],
-    ['renderSched',renderSched],['renderCal',renderCal],
-    ['renderSup',renderSup],['renderAch',renderAch],['renderBdKpis',renderBdKpis],
-    ['renderCM',renderCM],['renderInventory',renderInventory],['renderSystems',renderSystems]
-  ];
-  fns.forEach(function(pair){
-    try{pair[1]();}catch(e){console.error('CRASH in '+pair[0]+':',e.message,e.stack);}
-  });
+  renderDash();renderAnalytics();renderEquipment();renderPM();renderBreakdowns();
+  renderGemba();renderSched();renderCal();renderSup();renderAch();renderBdKpis();
+  renderCM();renderInventory();renderSystems();
 }
 
 // ══ DASHBOARD ══
+
+function seedSampleData(){
+  if(localStorage.getItem('em_seeded_v5'))return;
+  S.equipment=[
+    {id:'eq1',name:'Pump P-101',area:'20L A',type:'pump',subtype:'Centrifugal',tag:'P-101',carl_id:'EQ-001',model:'Grundfos CM5-4',serial:'GF2024-001',crit:'A',status:'operational',install_date:'2022-03-15',specs:{power:'5.5kW',flow:'12m³/h',head:'28m'},notes:'Main product transfer pump'},
+    {id:'eq2',name:'Motor M-201',area:'Mixers',type:'motor',subtype:'Electric AC',tag:'M-201',carl_id:'EQ-003',model:'ABB M2AA100',serial:'ABB2023-003',crit:'A',status:'operational',install_date:'2021-06-10',specs:{power:'7.5kW',volt:'400V',rpm:'1450'},notes:'Mixer 1 drive motor'},
+    {id:'eq3',name:'Mixer AGT-1',area:'Mixers',type:'mixer',subtype:'Propeller',tag:'AGT-1',carl_id:'EQ-004',model:'Chemineer HE-3',serial:'CH2021-004',crit:'A',status:'operational',install_date:'2021-06-10',specs:{power:'7.5kW',vol:'15m³'},notes:'15m³ mixing tank'},
+    {id:'eq4',name:'Valve V-301',area:'WWTP',type:'valve',subtype:'Butterfly',tag:'V-301',carl_id:'EQ-005',model:'Crane BF2-4',serial:'CR2022-005',crit:'B',status:'maintenance',install_date:'2022-01-20',specs:{size:'DN100',press:'10bar'},notes:'Effluent control — seal replacement pending'},
+    {id:'eq5',name:'Compressor C-401',area:'Outside',type:'compressor',subtype:'Screw',tag:'C-401',carl_id:'EQ-006',model:'Atlas Copco GA15',serial:'AC2020-006',crit:'A',status:'operational',install_date:'2020-09-01',specs:{power:'15kW',press:'8bar'},notes:'Plant air compressor'},
+    {id:'eq6',name:'Tank TK-801',area:'RM Tanks',type:'vessel',subtype:'Storage Tank',tag:'TK-801',carl_id:'EQ-010',model:'SS316L',serial:'TK2019-010',crit:'A',status:'operational',install_date:'2019-06-01',specs:{vol:'50m³',mat:'SS316L'},notes:'Raw material storage'}
+  ];
+  S.pms=[
+    {area:'Mixers',equip:'Mixer AGT-1',type:'Monthly inspection + lubrication',freq:'Monthly',sched:'2025-04-15',wo:'WO-041',notes:'Check impeller, seals, gearbox oil',status:'scheduled',operations:[{text:'Check impeller for wear',done:false},{text:'Lubricate shaft bearing',done:false},{text:'Check gearbox oil level',done:false},{text:'Inspect mechanical seal',done:false}]},
+    {area:'20L A',equip:'Pump P-101',type:'Monthly inspection',freq:'Monthly',sched:'2025-04-20',wo:'WO-042',notes:'Check seals, impeller, flow rate',status:'scheduled',operations:[{text:'Check mechanical seal',done:false},{text:'Verify flow rate',done:false},{text:'Clean strainer',done:false}]},
+    {area:'Outside',equip:'Compressor C-401',type:'Quarterly service',freq:'Quarterly',sched:'2025-04-01',wo:'WO-043',notes:'Oil change, filter replacement',status:'done',completedDate:'2025-04-02',operations:[{text:'Change compressor oil',done:true},{text:'Replace air filter',done:true},{text:'Test safety relief valve',done:true}]}
+  ];
+  S.breakdowns=[
+    {equip:'Valve V-301',area:'WWTP',date:'2025-03-10',duration:'3.5',rca:'mechanical',description:'Butterfly disc stuck — partial flow restriction.',resolution:'Replaced EPDM seat ring, regreased shaft bearings.',cost:'185'},
+    {equip:'Pump P-101',area:'20L A',date:'2025-02-18',duration:'2.0',rca:'lack_pm',description:'Mechanical seal failed — product leakage. PM overdue by 3 weeks.',resolution:'Emergency seal replacement.',cost:'320'}
+  ];
+  S.gemba=[
+    {date:'2025-04-08',area:'WWTP',desc:'Oil drip from Valve V-301 actuator stem — 5ml/day.',priority:'medium',due:'2025-04-20',action:'Replace stem packing',wo:'WO-045',status:'open'},
+    {date:'2025-04-05',area:'20L A',desc:'Pump P-101 vibration elevated — 4.2mm/s vs baseline 2.8mm/s.',priority:'high',due:'2025-04-15',action:'Inspect bearings at next PM',wo:'WO-042',status:'open'},
+    {date:'2025-04-03',area:'Warehouse',desc:'FLT charger cable insulation frayed. Safety hazard.',priority:'high',due:'2025-04-07',action:'Replace charger cable',wo:'',status:'closed',closedDate:'2025-04-06'}
+  ];
+  S.cm=[
+    {equip:'Valve V-301',area:'WWTP',desc:'Replace actuator stem packing — oil weeping',priority:'medium',status:'open',date:'2025-04-20',wo:'WO-045',est_hrs:'2',parts:'Stem packing kit DN100',cost:'85',source:'gemba',createdDate:'2025-04-08'},
+    {equip:'Pump P-101',area:'20L A',desc:'Investigate elevated vibration — 4.2mm/s',priority:'high',status:'progress',date:'2025-04-15',wo:'WO-042',est_hrs:'3',parts:'Bearings if needed',cost:'',source:'gemba',createdDate:'2025-04-05'}
+  ];
+  S.sups=[
+    {id:'sup1',name:'Grundfos Hellas SA',cat:'Spare Parts',status:'active',contact:'210 6234500',delivery:'5',credit:'30',s_quality:5,s_delivery:4,s_price:3,s_communication:5,notes:'Preferred pump supplier'},
+    {id:'sup2',name:'Parker Hannifin Hellas',cat:'Spare Parts',status:'active',contact:'2310 556600',delivery:'7',credit:'30',s_quality:4,s_delivery:4,s_price:4,s_communication:4,notes:'Filters, hoses, fittings'}
+  ];
+  S.inv=[
+    {id:'inv1',name:'Mechanical Seal Kit CM5',ref:'GF-SEAL-CM5',equip:'Pump P-101',loc:'Shelf A1',cat:'Seals',qty:'2',min:'1',reorder:'3',cost:'145',notes:'Critical spare — Grundfos CM5'},
+    {id:'inv2',name:'VG46 Gearbox Oil 1L',ref:'OIL-VG46',equip:'Mixer AGT-1',loc:'Chemical Store',cat:'Lubricants',qty:'6',min:'3',reorder:'10',cost:'12',notes:'Monthly top-up'},
+    {id:'inv3',name:'Grease SKF LGEP2',ref:'SKF-LGEP2',equip:'Motor M-201',loc:'Shelf B1',cat:'Lubricants',qty:'0',min:'2',reorder:'5',cost:'22',notes:'OUT OF STOCK'}
+  ];
+  S.achs=[
+    {title:'Implemented digital Gemba Walk system',date:'2025-04-01',cat:'Systems',impact:'100% finding traceability',rate:'100',evidence:'Ecolab Mandra Maintenance App'},
+    {title:'Zero unplanned downtime in March 2025',date:'2025-03-31',cat:'Maintenance',impact:'PM compliance 91%',rate:'91',evidence:'Carl Source WO report March 2025'}
+  ];
+  S.kpis={pm:83,od:1,bd:1,carl:75};
+  S.months={'2025-02':{pm:85,od:1,bd:1,carl:75},'2025-03':{pm:91,od:0,bd:0,carl:82},'2025-04':{pm:83,od:1,bd:1,carl:75}};
+  var sysMap={'sys1':['eq2','eq3'],'sys5':['eq1'],'sys8':['eq4'],'sys10':['eq6'],'sys6':['eq5']};
+  if(Array.isArray(S.systems))S.systems.forEach(function(sys){if(sysMap[sys.id])sys.assets=sysMap[sys.id];});
+  localStorage.setItem('em_seeded_v5','1');
+  svS();
+}
+
+function autoCalcKPIs(){
+  try{
+    if(!Array.isArray(S.pms))return;
+    var month=new Date().toISOString().slice(0,7);
+    var mPMs=S.pms.filter(function(p){return(p.sched||'').slice(0,7)===month;});
+    var done=mPMs.filter(function(p){return p.status==='done';});
+    S.kpis=S.kpis||{};
+    S.kpis.pm=mPMs.length?Math.round(done.length/mPMs.length*100):null;
+    S.kpis.od=S.pms.filter(function(p){return p.status==='scheduled'&&p.sched<TODAY;}).length;
+    S.kpis.bd=Array.isArray(S.breakdowns)?S.breakdowns.filter(function(b){return(b.date||'').slice(0,7)===month;}).length:0;
+    var tw=S.pms.filter(function(p){return p.wo;}).length;
+    var dw=S.pms.filter(function(p){return p.wo&&p.status==='done';}).length;
+    S.kpis.carl=tw?Math.round(dw/tw*100):null;
+    S.months=S.months||{};
+    S.months[month]={pm:S.kpis.pm,od:S.kpis.od,bd:S.kpis.bd,carl:S.kpis.carl};
+  }catch(e){}
+}
 function renderDash(){
-  try{if(S.pms&&S.pms.length)autoCalcKPIs();}catch(e){}
-  var k=S.kpis||{},c=CFG||{};
+  if(Array.isArray(S.pms)&&S.pms.length)autoCalcKPIs();
+  var k=S.kpis,c=CFG;
   kpiSet('k-pm','k-pm-s',k.pm,'%',function(v){return v>=(c.pmT||95)?'ok':v>=(c.pmT||95)-15?'warn':'bad';},'✅ On Track','⚠️ Below Target');
   kpiSet('k-od','k-od-s',k.od,'',function(v){return v===0?'ok':'bad';},'✅ Zero','⚠️ Action Needed');
   kpiSet('k-bd','k-bd-s',k.bd,'',function(v){return v<(c.bkT||3)?'ok':'bad';},'✅ OK','⚠️ Review');
@@ -2233,7 +2303,7 @@ function renderDash(){
       '<div style="width:7px;height:7px;border-radius:50%;background:'+catClr(t.cat)+';flex-shrink:0"></div>'+
       '<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+t.title+'</div>'+
       '<div style="font-size:10px;color:var(--t3)">'+fd(t.date)+(t.area?' · '+t.area:'')+'</div></div>'+
-      '<button class="btn btn-g btn-sm" style="padding:5px 9px;font-size:10px;flex-shrink:0">✓</button></div>';
+      '<button class="btn btn-g btn-sm" style="padding:5px 9px;font-size:10px;flex-shrink:0" onclick="doneSchedId(\''+t.id+'\')">✓</button></div>';
   }).join(''):empty('📅','No tasks this week');
   // Projects
   document.getElementById('proj-list').innerHTML=S.projects.map(function(p,i){
@@ -2244,8 +2314,8 @@ function renderDash(){
       '<div style="font-family:var(--mono);font-size:12px;color:'+pc+'">'+p.pct+'%</div></div>'+
       '<div style="font-size:10px;color:var(--t3);margin-bottom:7px">'+stl+' · Due: '+fd(p.due)+'</div>'+
       '<div class="pbar"><div class="pfill" style="background:'+pc+';width:'+p.pct+'%"></div></div>'+
-      '<div class="item-actions"><button class="btn btn-s btn-sm">%</button>'+
-      '<button class="btn btn-d btn-sm">✕</button></div></div>';
+      '<div class="item-actions"><button class="btn btn-s btn-sm" onclick="updPct('+i+')">%</button>'+
+      '<button class="btn btn-d btn-sm" onclick="delProj('+i+')">✕</button></div></div>';
   }).join('');
   var rc=S.gemba.slice().reverse().slice(0,3);
   document.getElementById('recent-g').innerHTML=rc.length?rc.map(function(g){return gCard(g,false);}).join(''):empty('🔍','No findings yet');
@@ -2384,7 +2454,6 @@ function delEq(i){S.equipment.splice(i,1);svS();renderEquipment();}
 
 // ══ PM LOG ══
 function renderPM(){
-  if(!S)return;
   var el=document.getElementById('pm-list');if(!el)return;
   var items=S.pms.slice().reverse();
   if(pmFilt==='due')items=items.filter(function(p){return p.status==='scheduled';});
@@ -2403,7 +2472,7 @@ function renderPM(){
       '<div class="item-meta">'+tag(p.area)+'<span>📅 '+fd(p.sched)+'</span><span>🔁 '+p.freq+'</span>'+(p.wo?'<span>'+p.wo+'</span>':'')+'</div>'+
       '<div style="font-size:11px;color:var(--t2);margin-top:5px">'+p.type+'</div>'+
       (p.notes?'<div style="font-size:10px;color:var(--t3);margin-top:3px">'+p.notes+'</div>':'')+
-      (p.status!=='done'?'<div class="item-actions">'+(p.operations&&p.operations.length?'<button class="btn btn-p btn-sm">▶ '+p.operations.length+' Ops</button>':'<button class="btn btn-g btn-sm">✓ Done</button>')+'<button class="btn btn-d btn-sm">Delete</button></div>':'')+
+      (p.status!=='done'?'<div class="item-actions">'+(p.operations&&p.operations.length?'<button class="btn btn-p btn-sm" onclick="openPMExecution('+idx+')">▶ '+p.operations.length+' Ops</button>':'<button class="btn btn-g btn-sm" onclick="donePM('+idx+')">✓ Done</button>')+'<button class="btn btn-d btn-sm" onclick="delPM('+idx+')">Delete</button></div>':'')+
       '</div>';
   }).join('');
 }
@@ -2422,9 +2491,33 @@ function removePMEquip(i){pmEquipList.splice(i,1);renderPMEquipTags();}
 function renderPMEquipTags(){
   var el=document.getElementById('pm-equip-list');if(!el)return;
   el.innerHTML=pmEquipList.map(function(e,i){
-    return'<span style="background:rgba(64,128,255,.15);border:1px solid rgba(64,128,255,.3);border-radius:6px;padding:4px 8px;font-size:12px;color:var(--acc);cursor:pointer;display:inline-flex;align-items:center;gap:4px">'+
+    return'<span style="background:rgba(64,128,255,.15);border:1px solid rgba(64,128,255,.3);border-radius:6px;padding:4px 8px;font-size:12px;color:var(--acc);cursor:pointer;display:inline-flex;align-items:center;gap:4px" onclick="removePMEquip('+i+')">'+
       e+'<span style="opacity:.5;font-size:10px">✕</span></span>';
   }).join('');
+}
+
+var pmOpsList=[];
+function renderPMOpsList(){
+  var el=document.getElementById('pm-ops-list');if(!el)return;
+  if(!pmOpsList.length){el.innerHTML='<div style="color:var(--t4);font-size:11px;padding:4px 0">No operations added</div>';return;}
+  el.innerHTML=pmOpsList.map(function(op,i){
+    return '<div style="display:flex;align-items:center;gap:8px;background:var(--s3);border:1px solid var(--b2);border-radius:8px;padding:8px 10px">'
+      +'<span style="font-family:var(--mono);font-size:10px;color:var(--acc);width:16px;text-align:center;flex-shrink:0">'+(i+1)+'</span>'
+      +'<span style="flex:1;font-size:13px">'+op+'</span>'
+      +'<span style="cursor:pointer;color:var(--r);font-size:13px;flex-shrink:0" id="rm-op-'+i+'">✕</span>'
+      +'</div>';
+  }).join('');
+  pmOpsList.forEach(function(op,i){
+    var rm=document.getElementById('rm-op-'+i);
+    if(rm)rm.addEventListener('click',function(){pmOpsList.splice(i,1);renderPMOpsList();});
+  });
+}
+function addPMOp(){
+  var inp=document.getElementById('pm-op-input');
+  if(!inp||!inp.value.trim())return;
+  pmOpsList.push(inp.value.trim());
+  inp.value='';
+  renderPMOpsList();
 }
 function savePM(){
   var area=document.getElementById('pm-area').value;
@@ -2464,7 +2557,6 @@ document.querySelectorAll('[data-pmf]').forEach(function(b){
 
 // ══ BREAKDOWNS ══
 function renderBreakdowns(){
-  if(!S)return;
   var el=document.getElementById('bd-list');if(!el)return;
   renderBdKpis();
   if(!S.breakdowns.length){el.innerHTML=empty('⚡','No breakdowns recorded');return;}
@@ -2478,7 +2570,7 @@ function renderBreakdowns(){
       '<div style="font-size:11px;color:var(--t2);margin-top:5px">'+tag((rcaLbl[b.rca]||b.rca),'tag-r')+' '+(b.description||'')+'</div>'+
       (b.resolution?'<div style="font-size:10px;color:var(--t3);margin-top:4px">✅ Resolution: '+b.resolution+'</div>':'')+
       (b.cost?'<div style="font-size:10px;color:var(--y);margin-top:3px">💶 Cost: €'+b.cost+'</div>':'')+
-      '<div class="item-actions"><button class="btn btn-y btn-sm">🛠️ → CM Task</button><button class="btn btn-d btn-sm">Delete</button></div>'+
+      '<div class="item-actions"><button class="btn btn-y btn-sm" onclick="cmFromBreakdown('+idx+')">🛠️ → CM Task</button><button class="btn btn-d btn-sm" onclick="delBd('+idx+')">Delete</button></div>'+
       '</div>';
   }).join('');
 }
@@ -2511,14 +2603,13 @@ function gCard(g,showA){
     (g.action?'<div style="font-size:11px;color:var(--t2);margin-top:5px">→ '+g.action+'</div>':'')+
     (showA!==false&&g.status!=='closed'?
       '<div class="item-actions">'+
-        '<button class="btn btn-g btn-sm">✓ Close</button>'+
-        '<button class="btn btn-y btn-sm">🛠️ CM</button>'+
-        '<button class="btn btn-d btn-sm">Delete</button>'+
+        '<button class="btn btn-g btn-sm" onclick="closeG('+idx+')">✓ Close</button>'+
+        '<button class="btn btn-y btn-sm" onclick="cmFromGemba('+idx+')">🛠️ CM</button>'+
+        '<button class="btn btn-d btn-sm" onclick="delG('+idx+')">Delete</button>'+
       '</div>':'')+
     '</div>';
 }
 function renderGemba(){
-  if(!S)return;
   var el=document.getElementById('gemba-list');if(!el)return;
   var items=S.gemba.slice().reverse();
   if(gFilt==='open')items=items.filter(function(g){return g.status!=='closed';});
@@ -2554,7 +2645,7 @@ function renderSched(){
       '<div class="item-hd"><div class="item-title">'+s.title+'</div>'+b+'</div>'+
       '<div class="item-meta"><span>'+(cLbl[s.cat]||s.cat)+'</span>'+(s.area?tag(s.area):'')+(s.recur&&s.recur!=='none'?'<span>🔁</span>':'')+'</div>'+
       (s.notes?'<div style="font-size:11px;color:var(--t3);margin-top:4px">'+s.notes+'</div>':'')+
-      (s.status!=='done'?'<div class="item-actions"><button class="btn btn-g btn-sm">✓ Done</button><button class="btn btn-d btn-sm">Delete</button></div>':'')+'</div>';
+      (s.status!=='done'?'<div class="item-actions"><button class="btn btn-g btn-sm" onclick="doneSched(\''+s.id+'\')">✓ Done</button><button class="btn btn-d btn-sm" onclick="delSched(\''+s.id+'\')">Delete</button></div>':'')+'</div>';
   }).join('');
 }
 function renderCal(){
@@ -2568,7 +2659,7 @@ function renderCal(){
     var isT=ds===TODAY;
     var dts=S.sched.filter(function(s){return s.date===ds&&s.status!=='done';});
     var dots=dts.slice(0,3).map(function(t){return'<div class="cd-dot" style="background:'+catClr(t.cat)+'"></div>';}).join('');
-    h+='<div class="cd'+(isT?' today':'')+'"><div class="cd-n">'+d+'</div>'+dots+'</div>';
+    h+='<div class="cd'+(isT?' today':'')+'" onclick="openSchedDate(\''+ds+'\')"><div class="cd-n">'+d+'</div>'+dots+'</div>';
   }
   var rem=(7-(first+days)%7)%7;
   for(var d2=1;d2<=rem;d2++)h+='<div class="cd other"><div class="cd-n">'+d2+'</div></div>';
@@ -2588,7 +2679,6 @@ function openSchedDate(d){document.getElementById('sc-date').value=d;openM('m-sc
 
 // ══ SUPPLIERS ══
 function renderSup(){
-  if(!S)return;
   document.getElementById('sup-cnt').textContent=S.sups.length;
   document.getElementById('sup-off').textContent=S.offers.length;
   var devs=S.sups.filter(function(s){return s.delivery;}).map(function(s){return parseInt(s.delivery);});
@@ -2629,8 +2719,8 @@ function renderSup(){
       scoreHTML+
       (s.notes?'<div style="font-size:11px;color:var(--t3);margin-top:6px">'+s.notes+'</div>':'')+
       '<div class="item-actions" style="margin-top:9px">'+
-      '<button class="btn btn-s btn-sm">+ Offer</button>'+
-      '<button class="btn btn-d btn-sm">Delete</button></div>'+
+      '<button class="btn btn-s btn-sm" onclick="openOfferModal(\''+s.id+'\')">+ Offer</button>'+
+      '<button class="btn btn-d btn-sm" onclick="delSup(\''+s.id+'\')">Delete</button></div>'+
       (offs.length?'<div style="margin-top:9px;font-size:9px;color:var(--t3);font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px">Offers ('+offs.length+')</div>'+offs.slice(-2).map(function(o){return offerCard(o,false);}).join(''):'')+
       '</div>';
   }).join(''):empty('🏭','No suppliers yet');
@@ -2674,7 +2764,6 @@ function saveOffer(){
 
 // ══ ACHIEVEMENTS ══
 function renderAch(){
-  if(!S)return;
   var el=document.getElementById('ach-list');if(!el)return;
   if(!S.achs.length){el.innerHTML=empty('🏆','No achievements yet');return;}
   el.innerHTML=S.achs.slice().reverse().map(function(a,ri){
@@ -2685,7 +2774,7 @@ function renderAch(){
       '<div style="font-size:10px;color:var(--t3)">'+a.cat+' · '+fd(a.date)+'</div>'+
       (a.impact?'<div style="font-size:12px;color:var(--t2);margin-top:6px">📊 '+a.impact+'</div>':'')+
       (a.evidence?'<div style="font-size:10px;color:var(--t3);margin-top:4px">📎 '+a.evidence+'</div>':'')+
-      '<div class="item-actions" style="margin-top:8px"><button class="btn btn-d btn-sm">Remove</button></div></div>';
+      '<div class="item-actions" style="margin-top:8px"><button class="btn btn-d btn-sm" onclick="delAch('+idx+')">Remove</button></div></div>';
   }).join('');
 }
 function saveAch(){
@@ -2851,18 +2940,13 @@ function doClear(){if(!confirm('Delete ALL data? Cannot be undone.'))return;S={k
 function doExport(type){
   var parts=type.split('-'),section=parts[0],format=parts[1];
   if(format==='pdf'){
-    // Hide all views except current, print, then restore
-    var views=document.querySelectorAll('.view');
-    var active=document.querySelector('.view.on');
-    views.forEach(function(v){if(v!==active)v.style.display='none';});
-    document.body.classList.add('printing');
-    toast('Opening print... 📄');
+    var allViews=document.querySelectorAll('.view');
+    var activeView=document.querySelector('.view.on');
+    allViews.forEach(function(v){if(v!==activeView)v.style.display='none';});
+    toast('Printing current view... 📄');
     setTimeout(function(){
       window.print();
-      setTimeout(function(){
-        views.forEach(function(v){v.style.display='';});
-        document.body.classList.remove('printing');
-      },1000);
+      setTimeout(function(){allViews.forEach(function(v){v.style.display='';});},800);
     },300);
     return;
   }
@@ -2886,172 +2970,96 @@ function doExport(type){
 
 // ══ EVENTS ══
 function initEvents(){
-  // ── Event delegation: one listener catches ALL clicks ──
-  document.body.addEventListener('click', function(e){
-    var t = e.target;
-    // Walk up DOM to find actionable element
-    for(var i=0; i<8; i++){
-      if(!t||t===document.body)break;
-      handleClick(t, e);
-      t = t.parentElement;
-    }
-  }, false);
-
-  // ── Change events ──
-  document.body.addEventListener('change', function(e){
-    var id = e.target.id;
-    if(id==='set-notif'){CFG.notif=e.target.checked;svS();checkAlerts();}
-    if(id==='restore-file'){doRestore(e);}
-  }, false);
-
-  // ── Filter button active state ──
-  // handled inside handleClick
-
-  // ── Calendar ──
-  document.body.addEventListener('input', function(e){
-    var id = e.target.id;
-    if(id==='search-input'){
-      var q=e.target.value.trim();
-      var clr=document.getElementById('search-clear');
-      if(clr)clr.classList.toggle('visible',q.length>0);
-      if(q.length>=1)doSearch(q);
-      else{var res=document.getElementById('search-results');if(res)res.classList.remove('visible');}
-    }
-    if(id==='ai-input'){
-      e.target.style.height='auto';
-      e.target.style.height=Math.min(e.target.scrollHeight,100)+'px';
-    }
-  }, false);
-
-  document.body.addEventListener('keydown', function(e){
-    if(e.target.id==='ai-input'&&e.key==='Enter'&&!e.shiftKey){
-      e.preventDefault();sendAIMsg().catch(function(){});
-    }
-    if(e.key==='Escape'){
-      document.querySelectorAll('.overlay.on').forEach(function(o){o.classList.remove('on');});
-    }
-  }, false);
-}
-
-function handleClick(t, e){
-  var id = t.id||'';
-  var cls = t.className||'';
-  var dv  = t.dataset&&t.dataset.view;
-  var de  = t.dataset&&t.dataset.export;
-  var dg  = t.dataset&&t.dataset.goto;
-
-  // ── NAV ──
-  if(dv && (cls.indexOf('nb')>=0||t.closest&&t.closest('.nb'))){
-    e.stopPropagation();
-    document.querySelectorAll('.nb').forEach(function(x){x.classList.remove('on');});
-    var btn=document.querySelector('.nb[data-view="'+dv+'"]');if(btn)btn.classList.add('on');
-    document.querySelectorAll('.view').forEach(function(x){x.classList.remove('on');});
-    var vEl=document.getElementById('view-'+dv);if(vEl)vEl.classList.add('on');
-    try{renderAll();}catch(err){console.error('renderAll:',err);}
-    return;
-  }
-  if(dg){e.stopPropagation();gotoView(dg);return;}
-
-  // ── EXPORT ──
-  if(de){e.stopPropagation();doExport(de);return;}
-
-  // ── FILTERS ──
-  var filterMap={'data-pmf':'pmFilt','data-gf':'gFilt','data-sf':'sFilt',
-                 'data-spf':'spFilt','data-cmf':'cmFilt','data-invf':'invFilt'};
-  var filterRender={'pmFilt':renderPM,'gFilt':renderGemba,'sFilt':renderSched,
-                    'spFilt':renderSup,'cmFilt':renderCM,'invFilt':renderInventory};
-  for(var attr in filterMap){
-    if(t.hasAttribute&&t.hasAttribute(attr)){
-      var varName=filterMap[attr];
-      window[varName]=t.getAttribute(attr);
-      var siblings=document.querySelectorAll('['+attr+']');
-      siblings.forEach(function(x){x.classList.remove('on');});
-      t.classList.add('on');
-      try{filterRender[varName]();}catch(err){}
-      return;
-    }
-  }
-
-  // ── OVERLAY CLOSE ──
-  if(t.classList&&t.classList.contains('overlay')){closeM(t.id);return;}
-
-  // ── BUTTONS BY ID ──
-  var actions = {
-    'btn-settings':   function(){openM('m-settings');},
-    'btn-kpi':        function(){openM('m-kpi');},
-    'btn-proj':       function(){openM('m-proj');},
-    'btn-add-sys':    function(){openAddSys();},
-    'save-sys-btn':   function(){saveSys();},
-    'del-sys-btn':    function(){delSystem();},
-    'close-sys-btn':  function(){closeM('m-sys');},
-    'btn-eq':         function(){openEqModal();},
-    'save-eq-btn':    function(){saveEq();},
-    'close-eq-btn':   function(){closeM('m-eq');},
-    'btn-pm':         function(){pmEquipList=[];renderPMEquipTags();pmOpsList=[];try{renderPMOpsList();}catch(err){}try{resetEqPicker('pm');}catch(err){}openM('m-pm');},
-    'save-pm-btn':    function(){savePM();},
-    'close-pm-btn':   function(){closeM('m-pm');},
-    'btn-bd':         function(){try{resetEqPicker('bd');}catch(err){}openM('m-bd');},
-    'save-bd-btn':    function(){saveBd();},
-    'close-bd-btn':   function(){closeM('m-bd');},
-    'btn-gemba':      function(){openM('m-gemba');},
-    'save-gemba-btn': function(){saveGemba();},
-    'close-gemba-btn':function(){closeM('m-gemba');},
-    'btn-sched':      function(){var d=document.getElementById('sc-date');if(d)d.value=TODAY;openM('m-sched');},
-    'save-sched-btn': function(){saveSched();},
-    'close-sched-btn':function(){closeM('m-sched');},
-    'cal-prev':       function(){calM--;if(calM<0){calM=11;calY--;}renderCal();},
-    'cal-next':       function(){calM++;if(calM>11){calM=0;calY++;}renderCal();},
-    'btn-sup':        function(){openM('m-sup');},
-    'btn-offer':      function(){openOfferModal(null);},
-    'save-sup-btn':   function(){saveSup();},
-    'close-sup-btn':  function(){closeM('m-sup');},
-    'save-offer-btn': function(){saveOffer();},
-    'close-offer-btn':function(){closeM('m-offer');},
-    'btn-ach':        function(){openM('m-ach');},
-    'save-ach-btn':   function(){saveAch();},
-    'close-ach-btn':  function(){closeM('m-ach');},
-    'btn-cm':         function(){var sb=document.getElementById('cm-source-banner');if(sb)sb.style.display='none';var st=document.getElementById('cm-source-type');if(st)st.value='manual';openM('m-cm');},
-    'save-cm-btn':    function(){saveCM();},
-    'close-cm-btn':   function(){closeM('m-cm');},
-    'btn-inv':        function(){var sel=document.getElementById('inv-sup');if(sel)sel.innerHTML='<option value="">— None —</option>'+S.sups.map(function(s){return'<option value="'+s.id+'">'+s.name+'</option>';}).join('');document.getElementById('inv-edit-idx').value='-1';openM('m-inv');},
-    'save-inv-btn':   function(){saveInv();},
-    'close-inv-btn':  function(){closeM('m-inv');},
-    'save-stock-btn': function(){saveStockMovement();},
-    'close-stock-btn':function(){closeM('m-stock');},
-    'save-kpi-btn':   function(){saveKPI();},
-    'close-kpi-btn':  function(){closeM('m-kpi');},
-    'save-proj-btn':  function(){saveProj();},
-    'close-proj-btn': function(){closeM('m-proj');},
-    'btn-gen-rpt':    function(){generateReport();},
-    'btn-print-rpt':  function(){printReport();},
-    'save-settings-btn':function(){saveSettings();},
-    'close-settings-btn':function(){closeM('m-settings');},
-    'backup-btn':     function(){doBackup();},
-    'restore-wrap':   function(){var f=document.getElementById('restore-file');if(f)f.click();},
-    'clear-btn':      function(){doClear();},
-    'set-perm-btn':   function(){reqNotif();},
-    'ai-fab':         function(){openAI();},
-    'ai-close':       function(){var o=document.getElementById('ai-overlay');if(o)o.classList.remove('on');},
-    'ai-save-key':    function(){var key=document.getElementById('ai-key-input').value.trim();if(!key)return;AI_KEY=key;localStorage.setItem('gemini_key',key);showAIChat();aiWelcome();},
-    'ai-send':        function(){sendAIMsg().catch(function(){});},
-    'search-clear':   function(){var inp=document.getElementById('search-input');if(inp)inp.value='';t.classList.remove('visible');var res=document.getElementById('search-results');if(res)res.classList.remove('visible');},
-    'topbar-reset-btn':function(){localStorage.clear();sessionStorage.clear();location.reload();},
-    'btn-print-rpt':  function(){printReport();}
-  };
-
-  if(id && actions[id]){
-    e.stopPropagation();
-    try{actions[id]();}catch(err){console.error('Action '+id+':',err);}
-    return;
-  }
-
-  // ── AI suggestion chips ──
-  if(t.classList&&t.classList.contains('ai-sug')){
-    var inp=document.getElementById('ai-input');
-    if(inp)inp.value=t.dataset.msg||t.textContent||'';
-    sendAIMsg().catch(function(){});
-    return;
-  }
+  // NAV
+  document.querySelectorAll('.nb').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.nb').forEach(function(x){x.classList.remove('on');});b.classList.add('on');
+      document.querySelectorAll('.view').forEach(function(v){v.classList.remove('on');});
+      document.getElementById('view-'+b.dataset.view).classList.add('on');
+      renderAll();
+    });
+  });
+  document.querySelectorAll('[data-goto]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var v=b.dataset.goto;
+      document.querySelectorAll('.nb').forEach(function(x){x.classList.remove('on');});
+      var nb=document.querySelector('.nb[data-view="'+v+'"]');if(nb)nb.classList.add('on');
+      document.querySelectorAll('.view').forEach(function(x){x.classList.remove('on');});
+      var vEl=document.getElementById('view-'+v);if(vEl)vEl.classList.add('on');
+    });
+  });
+  // SETTINGS BTN
+  document.getElementById('btn-settings').addEventListener('click',function(){
+    openM('m-settings');
+    var kst=document.getElementById('ai-key-status');
+    if(kst)kst.textContent=localStorage.getItem('gemini_key')?'✅ Connected (Gemini 1.5 Flash)':'❌ Not connected';
+  });
+  // EQ button
+  var btnEqBtn=document.getElementById('btn-eq');if(btnEqBtn)btnEqBtn.addEventListener('click',openEqModal);
+  // OPEN MODALS
+  var openers=[['btn-kpi','m-kpi'],['btn-proj','m-proj'],['btn-sched','m-sched'],['btn-gemba','m-gemba'],['btn-sup','m-sup'],['btn-offer','m-offer'],['btn-ach','m-ach'],['btn-eq','m-eq']];
+  openers.forEach(function(pair){var btn=document.getElementById(pair[0]);if(btn)btn.addEventListener('click',function(){if(pair[0]==='btn-sched')document.getElementById('sc-date').value=TODAY;if(pair[0]==='btn-offer')return openOfferModal(null);openM(pair[1]);});});
+  // SAVE BTNS
+  var savers=[['save-eq-btn',saveEq],['save-pm-btn',savePM],['save-bd-btn',saveBd],['save-gemba-btn',saveGemba],['save-sched-btn',saveSched],['save-sup-btn',saveSup],['save-offer-btn',saveOffer],['save-kpi-btn',saveKPI],['save-proj-btn',saveProj],['save-ach-btn',saveAch],['save-settings-btn',saveSettings],['btn-gen-rpt',generateReport],['btn-print-rpt',printReport],['backup-btn',doBackup]];
+  savers.forEach(function(pair){var btn=document.getElementById(pair[0]);if(btn)btn.addEventListener('click',pair[1]);});
+  // CLOSE BTNS
+  ['eq','pm','bd','gemba','sched','sup','offer','kpi','proj','ach','settings','sys'].forEach(function(k){var btn=document.getElementById('close-'+k+'-btn');if(btn)btn.addEventListener('click',function(){closeM('m-'+k);});});
+  // FILTER BTNS
+  document.querySelectorAll('[data-pmf]').forEach(function(b){b.addEventListener('click',function(){pmFilt=b.dataset.pmf;document.querySelectorAll('[data-pmf]').forEach(function(x){x.classList.remove('on');});b.classList.add('on');renderPM();});});
+  document.querySelectorAll('[data-gf]').forEach(function(b){b.addEventListener('click',function(){gFilt=b.dataset.gf;document.querySelectorAll('[data-gf]').forEach(function(x){x.classList.remove('on');});b.classList.add('on');renderGemba();});});
+  document.querySelectorAll('[data-sf]').forEach(function(b){b.addEventListener('click',function(){sFilt=b.dataset.sf;document.querySelectorAll('[data-sf]').forEach(function(x){x.classList.remove('on');});b.classList.add('on');renderSched();});});
+  document.querySelectorAll('[data-spf]').forEach(function(b){b.addEventListener('click',function(){spFilt=b.dataset.spf;document.querySelectorAll('[data-spf]').forEach(function(x){x.classList.remove('on');});b.classList.add('on');renderSup();});});
+  // CALENDAR
+  document.getElementById('cal-prev').addEventListener('click',function(){calM--;if(calM<0){calM=11;calY--;}renderCal();});
+  document.getElementById('cal-next').addEventListener('click',function(){calM++;if(calM>11){calM=0;calY++;}renderCal();});
+  // EXPORT
+  document.querySelectorAll('[data-export]').forEach(function(b){b.addEventListener('click',function(){doExport(b.dataset.export);});});
+  // CM FILTERS
+  document.querySelectorAll('[data-cmf]').forEach(function(b){
+    b.addEventListener('click',function(){
+      cmFilt=b.dataset.cmf;
+      document.querySelectorAll('[data-cmf]').forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on');renderCM();
+    });
+  });
+  // INV FILTERS
+  document.querySelectorAll('[data-invf]').forEach(function(b){
+    b.addEventListener('click',function(){
+      invFilt=b.dataset.invf;
+      document.querySelectorAll('[data-invf]').forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on');renderInventory();
+    });
+  });
+  // CM/INV open buttons
+  var btnCm=document.getElementById('btn-cm');if(btnCm)btnCm.addEventListener('click',function(){
+    document.getElementById('cm-source-banner').style.display='none';
+    document.getElementById('cm-source-type').value='manual';
+    openM('m-cm');
+  });
+  var btnInv=document.getElementById('btn-inv');if(btnInv)btnInv.addEventListener('click',function(){
+    // Populate supplier select
+    var sel=document.getElementById('inv-sup');
+    sel.innerHTML='<option value="">— None —</option>'+S.sups.map(function(s){return'<option value="'+s.id+'">'+s.name+'</option>';}).join('');
+    document.getElementById('inv-edit-idx').value='-1';
+    openM('m-inv');
+  });
+  // Reset PM equip list when PM modal is opened
+  var addPmOp=document.getElementById('btn-add-pm-op');if(addPmOp)addPmOp.addEventListener('click',addPMOp);
+  var btnPm2=document.getElementById('btn-pm');if(btnPm2)btnPm2.addEventListener('click',function(){pmOpsList=[];renderPMOpsList();if(typeof pmEquipList!=='undefined'){pmEquipList=[];renderPMEquipTags();}if(typeof pmOpsList!=='undefined'){pmOpsList=[];renderPMOpsList();}resetEqPicker('pm');openM('m-pm');});
+  var btnBd2=document.getElementById('btn-bd');if(btnBd2)btnBd2.addEventListener('click',function(){resetEqPicker('bd');openM('m-bd');});
+  var saveCmBtn=document.getElementById('save-cm-btn');if(saveCmBtn)saveCmBtn.addEventListener('click',saveCM);
+  var saveInvBtn=document.getElementById('save-inv-btn');if(saveInvBtn)saveInvBtn.addEventListener('click',saveInv);
+  var saveStockBtn=document.getElementById('save-stock-btn');if(saveStockBtn)saveStockBtn.addEventListener('click',saveStockMovement);
+  var closeCmBtn=document.getElementById('close-cm-btn');if(closeCmBtn)closeCmBtn.addEventListener('click',function(){closeM('m-cm');});
+  var closeInvBtn=document.getElementById('close-inv-btn');if(closeInvBtn)closeInvBtn.addEventListener('click',function(){closeM('m-inv');});
+  var closeStockBtn=document.getElementById('close-stock-btn');if(closeStockBtn)closeStockBtn.addEventListener('click',function(){closeM('m-stock');});
+  // RESTORE
+  var rf=document.getElementById('restore-file');if(rf)rf.addEventListener('change',doRestore);
+  var rw=document.getElementById('restore-wrap');if(rw)rw.addEventListener('click',function(){document.getElementById('restore-file').click();});
+  var cb=document.getElementById('clear-btn');if(cb)cb.addEventListener('click',doClear);
+  var ppb=document.getElementById('set-perm-btn');if(ppb)ppb.addEventListener('click',reqNotif);
+  // OVERLAY CLOSE
+  document.querySelectorAll('.overlay').forEach(function(o){o.addEventListener('click',function(e){if(e.target===o)o.classList.remove('on');});});
 }
 
 
@@ -3097,14 +3105,36 @@ async function hashPIN(pin){
 
 // ── Save encrypted state ──
 function svS(){
+  // Always save unencrypted immediately (fast, synchronous)
   try{localStorage.setItem('em_s',JSON.stringify(S));}catch(e){}
+  // Also save encrypted in background if crypto available
+  if(cryptoKey&&typeof crypto!=='undefined'&&crypto.subtle){
+    Promise.resolve().then(function(){
+      return encryptData({S:S,ts:Date.now()},cryptoKey);
+    }).then(function(enc){
+      try{localStorage.setItem(DATA_KEY,JSON.stringify(enc));}catch(e){}
+    }).catch(function(){});
+  }
 }
+
+// ── Load state ──
 async function ldAll(){
+  // Try encrypted first
+  if(cryptoKey&&typeof crypto!=='undefined'&&crypto.subtle){
+    try{
+      var enc=localStorage.getItem(DATA_KEY);
+      if(enc){
+        var dec=await decryptData(JSON.parse(enc),cryptoKey);
+        if(dec&&dec.S)Object.assign(S,dec.S);
+        return;
+      }
+    }catch(e){console.warn('Decrypt failed, using unencrypted',e);}
+  }
+  // Fallback: unencrypted
   try{var d=lsG('em_s');if(d)Object.assign(S,d);}catch(e){}
   try{var c=lsG('em_c');if(c)Object.assign(CFG,c);}catch(e){}
-  if(!S.systems||!S.systems.length)S.systems=DEFAULT_SYSTEMS.map(function(s){return Object.assign({},s,{assets:[],pid:{nodes:[],pipes:[]}});});
 }
-// ── PIN Setup ──
+
 // ── PIN Setup ──
 var setupPin = '';
 var setupConfirm = '';
@@ -3271,24 +3301,24 @@ function showLockScreen(){
     initSetupPad();
   }
 }
-var _appBooted=true; // PIN removed
+var _appBooted=false;
 function hideLockScreen(){
   var ls=document.getElementById('lock-screen');
-  if(ls)ls.style.display='none';
+  if(ls){ls.style.display='none';}
   document.body.style.overflow='';
   if(!_appBooted){
     _appBooted=true;
+    // Boot the app now that we're unlocked
     var todayMonth=TODAY.slice(0,7);
-    var rptM=document.getElementById('rpt-month');
-    if(rptM)rptM.value=todayMonth;
+    var rptM=document.getElementById('rpt-month');if(rptM)rptM.value=todayMonth;
     document.querySelectorAll('input[type=date]').forEach(function(e){e.value=TODAY;});
-    initEvents();
-    initSearch();
     try{seedSampleData();}catch(e){console.warn('seed:',e);}
-    renderAll();
-    loadCFGtoUI();
-    checkAlerts();
-    try{initAI();}catch(e){}
+    try{initEvents();}catch(e){console.warn('initEvents:',e);}
+    try{initSearch();}catch(e){console.warn('initSearch:',e);}
+    try{renderAll();}catch(e){console.warn('renderAll:',e);}
+    try{loadCFGtoUI();}catch(e){console.warn('loadCFGtoUI:',e);}
+    try{checkAlerts();}catch(e){console.warn('checkAlerts:',e);}
+    try{initAI();}catch(e){console.warn('AI init:',e);}
   }
   startAutoLock();
 }
@@ -3304,8 +3334,37 @@ function resetLockTimer(){clearTimeout(lockTimer);startAutoLock();}
 document.addEventListener('touchstart',resetLockTimer,{passive:true});
 document.addEventListener('click',resetLockTimer);
 
-// ── Init Security (PIN disabled) ──
-function initSecurity(){return true;}
+// ── Init Security ──
+async function initSecurity(){
+  if(typeof crypto==='undefined'||!crypto.subtle){
+    console.warn('crypto.subtle unavailable - requires HTTPS');
+    return true;
+  }
+  var hasPIN=localStorage.getItem(PIN_KEY);
+  var hasSession=sessionStorage.getItem(SESSION_KEY);
+  if(!hasPIN){
+    // First time — show setup
+    showLockScreen();
+    return false;
+  }
+  if(!hasSession){
+    // Locked — show unlock
+    showLockScreen();
+    return false;
+  }
+  // Session active — load data (already unlocked this session)
+  // Note: without crypto key we fall back to unencrypted
+  var saltArr=JSON.parse(localStorage.getItem(SALT_KEY)||'[]');
+  if(saltArr.length&&!cryptoKey){
+    // Need to re-derive key — but we don't have PIN in memory
+    // Show unlock screen to re-enter PIN for this session
+    sessionStorage.removeItem(SESSION_KEY);
+    showLockScreen();
+    return false;
+  }
+  return true;
+}
+
 // ══════════ SEARCH MODULE ══════════
 var searchActive = false;
 
@@ -3436,14 +3495,13 @@ function gotoView(v){
   var nb=document.querySelector('.nb[data-view="'+v+'"]');if(nb)nb.classList.add('on');
   document.querySelectorAll('.view').forEach(function(x){x.classList.remove('on');});
   var vEl=document.getElementById('view-'+v);if(vEl)vEl.classList.add('on');
-  try{renderAll();}catch(e){console.error('renderAll in gotoView:',e);}
+  renderAll();
 }
 
 // ══════════ CORRECTIVE MAINTENANCE ══════════
 var cmFilt='all';
 
 function renderCM(){
-  if(!S)return;
   // KPIs
   var open=S.cm.filter(function(c){return c.status==='open';}).length;
   var prog=S.cm.filter(function(c){return c.status==='progress';}).length;
@@ -3492,11 +3550,11 @@ function renderCM(){
       (c.resolution?'<div style="font-size:11px;color:var(--g);margin-top:4px">✅ '+c.resolution+'</div>':'')+
       (c.status!=='closed'?
         '<div class="item-actions">'+
-          '<button class="btn btn-s btn-sm">Edit</button>'+
-          '<button class="btn btn-g btn-sm">✓ Close</button>'+
-          '<button class="btn btn-d btn-sm">Delete</button>'+
+          '<button class="btn btn-s btn-sm" onclick="editCM('+idx+')">Edit</button>'+
+          '<button class="btn btn-g btn-sm" onclick="closeCM('+idx+')">✓ Close</button>'+
+          '<button class="btn btn-d btn-sm" onclick="delCM('+idx+')">Delete</button>'+
         '</div>':
-        '<div class="item-actions"><button class="btn btn-d btn-sm">Delete</button></div>'
+        '<div class="item-actions"><button class="btn btn-d btn-sm" onclick="delCM('+idx+')">Delete</button></div>'
       )+
       '</div>';
   }).join('');
@@ -3602,7 +3660,6 @@ function cmFromBreakdown(bIdx){
 var invFilt='all';
 
 function renderInventory(){
-  if(!S)return;
   // Summary KPIs
   var total=S.inv.length;
   var low=S.inv.filter(function(p){return parseInt(p.qty||0)>0&&parseInt(p.qty||0)<=parseInt(p.min||0);}).length;
@@ -3654,9 +3711,9 @@ function renderInventory(){
       '</div>'+
       (p.notes?'<div style="font-size:10px;color:var(--t3);margin-top:4px">'+p.notes+'</div>':'')+
       '<div class="item-actions">'+
-        '<button class="btn btn-s btn-sm">📤 Movement</button>'+
-        '<button class="btn btn-s btn-sm">Edit</button>'+
-        '<button class="btn btn-d btn-sm">Delete</button>'+
+        '<button class="btn btn-s btn-sm" onclick="openStockModal('+idx+')">📤 Movement</button>'+
+        '<button class="btn btn-s btn-sm" onclick="editInv('+idx+')">Edit</button>'+
+        '<button class="btn btn-d btn-sm" onclick="delInv('+idx+')">Delete</button>'+
       '</div>'+
       (isLow||isOut?'<div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:7px;padding:8px 10px;margin-top:8px;font-size:11px;color:var(--r)">'+
         (isOut?'❌ OUT OF STOCK — Order '+reorder+' units immediately':
@@ -3740,7 +3797,7 @@ function saveStockMovement(){
 var AI_KEY = localStorage.getItem('gemini_key') || '';
 var aiHistory = [];
 var aiLoading = false;
-var GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=';
+var GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=';
 
 function initAI(){
   var fab = document.getElementById('ai-fab');
@@ -3962,7 +4019,7 @@ var EQ_SPEC_FIELDS={pump:[['Power (kW)','power'],['Flow Rate (m³/h)','flow'],['
 var EQ_SPEC_LABELS={power:'Power',flow:'Flow',head:'Head',rpm:'RPM',fluid:'Medium',volt:'Voltage',amp:'Current',frame:'Frame',size:'Size',press:'Pressure',act:'Actuator',diam:'Diameter',len:'Length',mat:'Material',vol:'Volume',imp:'Impeller',area:'Area',hotmed:'Hot Side',coldmed:'Cold Side',micron:'Micron',range:'Range',signal:'Output',acc:'Accuracy',width:'Width',speed:'Speed',ip:'IP Rating',brand:'Brand',comptype:'Type',s1:'Spec 1',s2:'Spec 2'};
 var currentEqDetail=-1;
 
-function buildEqTypeGrid(sel){var grid=document.getElementById('eq-type-grid');if(!grid)return;sel=sel||'pump';grid.innerHTML=Object.keys(EQ_TYPES).map(function(k){var t=EQ_TYPES[k];return'<div class="eq-type-btn'+(k===sel?' selected':'')+'"><div class="eq-type-ico">'+t.icon+'</div><div class="eq-type-lbl">'+t.label+'</div></div>';}).join('');updateEqSubtypes(sel);updateEqSpecs(sel);document.getElementById('eq-type-val').value=sel;}
+function buildEqTypeGrid(sel){var grid=document.getElementById('eq-type-grid');if(!grid)return;sel=sel||'pump';grid.innerHTML=Object.keys(EQ_TYPES).map(function(k){var t=EQ_TYPES[k];return'<div class="eq-type-btn'+(k===sel?' selected':'')+'" onclick="selectEqType(\''+k+'\')"><div class="eq-type-ico">'+t.icon+'</div><div class="eq-type-lbl">'+t.label+'</div></div>';}).join('');updateEqSubtypes(sel);updateEqSpecs(sel);document.getElementById('eq-type-val').value=sel;}
 function selectEqType(k){document.getElementById('eq-type-val').value=k;document.querySelectorAll('.eq-type-btn').forEach(function(b){b.classList.remove('selected');});var keys=Object.keys(EQ_TYPES),idx=keys.indexOf(k);var btns=document.querySelectorAll('.eq-type-btn');if(btns[idx])btns[idx].classList.add('selected');updateEqSubtypes(k);updateEqSpecs(k);}
 function updateEqSubtypes(k){var sel=document.getElementById('eq-subtype');if(!sel)return;var t=EQ_TYPES[k];sel.innerHTML=(t?t.subtypes:[]).map(function(s){return'<option>'+s+'</option>';}).join('');}
 function updateEqSpecs(k){var wrap=document.getElementById('eq-specs-wrap');if(!wrap)return;var fields=EQ_SPEC_FIELDS[k]||EQ_SPEC_FIELDS.other;wrap.innerHTML='<div class="fr" style="flex-wrap:wrap">'+fields.map(function(f){return'<div class="fg" style="min-width:calc(50% - 5px)"><label class="fl">'+f[0]+'</label><input type="text" class="fi" id="eq-spec-'+f[1]+'" placeholder="—"></div>';}).join('')+'</div>';}
@@ -3971,7 +4028,6 @@ function setEqSpecs(k,specs){setTimeout(function(){Object.keys(specs||{}).forEac
 function openEqModal(){document.getElementById('eq-edit-idx').value='-1';clearIns(['eq-name','eq-tag','eq-carl-id','eq-model','eq-model-no','eq-serial','eq-notes']);buildEqTypeGrid('pump');openM('m-eq');}
 
 function renderEquipment(){
-  if(!S||!S.equipment)return;
   var el=document.getElementById('eq-list');if(!el)return;
   var tfEl=document.getElementById('eq-type-filters');
   if(tfEl){var types=Object.keys(S.equipment.reduce(function(a,e){if(e.type)a[e.type]=1;return a;},{}));tfEl.innerHTML='<button class="fb on" data-eqtype="all">All Types</button>'+types.map(function(t){var info=EQ_TYPES[t]||{icon:'🔧',label:t};return'<button class="fb" data-eqtype="'+t+'">'+info.icon+' '+info.label+'</button>';}).join('');tfEl.querySelectorAll('[data-eqtype]').forEach(function(b){b.addEventListener('click',function(){tfEl.querySelectorAll('[data-eqtype]').forEach(function(x){x.classList.remove('on');});b.classList.add('on');var f=b.dataset.eqtype;el.querySelectorAll('.eq-card').forEach(function(c){c.style.display=(f==='all'||c.dataset.type===f)?'':'none';});});});}
@@ -4004,9 +4060,9 @@ function renderEquipment(){
         (eq.next_service?'<span style="font-size:10px;color:var(--t3)">📅 '+fd(eq.next_service)+'</span>':'')+
       '</div>'+
       '<div class="item-actions">'+
-        '<button class="btn btn-p btn-sm">📋 Detail</button>'+
-        '<button class="btn btn-s btn-sm">Edit</button>'+
-        '<button class="btn btn-d btn-sm">Del</button>'+
+        '<button class="btn btn-p btn-sm" onclick="openEqDetail('+i+')">📋 Detail</button>'+
+        '<button class="btn btn-s btn-sm" onclick="editEq('+i+')">Edit</button>'+
+        '<button class="btn btn-d btn-sm" onclick="delEq('+i+')">Del</button>'+
       '</div></div>';
   }).join('');
 }
@@ -4040,7 +4096,7 @@ function openEqDetail(i){
   if(ss)ss.style.display=Object.keys(specs).length?'':'none';
   var wos=eq.wos||[];
   document.getElementById('eqd-wos').innerHTML=wos.length?
-    '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px">'+wos.map(function(wo,wi){return'<span class="wo-link">'+wo+' <span style="opacity:.4;font-size:9px">✕</span></span>';}).join('')+'</div><div style="font-size:10px;color:var(--t3)">Tap to unlink</div>':
+    '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px">'+wos.map(function(wo,wi){return'<span class="wo-link" onclick="removeWO('+i+','+wi+')">'+wo+' <span style="opacity:.4;font-size:9px">✕</span></span>';}).join('')+'</div><div style="font-size:10px;color:var(--t3)">Tap to unlink</div>':
     '<div style="color:var(--t4);font-size:12px;margin-bottom:8px">No WOs linked yet</div>';
   var events=[];
   S.pms.filter(function(p){return p.equip===eq.name;}).forEach(function(p){events.push({date:p.sched,title:p.type||'PM',meta:p.status==='done'?'✅ Done '+fd(p.completedDate):'⏳ Scheduled',color:'var(--acc)'});});
@@ -4050,6 +4106,37 @@ function openEqDetail(i){
   document.getElementById('eqd-timeline').innerHTML=events.length?events.map(function(ev){return'<div class="timeline-item"><div class="timeline-dot" style="color:'+ev.color+'"></div><div class="timeline-content"><div class="timeline-date">'+fd(ev.date)+'</div><div class="timeline-title">'+ev.title+'</div>'+(ev.meta?'<div class="timeline-meta">'+ev.meta+'</div>':'')+'</div></div>';}).join(''):'<div style="color:var(--t4);font-size:12px;padding:10px 0">No history yet</div>';
   document.getElementById('eq-detail-overlay').classList.add('on');
   document.body.style.overflow='hidden';
+  // Render attachments
+  var attEl=document.getElementById('eqd-attach-list');
+  if(attEl){
+    var eqIdx2=idx;
+    attEl.innerHTML='';
+    var atts2=eq.attachments||[];
+    var isImg2=function(t){return t&&t.indexOf('image/')===0;};
+    atts2.forEach(function(a){
+      var w=document.createElement('div');w.style.cssText='position:relative;display:inline-block';
+      if(isImg2(a.type)){
+        var im=document.createElement('img');im.className='attach-thumb';im.src=a.data;im.title=a.name;
+        im.addEventListener('click',function(){openAttachViewer(a.data,a.name);});
+        var d=document.createElement('button');
+        d.style.cssText='position:absolute;top:-4px;right:-4px;background:var(--r);border:none;border-radius:50%;width:18px;height:18px;color:#fff;font-size:10px;cursor:pointer;line-height:18px;text-align:center';
+        d.textContent='✕';d.addEventListener('click',function(){deleteAttachment(eqIdx2,a.id);openEqDetail(eqIdx2);});
+        w.appendChild(im);w.appendChild(d);
+      } else {
+        w.className='attach-doc';
+        w.innerHTML='📄 <span>'+a.name+'</span>';
+        w.addEventListener('click',function(){openAttachViewer(a.data,a.name);});
+      }
+      attEl.appendChild(w);
+    });
+    var lbl2=document.createElement('label');
+    lbl2.className='attach-add';lbl2.title='Add photo or file';
+    lbl2.innerHTML='<span class="attach-add-icon">📎</span><span>Add</span>';
+    var inp2=document.createElement('input');
+    inp2.type='file';inp2.accept='image/*,.pdf,.doc,.docx,.xls,.xlsx';inp2.style.display='none';
+    inp2.addEventListener('change',function(){if(inp2.files[0])addAttachment(eqIdx2,inp2.files[0]);openEqDetail(eqIdx2);});
+    lbl2.appendChild(inp2);attEl.appendChild(lbl2);
+  }
 }
 function closeEqDetail(){document.getElementById('eq-detail-overlay').classList.remove('on');document.body.style.overflow='';currentEqDetail=-1;}
 function addWOtoEq(){var wo=prompt('Carl Source WO#:');if(!wo||!wo.trim())return;var eq=S.equipment[currentEqDetail];if(!eq)return;if(!eq.wos)eq.wos=[];if(eq.wos.includes(wo.trim())){toast('Already linked',false);return;}eq.wos.push(wo.trim());svS();openEqDetail(currentEqDetail);toast('WO linked ✅');}
@@ -4088,76 +4175,67 @@ function renderPMOpsList(){
     return'<div style="display:flex;align-items:center;gap:8px;background:var(--s3);border:1px solid var(--b2);border-radius:8px;padding:8px 10px">'+
       '<span style="font-family:var(--mono);font-size:10px;color:var(--acc);flex-shrink:0;width:18px;text-align:center">'+(i+1)+'</span>'+
       '<span style="flex:1;font-size:13px">'+op.text+'</span>'+
-      '<span style="cursor:pointer;color:var(--r);font-size:14px;flex-shrink:0">✕</span>'+
+      '<span onclick="removePMOp('+i+')" style="cursor:pointer;color:var(--r);font-size:14px;flex-shrink:0">✕</span>'+
     '</div>';
   }).join('');
 }
 
 // ══ PM EXECUTION VIEW (when completing a PM) ══
-function openPMExecution(i){
-  var p=S.pms[i];if(!p)return;
+function openPMExecution(pmIdx){
+  var p=S.pms[pmIdx];if(!p)return;
   var ops=p.operations||[];
-  if(!ops.length){donePM(i);return;}
-  var existing=document.getElementById('pm-exec-modal');
-  if(existing)existing.remove();
+  if(!ops.length){donePM(pmIdx);return;}
+  var existing=document.getElementById('pm-exec-modal');if(existing)existing.remove();
   var wrap=document.createElement('div');
-  wrap.id='pm-exec-modal';
-  wrap.className='overlay on';
+  wrap.className='overlay on';wrap.id='pm-exec-modal';
   wrap.addEventListener('click',function(e){if(e.target===wrap)wrap.remove();});
-  var opsHtml=ops.map(function(op,oi){
-    var done=op.done||false;
-    return '<div style="display:flex;align-items:flex-start;gap:10px;background:var(--s3);border:1px solid var(--b2);border-radius:9px;padding:11px;cursor:pointer;margin-bottom:6px" id="pmop-'+i+'-'+oi+'">'
-      +'<div style="width:20px;height:20px;border-radius:6px;border:2px solid '+(done?'var(--g)':'var(--b3)')+';background:'+(done?'var(--g)':'transparent')+';flex-shrink:0;display:flex;align-items:center;justify-content:center">'
-      +(done?'<span style="color:#07090e;font-size:12px;font-weight:700">✓</span>':'')
+  function renderOps(){
+    var done=ops.filter(function(o){return o.done;}).length;
+    var pct=ops.length?Math.round(done/ops.length*100):0;
+    var opsHtml=ops.map(function(op,oi){
+      return '<div class="pm-op-row" data-oi="'+oi+'" style="display:flex;align-items:flex-start;gap:10px;background:var(--s3);border:1px solid var(--b2);border-radius:9px;padding:11px;cursor:pointer;margin-bottom:6px;transition:opacity .15s;opacity:'+(op.done?'0.6':'1')+'">'
+        +'<div style="width:22px;height:22px;border-radius:7px;border:2px solid '+(op.done?'var(--g)':'var(--b3)')+';background:'+(op.done?'var(--g)':'transparent')+';flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s">'
+        +(op.done?'<span style="color:#07090e;font-size:13px;font-weight:700">✓</span>':'')
+        +'</div>'
+        +'<span style="flex:1;font-size:13px;'+(op.done?'text-decoration:line-through;color:var(--t3)':'')+'">'+op.text+'</span>'
+        +'</div>';
+    }).join('');
+    wrap.innerHTML='<div class="modal">'
+      +'<div class="modal-handle"></div>'
+      +'<div class="modal-title">🔧 Execute PM</div>'
+      +'<div style="font-size:14px;font-weight:600;margin-bottom:2px">'+p.equip+'</div>'
+      +'<div style="font-size:11px;color:var(--t3);margin-bottom:14px">'+p.area+'</div>'
+      +opsHtml
+      +'<div style="margin:10px 0 14px">'
+        +'<div style="display:flex;justify-content:space-between;margin-bottom:4px">'
+          +'<span style="font-size:11px;color:var(--t2)">Progress</span>'
+          +'<span style="font-family:var(--mono);font-size:11px;color:'+(pct===100?'var(--g)':'var(--acc)')+'">'+done+'/'+ops.length+' ('+pct+'%)</span>'
+        +'</div>'
+        +'<div class="pbar"><div class="pfill" style="width:'+pct+'%;background:'+(pct===100?'var(--g)':'var(--acc)')+'"></div></div>'
       +'</div>'
-      +'<div style="flex:1;font-size:13px;font-weight:500;'+(done?'text-decoration:line-through;color:var(--t3)':'')+'">'+op.text+'</div>'
+      +'<textarea class="ft" id="pm-exec-notes" placeholder="Notes / findings..." style="min-height:55px;margin-bottom:10px">'+(p.notes||'')+'</textarea>'
+      +(pct===100?'<button class="btn btn-g" id="pm-exec-done">✓ Mark PM Complete</button>':'<button class="btn btn-p" id="pm-exec-done">Mark Done ('+(100-pct)+'% remaining)</button>')
+      +'<div style="height:8px"></div>'
+      +'<button class="btn btn-s" id="pm-exec-close">Cancel</button>'
       +'</div>';
-  }).join('');
-  var doneCnt=ops.filter(function(o){return o.done;}).length;
-  var pct=Math.round(doneCnt/ops.length*100);
-  wrap.innerHTML='<div class="modal">'
-    +'<div class="modal-handle"></div>'
-    +'<div class="modal-title">🔧 PM Execution</div>'
-    +'<div style="font-family:var(--hd);font-size:15px;margin-bottom:3px">'+p.equip+'</div>'
-    +'<div style="font-size:12px;color:var(--t3);margin-bottom:14px">'+p.area+' · '+(p.type||'PM')+'</div>'
-    +opsHtml
-    +'<div id="pmexec-prog" style="margin:12px 0">'
-      +'<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:12px;color:var(--t2)">Progress</span>'
-      +'<span style="font-family:var(--mono);font-size:12px;color:'+(pct===100?'var(--g)':'var(--acc)')+'">'+doneCnt+'/'+ops.length+' ('+pct+'%)</span></div>'
-      +'<div class="pbar"><div class="pfill" id="pmexec-bar" style="background:'+(pct===100?'var(--g)':'var(--acc)')+';width:'+pct+'%"></div></div>'
-    +'</div>'
-    +'<textarea class="ft" id="pm-exec-notes" placeholder="Notes / findings..." style="min-height:60px;margin-bottom:10px"></textarea>'
-    +'<button class="btn btn-g">✓ Mark PM Complete</button>'
-    +'<div style="height:8px"></div>'
-    +'<button class="btn btn-s" id="pm-exec-cancel">Cancel</button>'
-    +'</div>';
+    // Wire op checkboxes
+    wrap.querySelectorAll('.pm-op-row').forEach(function(row){
+      row.addEventListener('click',function(){
+        var oi=parseInt(row.dataset.oi);
+        ops[oi].done=!ops[oi].done;
+        p.operations=ops;svS();
+        renderOps(); // re-render in place
+      });
+    });
+    var doneBtn=document.getElementById('pm-exec-done');
+    if(doneBtn)doneBtn.addEventListener('click',function(){completePMExecution(pmIdx,wrap);});
+    var closeBtn=document.getElementById('pm-exec-close');
+    if(closeBtn)closeBtn.addEventListener('click',function(){wrap.remove();});
+  }
+  renderOps();
   document.body.appendChild(wrap);
-  document.getElementById('pm-exec-cancel').addEventListener('click',function(){wrap.remove();});
 }
 
-function togglePMOp(pmIdx,opIdx){
-  var p=S.pms[pmIdx];if(!p||!p.operations)return;
-  p.operations[opIdx].done=!p.operations[opIdx].done;
-  svS();
-  // Re-render the checkbox
-  var el=document.getElementById('pm-op-'+pmIdx+'-'+opIdx);
-  if(el){
-    var op=p.operations[opIdx];
-    var box=el.querySelector('div');
-    var txt=el.querySelector('div:last-child div:first-child');
-    if(box){box.style.background=op.done?'var(--g)':'transparent';box.style.borderColor=op.done?'var(--g)':'var(--b3)';box.innerHTML=op.done?'<span style="color:#07090e;font-size:12px;font-weight:700">✓</span>':'';}
-    if(txt){txt.style.textDecoration=op.done?'line-through':'none';txt.style.color=op.done?'var(--t3)':'';}
-  }
-  updatePMExecProgress(pmIdx);
-}
-function updatePMExecProgress(pmIdx){
-  var p=S.pms[pmIdx];if(!p||!p.operations)return;
-  var done=p.operations.filter(function(o){return o.done;}).length;
-  var total=p.operations.length;
-  var pct=Math.round(done/total*100);
-  var bar=document.getElementById('pmexec-bar');
-  if(bar){bar.style.width=pct+'%';bar.style.background=pct===100?'var(--g)':'var(--acc)';}
-}
 function completePMExecution(pmIdx){
   var p=S.pms[pmIdx];if(!p)return;
   var ops=p.operations||[];
@@ -4191,7 +4269,7 @@ function renderEqPickerList(prefix,query){
   if(!el)return;
   var list=getEqList(query);
   if(!list.length){
-    el.innerHTML='<div class="eq-picker-empty">No registered equipment.<br><span style="color:var(--acc);cursor:pointer;font-size:12px">Type manually</span></div>';
+    el.innerHTML='<div class="eq-picker-empty">No registered equipment.<br><span style="color:var(--acc);cursor:pointer;font-size:12px" onclick="addPMEquipManual()">Type manually</span></div>';
     return;
   }
   el.innerHTML='';
@@ -4297,7 +4375,7 @@ renderPMEquipTags=function(){
   el.innerHTML=pmEquipList.map(function(name,i){
     var eq=S.equipment.find(function(e){return e.name===name;});
     var icon=eq&&EQ_TYPES[eq.type]?EQ_TYPES[eq.type].icon:'🔧';
-    return '<span class="asset-tag">'
+    return '<span class="asset-tag" onclick="removePMEquip('+i+')">'
       +icon+' '+name
       +' <span class="asset-tag-x">✕</span></span>';
   }).join('');
@@ -4313,106 +4391,67 @@ function resetEqPicker(prefix){
   if(dd)dd.classList.remove('open');
 }
 
-// ── Auto-calculate KPIs from real data ──
-function autoCalcKPIs(){
-  try{
-    if(!S.pms||!S.breakdowns)return;
-    var now2=new Date(),month=now2.toISOString().slice(0,7);
-    var monthPMs=S.pms.filter(function(p){return(p.sched||'').slice(0,7)===month;});
-    var donePMs=monthPMs.filter(function(p){return p.status==='done';});
-    var pmRate=monthPMs.length?Math.round(donePMs.length/monthPMs.length*100):null;
-    var overdue=S.pms.filter(function(p){return p.status==='scheduled'&&p.sched<TODAY;}).length;
-    var monthBDs=S.breakdowns.filter(function(b){return(b.date||'').slice(0,7)===month;}).length;
-    var totalWOs=S.pms.filter(function(p){return p.wo;}).length;
-    var doneWOs=S.pms.filter(function(p){return p.wo&&p.status==='done';}).length;
-    var carlRate=totalWOs?Math.round(doneWOs/totalWOs*100):null;
-    S.kpis={pm:pmRate,od:overdue,bd:monthBDs,carl:carlRate};
-    if(!S.months)S.months={};
-    S.months[month]={pm:pmRate,od:overdue,bd:monthBDs,carl:carlRate};
+// ══ ATTACHMENTS ══
+function openAttachViewer(src, name){
+  var v=document.getElementById('attach-viewer');
+  var img=document.getElementById('attach-viewer-img');
+  var nm=document.getElementById('attach-viewer-name');
+  if(v&&img){img.src=src;if(nm)nm.textContent=name||'';v.classList.add('on');}
+}
+function closeAttachViewer(){
+  var v=document.getElementById('attach-viewer');if(v)v.classList.remove('on');
+  var img=document.getElementById('attach-viewer-img');if(img)img.src='';
+}
+function addAttachment(eqIdx, file){
+  var eq=S.equipment[eqIdx];if(!eq)return;
+  if(!eq.attachments)eq.attachments=[];
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var data=e.target.result;
+    var att={id:'att'+Date.now(),name:file.name,type:file.type,data:data,date:TODAY};
+    eq.attachments.push(att);
     svS();
-  }catch(e){console.warn('autoCalcKPIs:',e);}
+    renderEqAttachments(eqIdx);
+    toast(file.name+' attached ✅');
+  };
+  reader.readAsDataURL(file);
 }
+function deleteAttachment(eqIdx, attId){
+  var eq=S.equipment[eqIdx];if(!eq||!eq.attachments)return;
+  if(!confirm('Delete this attachment?'))return;
+  eq.attachments=eq.attachments.filter(function(a){return a.id!==attId;});
+  svS();renderEqAttachments(eqIdx);
+}
+// renderEqAttachments: see DOM version above
 
-// ── Seed sample data on first boot ──
-function seedSampleData(){
-  if(localStorage.getItem('em_seeded'))return;
-  // Equipment
-  S.equipment=[
-    {id:'eq1',name:'Pump P-101',area:'20L A',type:'pump',subtype:'Centrifugal',tag:'P-101',carl_id:'EQ-001',model:'Grundfos',model_no:'CM5-4',serial:'GF2024-001',crit:'A',status:'operational',install_date:'2022-03-15',next_service:'2025-05-01',specs:{power:'5.5',flow:'12',head:'28',rpm:'2900'},wos:['WO-042','WO-038'],notes:'Main product transfer pump'},
-    {id:'eq2',name:'Pump P-102',area:'20L A',type:'pump',subtype:'Dosing',tag:'P-102',carl_id:'EQ-002',model:'Grundfos',model_no:'DME60',serial:'GF2024-002',crit:'B',status:'operational',install_date:'2022-03-15',next_service:'2025-06-01',specs:{power:'0.37',flow:'2'},wos:[],notes:'Additive dosing pump'},
-    {id:'eq3',name:'Motor M-201',area:'Mixers',type:'motor',subtype:'Electric AC',tag:'M-201',carl_id:'EQ-003',model:'ABB',model_no:'M2AA100',serial:'ABB2023-003',crit:'A',status:'operational',install_date:'2021-06-10',next_service:'2025-04-15',specs:{power:'7.5',volt:'400',amp:'15.2',rpm:'1450'},wos:['WO-041'],notes:'Mixer 1 main drive'},
-    {id:'eq4',name:'Mixer AGT-1',area:'Mixers',type:'mixer',subtype:'Propeller',tag:'AGT-1',carl_id:'EQ-004',model:'Chemineer',model_no:'HE-3',serial:'CH2021-004',crit:'A',status:'operational',install_date:'2021-06-10',next_service:'2025-04-15',specs:{power:'7.5',rpm:'60',vol:'15'},wos:[],notes:'15m³ mixing tank'},
-    {id:'eq5',name:'Valve V-301',area:'WWTP',type:'valve',subtype:'Butterfly',tag:'V-301',carl_id:'EQ-005',model:'Crane',model_no:'BF2-4',serial:'CR2022-005',crit:'B',status:'maintenance',install_date:'2022-01-20',next_service:'2025-04-30',specs:{size:'DN100',press:'10bar'},wos:['WO-045'],notes:'Effluent control valve — seal replacement pending'},
-    {id:'eq6',name:'Compressor C-401',area:'Outside',type:'compressor',subtype:'Screw',tag:'C-401',carl_id:'EQ-006',model:'Atlas Copco',model_no:'GA15',serial:'AC2020-006',crit:'A',status:'operational',install_date:'2020-09-01',next_service:'2025-05-15',specs:{power:'15',press:'8'},wos:[],notes:'Plant air compressor'},
-    {id:'eq7',name:'Filter F-501',area:'RM Tanks',type:'filter',subtype:'Bag Filter',tag:'F-501',carl_id:'EQ-007',model:'Parker',model_no:'HF5-2',serial:'PK2023-007',crit:'C',status:'operational',install_date:'2023-02-14',next_service:'2025-04-20',specs:{size:'DN50',micron:'25'},wos:[],notes:'Raw material intake filter'},
-    {id:'eq8',name:'Level Sensor LS-601',area:'HYPO',type:'sensor',subtype:'Level Sensor',tag:'LS-601',carl_id:'EQ-008',model:'Endress+Hauser',model_no:'FMP51',serial:'EH2023-008',crit:'B',status:'operational',install_date:'2023-05-01',next_service:'2025-07-01',specs:{range:'0-5m',signal:'4-20mA'},wos:[],notes:'HYPO tank level'},
-    {id:'eq9',name:'Hose H-101A',area:'20L A',type:'hose',subtype:'Flexible Hose',tag:'H-101A',carl_id:'EQ-009',model:'Parker',model_no:'HF2-16',serial:'',crit:'C',status:'operational',install_date:'2024-01-10',next_service:'2025-06-01',specs:{diam:'25',len:'2',press:'10bar',mat:'EPDM'},wos:[],notes:'Pump P-101 outlet flexible connection'},
-    {id:'eq10',name:'Tank TK-801',area:'RM Tanks',type:'vessel',subtype:'Storage Tank',tag:'TK-801',carl_id:'EQ-010',model:'Local',model_no:'SS316',serial:'TK2019-010',crit:'A',status:'operational',install_date:'2019-06-01',next_service:'2026-01-01',specs:{vol:'50000',mat:'SS316L',press:'atmospheric'},wos:[],notes:'Raw material storage 50m³'}
-  ];
-  // PMs
-  S.pms=[
-    {area:'Mixers',equip:'Mixer AGT-1',type:'Monthly inspection + lubrication',freq:'Monthly',sched:'2025-04-15',wo:'WO-041',notes:'Check impeller, seals, gearbox oil level',status:'scheduled',operations:[{text:'Check impeller for wear/damage',done:false},{text:'Lubricate shaft bearing (grease gun)',done:false},{text:'Check gearbox oil level',done:false},{text:'Inspect mechanical seal for leaks',done:false},{text:'Measure vibration levels',done:false}]},
-    {area:'20L A',equip:'Pump P-101',type:'Monthly inspection',freq:'Monthly',sched:'2025-04-20',wo:'WO-042',notes:'Check seals, impeller, flow rate',status:'scheduled',operations:[{text:'Check mechanical seal — no leaks',done:false},{text:'Verify flow rate vs design',done:false},{text:'Inspect flexible coupling',done:false},{text:'Clean strainer',done:false}]},
-    {area:'Outside',equip:'Compressor C-401',type:'Quarterly service',freq:'Quarterly',sched:'2025-04-01',wo:'WO-043',notes:'Oil change, filter replacement',status:'done',completedDate:'2025-04-02',operations:[{text:'Change compressor oil',done:true},{text:'Replace air filter',done:true},{text:'Replace oil separator',done:true},{text:'Check belt tension',done:true},{text:'Test safety relief valve',done:true}]},
-    {area:'WWTP',equip:'Valve V-301',type:'Annual inspection',freq:'Annual',sched:'2025-03-15',wo:'WO-044',notes:'',status:'done',completedDate:'2025-03-20',operations:[]},
-    {area:'RM Tanks',equip:'Filter F-501',type:'Bag filter replacement',freq:'Monthly',sched:'2025-03-28',wo:'',notes:'Replace bags — check housing for cracks',status:'done',completedDate:'2025-03-28',operations:[{text:'Isolate filter',done:true},{text:'Drain and open housing',done:true},{text:'Replace filter bags',done:true},{text:'Pressure test before restart',done:true}]},
-    {area:'20L A',equip:'Pump P-102',type:'Quarterly inspection',freq:'Quarterly',sched:'2025-06-01',wo:'',notes:'',status:'scheduled',operations:[{text:'Check dosing accuracy',done:false},{text:'Inspect diaphragm',done:false},{text:'Clean injection valve',done:false}]}
-  ];
-  // Breakdowns
-  S.breakdowns=[
-    {id:'bd1',equip:'Valve V-301',area:'WWTP',date:'2025-03-10',duration:'3.5',rca:'mechanical',description:'Butterfly disc stuck — actuator could not complete full stroke. Caused partial flow restriction.',resolution:'Removed valve, cleaned disc and bore, replaced EPDM seat ring. Regreased shaft bearings.',cost:'185'},
-    {id:'bd2',equip:'Pump P-101',area:'20L A',date:'2025-02-18',duration:'2.0',rca:'lack_pm',description:'Mechanical seal failed — product leakage detected at pump casing. PM was overdue by 3 weeks.',resolution:'Emergency seal replacement (spare kit from inventory). Updated PM schedule.',cost:'320'},
-    {id:'bd3',equip:'Motor M-201',area:'Mixers',date:'2025-01-25',duration:'1.5',rca:'electrical',description:'VFD fault F0022 — overcurrent on startup. Mixer 1 offline for 90 min.',resolution:'Reset VFD parameters, checked motor winding resistance (OK). Increased acceleration ramp.',cost:'0'}
-  ];
-  // Gemba findings
-  S.gemba=[
-    {date:'2025-04-08',area:'WWTP',desc:'Oil drip from Valve V-301 actuator stem — approx 5ml/day. Not yet affecting performance.',priority:'medium',due:'2025-04-20',action:'Inspect and replace stem packing',wo:'WO-045',status:'open'},
-    {date:'2025-04-05',area:'20L A',desc:'Pump P-101 vibration slightly elevated — 4.2mm/s vs baseline 2.8mm/s.',priority:'high',due:'2025-04-15',action:'Check impeller balance, inspect bearings at next PM',wo:'WO-042',status:'open'},
-    {date:'2025-04-03',area:'Warehouse',desc:'FLT charger #2 cable insulation frayed near connector. Potential safety hazard.',priority:'high',due:'2025-04-07',action:'Replace charger cable immediately',wo:'',status:'closed',closedDate:'2025-04-06'},
-    {date:'2025-03-28',area:'RM Tanks',desc:'Small corrosion spots on TK-801 external surface near base plate.',priority:'low',due:'2025-06-01',action:'Sand, treat with primer and apply epoxy coating',wo:'',status:'open'},
-    {date:'2025-03-20',area:'Outside',desc:'Compressor C-401 outlet air temperature 92°C — within limits but trending up.',priority:'medium',due:'2025-05-15',action:'Check cooler fins and clean if fouled',wo:'',status:'closed',closedDate:'2025-03-22'}
-  ];
-  // CM tasks
-  S.cm=[
-    {id:'cm1',equip:'Valve V-301',area:'WWTP',desc:'Replace actuator stem packing — oil weeping from stem',priority:'medium',status:'open',date:'2025-04-20',wo:'WO-045',est_hrs:'2',act_hrs:'',parts:'Stem packing kit DN100',cost:'85',resolution:'',source:'gemba',createdDate:'2025-04-08'},
-    {id:'cm2',equip:'Pump P-101',area:'20L A',desc:'Investigate elevated vibration — 4.2mm/s, baseline 2.8mm/s',priority:'high',status:'progress',date:'2025-04-15',wo:'WO-042',est_hrs:'3',act_hrs:'',parts:'Impeller, bearings (if needed)',cost:'',resolution:'',source:'gemba',createdDate:'2025-04-05'},
-    {id:'cm3',equip:'Filter F-501',area:'RM Tanks',desc:'Housing O-ring showing compression set — minor weep at cover joint',priority:'low',status:'waiting',date:'2025-05-01',wo:'',est_hrs:'1',act_hrs:'',parts:'O-ring kit Parker HF5-2',cost:'25',resolution:'',source:'manual',createdDate:'2025-04-01'}
-  ];
-  // Suppliers
-  S.sups=[
-    {id:'sup1',name:'Grundfos Hellas SA',cat:'Spare Parts',status:'active',contact:'Γ. Παπαδόπουλος — 210 6234500',delivery:'5',credit:'30',s_quality:5,s_delivery:4,s_price:3,s_communication:5,total_score:'4.3',notes:'Preferred pump supplier — stock spare kits locally'},
-    {id:'sup2',name:'ABB Greece',cat:'Equipment',status:'active',contact:'Ν. Σταμάτης — 210 7777700',delivery:'10',credit:'45',s_quality:5,s_delivery:3,s_price:3,s_communication:4,total_score:'3.8',notes:'Motors and drives supplier'},
-    {id:'sup3',name:'Parker Hannifin Hellas',cat:'Spare Parts',status:'active',contact:'Α. Κώστας — 2310 556600',delivery:'7',credit:'30',s_quality:4,s_delivery:4,s_price:4,s_communication:4,total_score:'4.0',notes:'Filters, hoses, fittings'}
-  ];
-  // Inventory
-  S.inv=[
-    {id:'inv1',name:'Mechanical Seal Kit — CM5',ref:'GF-SEAL-CM5',equip:'Pump P-101',loc:'Shelf A1',cat:'Seals & Gaskets',qty:'2',min:'1',reorder:'3',cost:'145',supId:'sup1',movements:[],notes:'Grundfos CM5 series — critical spare'},
-    {id:'inv2',name:'Bag Filter 25 micron',ref:'PK-BAG-25',equip:'Filter F-501',loc:'Shelf B3',cat:'Filters',qty:'8',min:'4',reorder:'12',cost:'18',supId:'sup3',movements:[],notes:'Monthly replacement — 2 bags per change'},
-    {id:'inv3',name:'EPDM Butterfly Seat DN100',ref:'CR-SEAT-DN100',equip:'Valve V-301',loc:'Shelf A2',cat:'Seals & Gaskets',qty:'1',min:'2',reorder:'4',cost:'65',supId:'sup3',movements:[],notes:'LOW STOCK — reorder required'},
-    {id:'inv4',name:'VG46 Gearbox Oil 1L',ref:'OIL-VG46',equip:'Mixer AGT-1',loc:'Chemical Store',cat:'Lubricants',qty:'6',min:'3',reorder:'10',cost:'12',supId:'',movements:[],notes:'Monthly top-up'},
-    {id:'inv5',name:'Grease Cartridge SKF LGEP2',ref:'SKF-LGEP2',equip:'Motor M-201',loc:'Shelf B1',cat:'Lubricants',qty:'0',min:'2',reorder:'5',cost:'22',supId:'',movements:[],notes:'OUT OF STOCK — needed for next PM'}
-  ];
-  // KPIs
-  S.kpis={pm:83,od:1,bd:1,carl:75};
-  S.months={'2025-01':{pm:78,od:2,bd:2,carl:70},'2025-02':{pm:85,od:1,bd:1,carl:75},'2025-03':{pm:91,od:0,bd:0,carl:82},'2025-04':{pm:83,od:1,bd:1,carl:75}};
-  // Systems — link assets
-  var sysMap={sys1:['eq3','eq4'],sys5:['eq1','eq2','eq9'],sys8:['eq5'],sys10:['eq7','eq10'],sys9:['eq8'],sys6:['eq6'],sys12:[]};
-  S.systems.forEach(function(sys){if(sysMap[sys.id])sys.assets=sysMap[sys.id];});
-  // Achievements
-  S.achs=[
-    {title:'Implemented digital Gemba Walk system',date:'2025-04-01',cat:'Systems',impact:'100% finding traceability, avg closure time from unknown to 8 days',rate:'100',evidence:'This app — Gemba module'},
-    {title:'Zero unplanned downtime in March 2025',date:'2025-03-31',cat:'Maintenance',impact:'0 production stops, PM compliance 91%',rate:'91',evidence:'Carl Source WO report March 2025'},
-    {title:'Reduced Compressor C-401 oil consumption',date:'2025-03-22',cat:'Process',impact:'22% reduction after cooler cleaning program',rate:'100',evidence:'Monthly oil consumption log'}
-  ];
-  localStorage.setItem('em_seeded','1');
-  svS();
+function renderEqAttachmentsInEl(el, eqIdx){
+  var eq=S.equipment[eqIdx];if(!eq)return;
+  el.innerHTML='';
+  var atts=eq.attachments||[];
+  var isImg=function(t){return t&&t.indexOf('image/')===0;};
+  atts.forEach(function(a){
+    var w=document.createElement('div');
+    if(isImg(a.type)){
+      w.style.cssText='position:relative;display:inline-block';
+      var im=document.createElement('img');im.className='attach-thumb';im.src=a.data;im.title=a.name;
+      im.addEventListener('click',function(){openAttachViewer(a.data,a.name);});
+      w.appendChild(im);
+    } else {
+      w.className='attach-doc';w.innerHTML='📄 <span style="font-size:12px">'+a.name+'</span>';
+      w.addEventListener('click',function(){openAttachViewer(a.data,a.name);});
+    }
+    el.appendChild(w);
+  });
+  var lbl=document.createElement('label');
+  lbl.className='attach-add';lbl.title='Add';
+  lbl.innerHTML='<span class="attach-add-icon">📎</span><span>Add</span>';
+  var inp=document.createElement('input');
+  inp.type='file';inp.accept='image/*,.pdf,.doc,.docx,.xls,.xlsx';inp.style.display='none';
+  inp.addEventListener('change',function(){
+    if(inp.files[0])addAttachment(eqIdx,inp.files[0]);
+  });
+  lbl.appendChild(inp);el.appendChild(lbl);
 }
-}
-
-function openInvModal(){
-  var sel=document.getElementById('inv-sup');
-  if(sel)sel.innerHTML='<option value="">— None —</option>'+S.sups.map(function(s){return'<option value="'+s.id+'">'+s.name+'</option>';}).join('');
-  document.getElementById('inv-edit-idx').value='-1';
-  openM('m-inv');
-}
-
+</script>
+</body>
+</html>
